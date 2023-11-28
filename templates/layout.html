@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{% block title %}Default Title{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+        <!-- Bootstrap CSS CDN -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.6.0/css/bootstrap.min.css" integrity="sha384-B0UglyR+jN6C1n4Mxnxx+RmPXT0tlkkjT3hWgGJ3pUogPFyo+I3Ufw4hCzOcYJ4Y" crossorigin="anonymous">
+
+    <!-- Other head elements -->
+</head>
+
+<body>
+    <header>
+        <!-- Header content -->
+    </header>
+
+    <nav>
+        <!-- Navigation content -->
+    </nav>
+
+    <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        {% block content %}
+        <!-- Default content (if any) -->
+        {% endblock %}
+    </main>
+
+    <footer>
+        <!-- Footer content -->
+    </footer>
+
+            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.6/dist/umd/popper.min.js" integrity="sha384-+YI5nL2Mmx7l6cz/yNo4l6r7NOw3D5y1F3J1l49dVETYUFP5/5QnwzjzV83cYlJx" crossorigin="anonymous"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.6.0/js/bootstrap.min.js" integrity="sha384-+YI5nL2Mmx7l6cz/yNo4l6r7NOw3D5y1F3J1l49dVETYUFP5/5QnwzjzV83cYlJx" crossorigin="anonymous"></script>
+
+    <!-- JavaScript files 
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>-->
+</body>
+
+</html>

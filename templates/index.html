@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+
+{% block title %}Home Page{% endblock %}
+
+{% block content %}
+<div class="container mt-3">
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" data-bs-toggle="tab" href="#userInfo">User Info</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#chat">Chat</a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <div id="userInfo" class="container tab-pane active"><br>
+            {% include 'partials/user_info.html' %}
+        </div>
+        <div id="chat" class="container tab-pane fade"><br>
+            {% include 'partials/chat.html' %}
+        </div>
+    </div>
+</div>
+{% endblock %}

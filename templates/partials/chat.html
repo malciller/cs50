@@ -1,0 +1,13 @@
+{% extends 'layout.html' %}
+
+{% block title %}User Info{% endblock %}
+
+{% block content %}
+
+<!-- partials/user_info.html -->
+<div class="user-info">
+    <h2>User Information</h2>
+    <p><strong>Username:</strong> {{ username }}</p>
+    <p><strong>Email:</strong> {{ email }}</p>
+</div>
+{% endblock %}
