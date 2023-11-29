@@ -1,40 +1,26 @@
 :root {
     --background-color: #36393f;
     --text-color: #ffffff;
-    --button-color: #4b3c5e;
+    --button-color: #e8202b;
     --input-background: #40444b;
     --border-color: #202225;
+    
 }
 
-.custom-footer {
-    position: sticky;
-    bottom: 0;
+/* Reset and Base Styles */
+body,
+html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
 }
-
 
 body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-}
-
-.main-content {
-    flex: 1;
-}
-
-
-
-body,
-html {
-    height: 100%;
-    margin: 0;
-}
-
-/* Global Styles */
-body {
-    font-family: Arial, sans-serif;
-    background-color: var(--background-color);
-    color: var(--text-color);
 }
 
 /* Tab Styles */
@@ -46,7 +32,8 @@ body {
     display: block;
 }
 
-.nav-tabs {
+.nav-tabs,
+.custom-nav-tabs {
     list-style-type: none;
     padding: 0;
     margin: 0;
@@ -55,83 +42,32 @@ body {
     background-color: var(--input-background);
 }
 
-.nav-tabs .nav-item {
-    flex-grow: 1;
-    text-align: center;
-}
-
-.nav-tabs .nav-link {
-    display: block;
-    padding: 10px;
-    text-decoration: none;
-    color: var(--text-color);
-}
-
-.nav-tabs .nav-link.active {
-    font-weight: bold;
-    text-decoration: underline;
-    background-color: var(--border-color);
-}
-
-
-
-
-input,
-textarea,
-select {
-    background-color: var(--input-background);
-    color: var(--text-color);
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-    padding: 5px;
-}
-
-a {
-    color: var(--button-color);
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-/* Custom Tab Styles */
-.custom-nav-tabs {
-    display: flex;
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    background-color: var(--input-background);
-    /* Background color for the tab bar */
-    border-bottom: 1px solid var(--border-color);
-}
-
+.nav-tabs .nav-item,
 .custom-nav-item {
     flex-grow: 1;
     text-align: center;
 }
 
-.custom-nav-link {
+
+.nav-tabs .nav-link,
+.custom-nav-link{
     display: block;
-    padding: 10px 15px;
-    color: var(--text-color);
+    padding: 10px;
     text-decoration: none;
+    color: var(--text-color);
     transition: background-color 0.3s;
+}
+
+.nav-tabs .nav-link.active,
+.custom-nav-link.active {
+    font-weight: bold;
+    text-decoration: underline;
+    background-color: var(--button-color);
 }
 
 .custom-nav-link:hover,
 .custom-nav-link:focus {
-    background-color: darken(var(--input-background), 5%);
-    color: var(--text-color);
-}
-
-.custom-nav-link.active {
-    background-color: var(--background-color);
-    /* Active tab background color */
-    color: var(--text-color);
-    font-weight: bold;
-    border-bottom: 3px solid var(--button-color);
-    /* Highlight color for active tab */
+    background-color: darken(var(--button-color), 5%);
 }
 
 .custom-tab-content {
@@ -148,34 +84,27 @@ a:hover {
     display: block;
 }
 
-
-.custom-footer {
-    text-align: center;
-    font-size: 10px;
-    /* You can adjust the font size as needed */
-    background-color: var(--background-color);
-    /* Match the background color to the body */
+/* Form Styles */
+input,
+textarea,
+select,
+.form-input {
+    background-color: var(--input-background);
     color: var(--text-color);
-    /* Match the text color to the body */
-    padding: 5px 0;
-    /* Optional padding for better visibility */
-
-    bottom: 0;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    padding: 5px;
     width: 100%;
 }
 
-
-.form-group {
-    margin-bottom: 10px;
-    /* Add space between form groups */
-}
-
+.form-group,
 .form-check {
     margin-bottom: 10px;
-    /* Add space between the checkbox and the next element */
 }
 
+/* Button Styles */
 button,
+img,
 .send-button,
 .custom-button,
 .btn {
@@ -190,32 +119,41 @@ button,
     width: 40px;
     height: 40px;
     text-align: center;
-    font-size: 16px;
     color: var(--text-color);
-}
-
-/* Button background color */
-button,
-.send-button,
-.custom-button,
-.btn {
     background-color: var(--button-color);
 }
 
-/* Hover styles for all buttons */
 button:hover,
 .send-button:hover,
 .custom-button:hover,
 .btn:hover {
     background-color: #5d4e6d;
-    /* Slightly lighter purple for hover */
 }
 
-/* Styles for button images */
-.btn img {
-    width: 32px;
-    height: auto;
-    /* Adjust the size as needed */
+/* Link Styles */
+a {
+    color: var(--button-color);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Layout Styles */
+.main-content {
+    flex: 1;
+}
+
+.custom-footer {
+    position: sticky;
+    bottom: 0;
+    text-align: center;
+    font-size: 10px;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    padding: 5px 0;
+    width: 100%;
 }
 
 .centered-form-container {
@@ -224,105 +162,113 @@ button:hover,
     align-items: center;
     height: 100vh;
     padding: 20px;
+    box-sizing: border-box;
+    /* Makes sure padding is included in the width */
 }
 
 .centered-form {
     width: 100%;
     max-width: 400px;
     background-color: var(--input-background);
-    /* Use the theme's input background color */
     padding: 40px;
+    /* Adjusted padding */
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    display: flex;
+    /* Added for internal flex layout */
+    flex-direction: column;
+    /* Stack children vertically */
+    justify-content: space-between;
+    /* Distribute space */
+    box-sizing: border-box;
+    /* Makes sure padding is included in the height */
 }
 
 .form-field {
     margin-bottom: 20px;
-    /* Increase margin if needed */
+    /* Add more space between inputs */
 }
 
-.form-input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+.form-footer {
+    margin-top: 20px;
+    /* Add space above the footer area */
+    text-align: center;
+    /* Center align the footer contents */
 }
 
+.register-prompt {
+    margin-bottom: 20px;
+    /* Add space below the prompt */
+}
 
+.login-button {
+    align-self: center;
+    /* Center the button in the form */
+    margin-top: 10px;
+    /* Optional: adds space above the login button if needed */
+}
+
+/* Ensure the footer is always at the bottom */
+.centered-form {
+    justify-content: space-between;
+    /* Distributes space between and around content items */
+}
 
 .form-action {
-    display: flex;
-    justify-content: space-between;
-    /* Align button and prompt */
-    align-items: center;
+    position: relative;
+    /* Relative positioning for absolute children */
+    padding-bottom: 60px;
+    /* Space for the button and prompt */
 }
 
 .register-prompt {
     margin-left: 10px;
-    /* Space between button and text */
     color: var(--text-color);
-    /* Optional: Set the color */
-}
-
-.register-prompt {
-    margin-left: 10px;
-    /* Space between button and text */
-    color: var(--text-color);
-    /* Optional: Set the color */
     align-self: center;
-    /* Center vertically in the flex container */
 }
 
-
-/* Parent Container (if it's not already styled this way) */
+/* Chat Styles */
 .parent-of-chat-container {
     display: flex;
     flex-direction: column;
-    height: 100%; /* Take full height of its container */
+    height: 100%;
 }
 
-/* Chat Container Styles */
 .chat-container {
     display: flex;
     flex-direction: column;
-    flex-grow: 1; /* Takes up all available space */
-    overflow: hidden; /* Prevents overflow */
+    flex-grow: 1;
+    overflow: hidden;
 }
 
 .chat-messages {
     flex: 0 0 80%;
-    /* 80% of the container height */
     overflow-y: auto;
-    /* Scroll bar for overflow content */
     padding: 10px;
-    /* Optional: for internal spacing */
     border-bottom: 1px solid var(--border-color);
-    /* Separator line */
 }
 
 .chat-input-container {
     flex: 0 0 20%;
-    /* 20% of the container height */
     display: flex;
-    /* Flex layout for input and button */
     align-items: center;
-    /* Center items vertically */
     padding: 10px;
-    /* Optional: for internal spacing */
 }
 
 .chat-input {
     flex-grow: 1;
-    /* Input field takes remaining space */
     resize: none;
-    /* Disable manual resizing */
     margin-right: 10px;
-    /* Space between input and button */
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    padding: 5px;
 }
 
 .send-button {
     flex-shrink: 0;
-    /* Prevents button from shrinking */
+    background-color: var(--button-color);
+    color: var(--text-color);
 }
 
 /* Ensure text wraps within its container */
@@ -332,6 +278,7 @@ button:hover,
     overflow-wrap: break-word;
 }
 
+/* Additional Styles */
 .code-container {
     margin: 10px 0;
     border: 1px solid #ddd;
@@ -343,54 +290,78 @@ button:hover,
 .code-toolbar {
     display: flex;
     justify-content: space-between;
-    /* This will push the children to each end */
     align-items: center;
-    /* This will vertically center the children */
     padding: 5px;
-    /* Add padding as needed */
 }
 
 .code-toolbar-title {
     float: left;
-    /* Positions the title to the left */
 }
 
 .copy-button {
     float: right;
-    /* Keeps the copy button to the right */
-}
-
-.code-block {
-    width: calc(100% - 20px);
-    /* Adjust width to account for padding */
-    margin: 0;
+    padding: 10px;
     border: none;
-    padding: 10px;
-    height: 150px;
-    /* Adjust height as needed */
-    font-family: monospace;
-    resize: none;
-    /* Disable resizing */
-    background-color: #40444b;
-    color: #ffffff;
-}
-
-.copy-button {
-    padding: 10px;
-        border: none;
-        border-radius: 50%;
-        cursor: pointer;
-        transition: background-color 0.3s;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 40px;
-        height: 40px;
-        text-align: center;
-        font-size: 16px;
-        color: var(--text-color);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--button-color);
 }
 
 .copy-button:hover {
     background-color: #5d4e6d;
+}
+
+.code-block {
+    width: calc(100% - 20px);
+    margin: 0;
+    border: none;
+    padding: 10px;
+    height: auto;
+    font-family: monospace;
+    resize: none;
+    background-color: #40444b;
+    color: #ffffff;
+}
+
+.login-button {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+}
+
+.register-prompt {
+    position: absolute;
+    left: 40%;
+    bottom: 10px;
+    /* Adjust this value as needed to move the prompt up or down within the container */
+    transform: translateX(-50%);
+    margin-left: 0;
+    /* This is not needed as translateX(-50%) will already center the element */
+}
+
+/* Specific styles for toolbar buttons */
+.code-toolbar .copy-button {
+    width: 30px;
+    /* Adjust the width as necessary */
+    height: 30px;
+    /* Adjust the height as necessary */
+    padding: 5px;
+    /* Adjust the padding to ensure the content is centered */
+}
+
+/* Ensure the image inside the button does not overflow */
+.code-toolbar .copy-button img {
+    width: 100%;
+    /* Ensures the image is as wide as the button */
+    height: auto;
+    /* Ensures the aspect ratio of the image is maintained */
+}
+
+.custom-nav-link[aria-selected='true'] {
+    background-color: var(--button-color);
+    /* Other styling as needed */
 }

@@ -5,8 +5,7 @@
     <div class="chat-input-container">
         <textarea id="chatInput" placeholder="Type a message..." class="chat-input"></textarea>
         <button onclick="sendMessage()" class="send-button">
-            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAACLElEQVR4nO3YS6hNYRTA8d/1yqs8YqYIIcprQvdKGRgoBiZKtwxMDiGJiTJABgh1MzViQDERJheZyNDAY2Dgka6UgVC4uO7Wrq12OvbZe5/Xt+v+a832d85/rbO+71v7MMYYeViKA9iLWSrCapzEM0SpeBlqEj1Yj7OJZJQRewTCeGzCRQw1kE7H/m5Lb8AA3heQTseyTktPwTZcxqeS0lESTzslPTUl/aVJ6SgVJ9opPRu7cAvDLZSOUrGq1dJzU9I/2yQdJfGqVdLzcRAP8bvN0lEqzjQjvTAlPdpB6SgV64pKr8BxPO+ScJSKoeSya0gfLuBNh8RGc+6d+LLLZCLudKGq53K2ZHxjZ7Kzw/JXsRjvcjz7IbnBMzncIfGPSbFirudccynvzP29zfJ3MS/5vvjuyLtui5z0YhAjLRb/lhzBf0+RBficc208O03SxEjQ7O36BCtTnz0ODwqsv1JUvlXJxL/i6TrVO1qwANubTaBMMq+xsc76NfhRQP4rprUygTzJxOPz9DrPT07aqUj1b+gQ8URaw9aMZwZK7J9+gbC5xAA4jBkCYCbelqj+bYFwreTxu1sA9JeUH0n2VdeplUzgvkCYg18lEtgnIO4VlB9NDXyq2EaPBEbRNjoiQIq00SIBkreNHguUvG10TMDkaaPlAqZRG70QOI3a6JQKkNVGa1WAWsYraI8K8L82Oq9CDNZJoFeF6PvnH8CbKsgSHMIOTOi2zBia4A+MKPC3F51e4QAAAABJRU5ErkJggg=="
-                title="Send" alt="Send Icon" style="width: 20px; height: 20px;">
+            <img src="static\images\icons8-hexagon-synchronize.svg" title="Send" alt="Send Icon" style="width: 20px; height: 20px;">
         </button>
     </div>
 </div>
@@ -74,7 +73,12 @@
 
                 var copyButton = document.createElement("button");
                 copyButton.className = "copy-button";
-                copyButton.textContent = "Copy";
+                
+                var img = document.createElement("img");
+                img.src = "/static/images/icons8-external-link.svg"; // Correct the path with forward slashes
+                img.title = "Copy";
+                copyButton.appendChild(img);
+
                 copyButton.onclick = function () { copyToClipboard(codeSnippet); };
 
                 codeToolbar.appendChild(copyButton);

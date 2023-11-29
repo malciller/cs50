@@ -31,26 +31,34 @@
         tabs.forEach(tab => {
             tab.addEventListener('click', function (event) {
                 event.preventDefault();
-                const activePane = document.querySelector('.custom-tab-pane.active.show');
-                const targetPane = document.querySelector(this.getAttribute('href'));
 
-                if (activePane) {
-                    activePane.classList.remove('active', 'show');
-                    activePane.style.display = 'none';
-                }
+                // Remove the active class and set aria-selected to false for all tabs
+                tabs.forEach(t => {
+                    t.classList.remove('active');
+                    t.setAttribute('aria-selected', 'false');
+                });
+
+                // Add the active class and set aria-selected to true for the clicked tab
+                this.classList.add('active');
+                this.setAttribute('aria-selected', 'true');
+
+                // Hide all tab panes
+                const tabPanes = document.querySelectorAll('.custom-tab-pane');
+                tabPanes.forEach(pane => {
+                    pane.classList.remove('active', 'show');
+                    pane.style.display = 'none';
+                });
+
+                // Show the clicked tab's content pane
+                const targetPane = document.querySelector(this.getAttribute('href'));
                 if (targetPane) {
                     targetPane.classList.add('active', 'show');
                     targetPane.style.display = 'block';
                 }
-
-                const activeTab = document.querySelector('.custom-nav-link.active');
-                if (activeTab) {
-                    activeTab.classList.remove('active');
-                }
-                this.classList.add('active');
             });
         });
     });
+
 
 
 </script>

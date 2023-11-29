@@ -1,5 +1,5 @@
 {% extends 'layout.html' %}
-
+{% block title %}Login{% endblock %}
 {% block content %}
 <div class="centered-form-container">
     <form method="POST" action="" class="centered-form">
@@ -10,12 +10,13 @@
         <div class="form-field">
             {{ form.password(class='form-input') }}
         </div>
-        <div class="form-action">
-            <button type="submit" name="submit" class="btn btn-danger">
-                <img
-                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAABIElEQVR4nM3WvUrDYBjF8d+iHVx6CR28FPEDVBwc1Btx7ejioODoYnsdOrirVHB0UAsqiGYTFCIvvEIoSZuYBDzwLHnC+ef9PGG2uhgiQVqh7rFcwl8w/8QJDibqEDcTxu8YYISHMoAExznPN/EaTT9whnV0Yr8fezOVxpcnNcYVNjKmWZUGjLBTAVwZUKRagF6cgu22APO4xNcUSO0pWsA5vrFXB7CIpYLawnPBSEoDxiVP5tu/HcG0NbiIa7Cb068F6LS9i3ptn4MySpsC3LZ9F6UFRo0BkoI8aAwwiIl2hP1MNQboxrTKy+R+wRYPyXaNJzWUZgDBNCRb+JAQn6EX4jSA/qxH3MUp/DUN99UpVjBXxzxoLf41vETT1TzTHyyzk+nVyUG8AAAAAElFTkSuQmCC" title="Sign In" alt="Login">
+        <div class="form-footer">
+            <div class="register-prompt">
+                Don't have an account? <a href="{{ url_for('register') }}">Register here</a>
+            </div>
+            <button type="submit" name="submit" class="login-button">
+                <img src="static/images/icons8-done.svg" title="Sign In" alt="Login">
             </button>
-            <p class="register-prompt" style="color: black;">Don't have an account? <a href="{{ url_for('register') }}" style="color: white;">Register here</a></p>
         </div>
     </form>
 </div>
