@@ -94,6 +94,7 @@ a {
 a:hover {
     text-decoration: underline;
 }
+
 /* Custom Tab Styles */
 .custom-nav-tabs {
     display: flex;
@@ -158,7 +159,7 @@ a:hover {
     /* Match the text color to the body */
     padding: 5px 0;
     /* Optional padding for better visibility */
-    
+
     bottom: 0;
     width: 100%;
 }
@@ -272,3 +273,63 @@ button:hover,
     /* Center vertically in the flex container */
 }
 
+
+/* Parent Container (if it's not already styled this way) */
+.parent-of-chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Take full height of its container */
+}
+
+/* Chat Container Styles */
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Takes up all available space */
+    overflow: hidden; /* Prevents overflow */
+}
+
+.chat-messages {
+    flex: 0 0 80%;
+    /* 80% of the container height */
+    overflow-y: auto;
+    /* Scroll bar for overflow content */
+    padding: 10px;
+    /* Optional: for internal spacing */
+    border-bottom: 1px solid var(--border-color);
+    /* Separator line */
+}
+
+.chat-input-container {
+    flex: 0 0 20%;
+    /* 20% of the container height */
+    display: flex;
+    /* Flex layout for input and button */
+    align-items: center;
+    /* Center items vertically */
+    padding: 10px;
+    /* Optional: for internal spacing */
+}
+
+.chat-input {
+    flex-grow: 1;
+    /* Input field takes remaining space */
+    resize: none;
+    /* Disable manual resizing */
+    margin-right: 10px;
+    /* Space between input and button */
+}
+
+.send-button {
+    flex-shrink: 0;
+    /* Prevents button from shrinking */
+}
+
+/* Ensure text wraps within its container */
+.chat-messages,
+.chat-input {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* Add any additional styles or modifications as necessary */

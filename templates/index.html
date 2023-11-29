@@ -24,55 +24,6 @@
         </div>
     </div>
 </div>
-<style>
-    /* Add custom styles here */
-    .chat-container {
-        display: flex;
-        flex-direction: column;
-        height: 100vh;
-    }
-
-    .chat-messages {
-        flex: 4;
-        /* 80% of the height */
-        overflow-y: scroll;
-        padding: 10px;
-        background-color: #f0f0f0;
-        /* Set your desired background color */
-    }
-
-    .chat-input-container {
-        display: flex;
-        flex-direction: row;
-        flex: 1;
-        /* 20% of the height */
-        background-color: #ffffff;
-        /* Set your desired background color */
-        border-top: 1px solid #ccc;
-        /* Add a border above the input area */
-    }
-
-    .chat-input {
-        flex: 4;
-        /* Takes up most of the width */
-        padding: 10px;
-        border: none;
-        outline: none;
-        resize: vertical;
-        /* Allows vertical scrolling */
-    }
-
-    .send-button {
-        flex: 1;
-        /* Takes up remaining width */
-        background-color: #4b3c5e;
-        /* Set your desired button color */
-        color: #ffffff;
-        /* Set your desired text color */
-        border: none;
-        cursor: pointer;
-    }
-</style>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const tabs = document.querySelectorAll('.custom-nav-link');
@@ -80,19 +31,18 @@
         tabs.forEach(tab => {
             tab.addEventListener('click', function (event) {
                 event.preventDefault();
-                const activePane = document.querySelector('.custom-tab-pane.active');
+                const activePane = document.querySelector('.custom-tab-pane.active.show');
                 const targetPane = document.querySelector(this.getAttribute('href'));
 
                 if (activePane) {
                     activePane.classList.remove('active', 'show');
-                    activePane.style.display = 'none'; // Hide the currently active tab content
+                    activePane.style.display = 'none';
                 }
                 if (targetPane) {
                     targetPane.classList.add('active', 'show');
-                    targetPane.style.display = 'block'; // Show the clicked tab content
+                    targetPane.style.display = 'block';
                 }
 
-                // Update active state for tabs
                 const activeTab = document.querySelector('.custom-nav-link.active');
                 if (activeTab) {
                     activeTab.classList.remove('active');
