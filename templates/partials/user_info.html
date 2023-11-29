@@ -1,13 +1,13 @@
 <div class="user-info">
-    <h2>User Information</h2>
-    <p><strong>Username:</strong> {{ username }}</p>
-    <p><strong>Email:</strong> {{ email }}</p>
+    <p><strong>u:</strong> {{ username }}</p>
+    <p><strong>e:</strong> {{ email }}</p>
     
     
-    <br/>
     <!-- Update Email Button -->
-    <button type="button" class="btn btn-info" id="updateEmailButton">Update Email</button>
-    
+    <button title="Update Email Address" type="button" class="btn btn-info" id="updateEmailButton">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAAEqElEQVR4nO2ae4gVVRzHP7bq5mKapv2RmL1LCY3QHkq6IEURrT0oU1PKUEGKLQxSQnxFhBnkZiTYg7ICqWhDS3AFM9HIhFgy1LQMUSszeqislbnyg++V0/XeufO63tm75wMDe2fOnDnne87vMb9Z8Hg8Ho/H4/F4OjUXAM1ASyc5mjXn09QD7Tp2ZWCA5Tp2OfO0OZ8hwHHgN2AM1Ue95nY8SIAJwDbgb2AK1cN4oA1oBSYHCVAP9ATWACeBeUCXMg6sBuhexv5t7As0l9WamzvX0+SftIEt07m3Ux7kZcCrwI8amD3jV+B9YFSKz6kF3lH/TZoTYQXI8QTwH/AZ0JfkNGgr7gOe03Y0s3sG+EaCzEnhOebhPwdOAI151yIJYIwDjgI7gcuJz9XAMeBjoA4YDDwsEQYC5wCvSIQ7EzznSuA7jdkEJ6kAxnDgIHAIuJl4rNRW7w087mz/djndSUA3YA/wRcxn3AIcBg4A1xdpE0sAY5C2qW3hB4iG2d8RYLl+36WtPhJ4SH3u1bVnZXZ9Ij5jokJcq3YUaQuAVm+dVm824blK/T+ZJ8oQrdq3um48qL+HRfD0czWmtcB5JdonEgBt0xVqv0K/S3GDk2cY98ucbFdskXnlBGiIIIBFp7fU3iJL1xD3JBYgx9NSfZ12RhCD1f9MCWbO8C+gv65/6AgwXf3+L1cvgJnIBpnLLMKTmgC5lWyTbzAfUYw62eeLWqVjus8c6lQnPbUo8wGwiWCs3Q71cw/RSFUANAnbzj8pWhTjEyU/tYoCuUl/BYwF/lDc/h24KaCfkc7zRhCd1AXIZXc7FHvvpjA2qX+BN2S7vYCLnVS7jyZ3PqVz+lI77qwLkG+Trrd3eVQi/AC8JD+yWHF/BsHMieBzKiJAvlde5uTfLkO1Cyyz3C97bwpYUXOar0eMOhUTAG3p5epvjd7A4mLmsF59LSQdyi7AIKWiB2WvXwMDYvRzqRKko+pnI9Aj6wL0kzM8rNhvju+XErl5scTpZyeyNMh3rA6Z7FREgDpgs2KzefP8CHFE7wCluFd9bM/zC1PkBFfqzTFTAnQDPgX+Ae4ocL2vagoW5x8L6KdRUWR9EU8/W+N8mQwJ0AV4U6vzSEC7Wq2ePWdp3irWqBbQrggR5OlfUDsLoZkQYInufSqkWPPV/iOZjVuDnB+yj9fUflqlBZil+0yEKEyVuWx1agyW5YWlqypLJyr5LjBR9vpuTKc0Vnm/1epHx7i/h0KjVZNuO9sC3K4VXJswM+sXo/Lj0lt5xp8RwmxiAUYopG1NmOWlRX+l1VZvvKbcAlyhxGY3cCHZYaBK7fv0hlkWAS5S4dKyukvIHtfKn2wv8Q0jlgC9ZGtWtLiO7HKj3h2+DDDPyAKcK2/bpgpu1rlVkaFFyVciAWpUo7N4ex8dh1yIfq9AiI4kQJPOB+XvWWWmxm4pdiwBFuicfXToqCwqMIdQAsxwPjZ0dJZqLo1hBWiQzTcXqel1NMwHrJJPGF9KgHny9hvk/auF7krbLX1/PkiAk4r3FverjZ7KDwL/S6xdArRU6bGtmAAD9F39+05ytMasVHs8Ho/H4/F4PFQJpwAPGDnj5vifmwAAAABJRU5ErkJggg=="
+            alt="Delete Account Icon" style="width: 20px; height: 20px;">
+    </button>
     <!-- Update Email Form (Initially Hidden) -->
     <form action="{{ url_for('update_email') }}" method="post" style="display: none;" id="updateEmailForm">
         <div class="form-group">
@@ -18,14 +18,23 @@
             <label for="confirmEmail">Confirm New Email:</label>
             <input type="email" class="form-control" id="confirmEmail" name="confirm_email" required>
         </div>
-        <button type="submit" class="btn btn-primary">Update Email</button>
+        <button title="Update Email Address" type="submit" class="btn btn-primary"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAAEqElEQVR4nO2ae4gVVRzHP7bq5mKapv2RmL1LCY3QHkq6IEURrT0oU1PKUEGKLQxSQnxFhBnkZiTYg7ICqWhDS3AFM9HIhFgy1LQMUSszeqislbnyg++V0/XeufO63tm75wMDe2fOnDnne87vMb9Z8Hg8Ho/H4/F4OjUXAM1ASyc5mjXn09QD7Tp2ZWCA5Tp2OfO0OZ8hwHHgN2AM1Ue95nY8SIAJwDbgb2AK1cN4oA1oBSYHCVAP9ATWACeBeUCXMg6sBuhexv5t7As0l9WamzvX0+SftIEt07m3Ux7kZcCrwI8amD3jV+B9YFSKz6kF3lH/TZoTYQXI8QTwH/AZ0JfkNGgr7gOe03Y0s3sG+EaCzEnhOebhPwdOAI151yIJYIwDjgI7gcuJz9XAMeBjoA4YDDwsEQYC5wCvSIQ7EzznSuA7jdkEJ6kAxnDgIHAIuJl4rNRW7w087mz/djndSUA3YA/wRcxn3AIcBg4A1xdpE0sAY5C2qW3hB4iG2d8RYLl+36WtPhJ4SH3u1bVnZXZ9Ij5jokJcq3YUaQuAVm+dVm824blK/T+ZJ8oQrdq3um48qL+HRfD0czWmtcB5JdonEgBt0xVqv0K/S3GDk2cY98ucbFdskXnlBGiIIIBFp7fU3iJL1xD3JBYgx9NSfZ12RhCD1f9MCWbO8C+gv65/6AgwXf3+L1cvgJnIBpnLLMKTmgC5lWyTbzAfUYw62eeLWqVjus8c6lQnPbUo8wGwiWCs3Q71cw/RSFUANAnbzj8pWhTjEyU/tYoCuUl/BYwF/lDc/h24KaCfkc7zRhCd1AXIZXc7FHvvpjA2qX+BN2S7vYCLnVS7jyZ3PqVz+lI77qwLkG+Trrd3eVQi/AC8JD+yWHF/BsHMieBzKiJAvlde5uTfLkO1Cyyz3C97bwpYUXOar0eMOhUTAG3p5epvjd7A4mLmsF59LSQdyi7AIKWiB2WvXwMDYvRzqRKko+pnI9Aj6wL0kzM8rNhvju+XErl5scTpZyeyNMh3rA6Z7FREgDpgs2KzefP8CHFE7wCluFd9bM/zC1PkBFfqzTFTAnQDPgX+Ae4ocL2vagoW5x8L6KdRUWR9EU8/W+N8mQwJ0AV4U6vzSEC7Wq2ePWdp3irWqBbQrggR5OlfUDsLoZkQYInufSqkWPPV/iOZjVuDnB+yj9fUflqlBZil+0yEKEyVuWx1agyW5YWlqypLJyr5LjBR9vpuTKc0Vnm/1epHx7i/h0KjVZNuO9sC3K4VXJswM+sXo/Lj0lt5xp8RwmxiAUYopG1NmOWlRX+l1VZvvKbcAlyhxGY3cCHZYaBK7fv0hlkWAS5S4dKyukvIHtfKn2wv8Q0jlgC9ZGtWtLiO7HKj3h2+DDDPyAKcK2/bpgpu1rlVkaFFyVciAWpUo7N4ex8dh1yIfq9AiI4kQJPOB+XvWWWmxm4pdiwBFuicfXToqCwqMIdQAsxwPjZ0dJZqLo1hBWiQzTcXqel1NMwHrJJPGF9KgHny9hvk/auF7krbLX1/PkiAk4r3FverjZ7KDwL/S6xdArRU6bGtmAAD9F39+05ytMasVHs8Ho/H4/F4PFQJpwAPGDnj5vifmwAAAABJRU5ErkJggg=="
+            alt="Delete Account Icon" style="width: 20px; height: 20px;">
+        </button>
         <!-- Cancel Button -->
-        <button type="button" class="btn btn-secondary" id="cancelEmailUpdate" style="margin-left: 10px;">Cancel</button>
+            <button title="Cancel" type="button" class="btn btn-secondary" id="cancelEmailUpdate" style="margin-left: 10px;">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAABiElEQVR4nO2bzUrEQBCE68HEo4Kr4EV8ni2zLAp792VFCSQgyya76cxM/6QL5tpUfZlMepIJkEqlUqnUlO4BHAG8wJ/eAXwDeFoT/gfA7zA6+FH3z3c/3iRFjmdFvEA4D9+Pk6TQ84VC1iFcCi+eAXMFLUKo5pUThb9gR9U90jCEZt5oEEJzTzQEQc0LDUBQ90BFA+rhNY2YCa9hyFz4lsbMhm9h0Hz4UfsKRqfCf8Ko9gUhuAtfEoLb8CUguA+/BkKY8BII4cIvgRA2/LW3NR/D8PLWqcpMCH3lJRDChr8FQvjwcwueyf6+ZfjwELhgEQwHgTP3vJvtrlS3NDk1ttImxAWrfTgIFDzqwkDgiue8ewgs0OS4hcCCHZ47CKzQ3rqBwIq9vXkIbLCxMQuBDY2Z6xipYMgMBCoaUYdAbQNbPx0yatPng0Zt+oTYqE2fEazusXP00aK411dH4a9B2EmKnZyFn4NwkBR6dBj+EoT+p487aaGHYSZ4/GVmN4AQh0+lUqkUgusP6DQ+9KlN4P8AAAAASUVORK5CYII="
+                    alt="Delete Account Icon" style="width: 20px; height: 20px;">
+            </button>
     </form><br /><br/>
 
     <!-- Password Reset Button -->
-    <button type="button" class="btn btn-info" id="resetPasswordButton">Reset Password</button>
- 
+    <button title="Update Password" type="button" class="btn btn-info" id="resetPasswordButton">
+<img
+    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAADEUlEQVR4nO2bzUtUURjGfxgoFQWV00K3FaT9CbWocZeSGea/UJRGGX2sikKy8i9oHS7aBrWIUoqoIDCqhVFtAt1mM1FpyI0Dz4WDnTsz1/nw3I8HXrjnPc87c97nfN65dyBHjvWgHRgBpoF54KdsXr6T4qQSJ4CvQFDFvgBDpAibgCkrwffAOaAX2Crrle+DxbsLtJECTCmhP8DpKkkZsc4Ay4q5QwqGfaDkD8vXAYwBr601wFyPqs7giCXCIAlFuzXnT8nXDbyrMP/nxDE4K9/npC6MI9acb1Pvhsl/0+jYJhvUThCK0KHp8FG+YRKIaTXeLG5o2IfJ73Twd6guUO8bnFf5PgnEJzW+R+U3Kpuej8KwOK9UPqCyGR2JQ0mNN0PcoLym7MJ2cUws4trlRCGQRZUbHecdFtTwg8AhXRtfZgSYdGxzt7IkQLtEWJBN1rifp0aAODDC3AYWa7hZimtxxPdqugQNtlqm34ZhsQUCmO/wFkGLzFsEuQDkIyDIpwBVRVgBLgCdsnH5MrMGjDtiL2ZJgIIjtpAlATodsbuzPgUuZUmAv8B+K65HvswI8BvYYsVtBn5lSYBHjtjHWRJg1BE7liUB9jhi96ZBgFKMJNZrS3iMuRYI8BaPcaMFAlzDYxSAH00e/q5TpFcYAlabkPxqkh6xD6m3Gtnzx0kYOoHrWrTWszuUFGs+Y9dGJ5MjR47s4Bgwq7e+gpSYyWUGGPDh2V6wwTZRqecDvddnfp7qIj0wuVy23lnsd5FmVWmIacUV5fjMVVlWZS09/xJ4EeOLfeF3WYes/xDOkVoQh+sbP5IbVPiQPo2Qe2seYBTkM3VFj/l1C1C0nt19t7jh9YpejPaVX7cABvuAB45t5YneBPWd3xABHsZsoE/8ugToa8IQLbaQX7cARW0dUYvOkvVHCiTGUgV+aY1gzebXLYDP21pcfiS3HOMgZA4dz2M00Bd+d6WD0IwqzXExrbiqHJ+6KgdUuSwR0nQz1K3kw5uho1HECce2kja7WU2tft0thWtCGqysYR/Z8znIKP4BJe9vzN7fHnUAAAAASUVORK5CYII="
+        alt="Delete Account Icon" style="width: 20px; height: 20px;">
+    </button>
+
     <!-- Password Reset Form (Initially Hidden) -->
     <form action="{{ url_for('reset_password') }}" method="post" style="display: none;" id="resetPasswordForm">
         <div class="form-group">
@@ -40,10 +49,15 @@
             <label for="confirmPassword">Confirm New Password:</label>
             <input type="password" class="form-control" id="confirmPassword" name="confirm_password" required>
         </div>
-        <button type="submit" class="btn btn-primary">Update Password</button>
+        <button title="Update Password" type="submit" class="btn btn-primary"><img
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAADEUlEQVR4nO2bzUtUURjGfxgoFQWV00K3FaT9CbWocZeSGea/UJRGGX2sikKy8i9oHS7aBrWIUoqoIDCqhVFtAt1mM1FpyI0Dz4WDnTsz1/nw3I8HXrjnPc87c97nfN65dyBHjvWgHRgBpoF54KdsXr6T4qQSJ4CvQFDFvgBDpAibgCkrwffAOaAX2Crrle+DxbsLtJECTCmhP8DpKkkZsc4Ay4q5QwqGfaDkD8vXAYwBr601wFyPqs7giCXCIAlFuzXnT8nXDbyrMP/nxDE4K9/npC6MI9acb1Pvhsl/0+jYJhvUThCK0KHp8FG+YRKIaTXeLG5o2IfJ73Twd6guUO8bnFf5PgnEJzW+R+U3Kpuej8KwOK9UPqCyGR2JQ0mNN0PcoLym7MJ2cUws4trlRCGQRZUbHecdFtTwg8AhXRtfZgSYdGxzt7IkQLtEWJBN1rifp0aAODDC3AYWa7hZimtxxPdqugQNtlqm34ZhsQUCmO/wFkGLzFsEuQDkIyDIpwBVRVgBLgCdsnH5MrMGjDtiL2ZJgIIjtpAlATodsbuzPgUuZUmAv8B+K65HvswI8BvYYsVtBn5lSYBHjtjHWRJg1BE7liUB9jhi96ZBgFKMJNZrS3iMuRYI8BaPcaMFAlzDYxSAH00e/q5TpFcYAlabkPxqkh6xD6m3Gtnzx0kYOoHrWrTWszuUFGs+Y9dGJ5MjR47s4Bgwq7e+gpSYyWUGGPDh2V6wwTZRqecDvddnfp7qIj0wuVy23lnsd5FmVWmIacUV5fjMVVlWZS09/xJ4EeOLfeF3WYes/xDOkVoQh+sbP5IbVPiQPo2Qe2seYBTkM3VFj/l1C1C0nt19t7jh9YpejPaVX7cABvuAB45t5YneBPWd3xABHsZsoE/8ugToa8IQLbaQX7cARW0dUYvOkvVHCiTGUgV+aY1gzebXLYDP21pcfiS3HOMgZA4dz2M00Bd+d6WD0IwqzXExrbiqHJ+6KgdUuSwR0nQz1K3kw5uho1HECce2kja7WU2tft0thWtCGqysYR/Z8znIKP4BJe9vzN7fHnUAAAAASUVORK5CYII="
+            alt="Delete Account Icon" style="width: 20px; height: 20px;">
+        </button>
         <!-- Cancel Button -->
-        <button type="button" class="btn btn-secondary" id="cancelPasswordUpdate"
-            style="margin-left: 10px;">Cancel</button>
+        <button title="Cancel" type="button" class="btn btn-secondary" id="cancelPasswordUpdate"
+            style="margin-left: 10px;"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAABiElEQVR4nO2bzUrEQBCE68HEo4Kr4EV8ni2zLAp792VFCSQgyya76cxM/6QL5tpUfZlMepIJkEqlUqnUlO4BHAG8wJ/eAXwDeFoT/gfA7zA6+FH3z3c/3iRFjmdFvEA4D9+Pk6TQ84VC1iFcCi+eAXMFLUKo5pUThb9gR9U90jCEZt5oEEJzTzQEQc0LDUBQ90BFA+rhNY2YCa9hyFz4lsbMhm9h0Hz4UfsKRqfCf8Ko9gUhuAtfEoLb8CUguA+/BkKY8BII4cIvgRA2/LW3NR/D8PLWqcpMCH3lJRDChr8FQvjwcwueyf6+ZfjwELhgEQwHgTP3vJvtrlS3NDk1ttImxAWrfTgIFDzqwkDgiue8ewgs0OS4hcCCHZ47CKzQ3rqBwIq9vXkIbLCxMQuBDY2Z6xipYMgMBCoaUYdAbQNbPx0yatPng0Zt+oTYqE2fEazusXP00aK411dH4a9B2EmKnZyFn4NwkBR6dBj+EoT+p487aaGHYSZ4/GVmN4AQh0+lUqkUgusP6DQ+9KlN4P8AAAAASUVORK5CYII="
+                alt="Delete Account Icon" style="width: 20px; height: 20px;">
+            </button>
     </form><br /><br />
 
     
@@ -61,10 +75,14 @@
             <label for="newApiKey">New API Key:</label>
             <input type="text" class="form-control" id="newApiKey" name="new_api_key" required>
         </div>
-        <button type="submit" class="btn btn-primary">Update Key</button>
+        <button title="Update API Key" type="submit" class="btn btn-primary"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAADGElEQVR4nO2byWvXUBDHPxZKxWoFPVn0Jlr1ZMEFL+JBT4L14Nnin+By8lJcoK4nsYhSj/4PIoILaK2eXaiISkXQuuBKPYw8mEAIeUl+ycueLwz88vLy8ub7m5k3mZdAhw5NRz9wGfgMfNDfS2kRzgESkEtUGE9CJuxajCVUFlKAzFNhiIorTIYQcIEWEdAPXAQ+qemb3wO0iIDaQdpOQIcOFUxEHuu5NRFr63CC62uRCotFjPIGMyHnHiUgqDapsFjkaIKbHU9AQNi5voxKDlr+mFSpsFjkj5LgWYIfpu0Y8DclAWszEnDT5bOA5CRR449nUP6wjvET2OIiFZYSCJgDVkfMaZOlfbMqHkViz6mwqGwjO3YkJMDIs5B/0MSGE8A/YCJk/Am91riAM0hgwq7Hi7KSReAOcB6YAt4GzoeRcEiDYCkTlh5M3sN+zRkGdOIbgQPADWAhAUE2d6gNAVFYAZwCflnGNO6QOyRnFzD++lyDl5EXwHVgn6/PVuBdQPn3DvKFVBMu0qIeACPabzhAgtNAV6YLSIx8A/b4LMFzhyttIUCArz5LOK1t9wrSn6QKBI9dEuC5g8GQrg6LlkyvsQSILzBO6/HTmIyxMS4gKmZ1MBjztb0GjgDrgCV51gOqQIBZItFkKe4+zusBVSDgh16zPOY+vc7tIzUh4LsvELokYL5NLjCZth5QpSB4MFA7GNcqUtIgmKoeUAUC9gaWwVlgFTlDKkLAfe2/0pcImQoQbSDgC7BB+5/RNlMooQ0ELAC7te8o8FvbTZWo8QTcBtZbHoevNoWAs8Bd4CXwCnioy9IuX5/RkILIm4RRv3ACgogjIApDSpBn9kExO0+1J2BMzXyZprgj2jatwa/xRVGJUdAsf9eAW/oE17iyuFhkNmSdN1ncybI3RqQAAuZiMrysW2OZ6gFZUfbmaOp6wHayY2dCAlq/Pd6XkehBfQ2nFu8HFI2e6wEzOSjvvUNUBmr3qmyHDi2HlBw0S0dHAG4toHZfjYljAmr31ZgUIJFbY2Ujj0Ssp1S4aajdV2Ou0aXCHbDjP2J84+pSFzO7AAAAAElFTkSuQmCC"
+            alt="Delete Account Icon" style="width: 20px; height: 20px;">
+        </button>
         <!-- Cancel Button -->
-        <button type="button" class="btn btn-secondary" id="cancelApiKeyUpdate"
-            style="margin-left: 10px;">Cancel</button>
+        <button title="Cancel" type="button" class="btn btn-secondary" id="cancelApiKeyUpdate"
+            style="margin-left: 10px;"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAABiElEQVR4nO2bzUrEQBCE68HEo4Kr4EV8ni2zLAp792VFCSQgyya76cxM/6QL5tpUfZlMepIJkEqlUqnUlO4BHAG8wJ/eAXwDeFoT/gfA7zA6+FH3z3c/3iRFjmdFvEA4D9+Pk6TQ84VC1iFcCi+eAXMFLUKo5pUThb9gR9U90jCEZt5oEEJzTzQEQc0LDUBQ90BFA+rhNY2YCa9hyFz4lsbMhm9h0Hz4UfsKRqfCf8Ko9gUhuAtfEoLb8CUguA+/BkKY8BII4cIvgRA2/LW3NR/D8PLWqcpMCH3lJRDChr8FQvjwcwueyf6+ZfjwELhgEQwHgTP3vJvtrlS3NDk1ttImxAWrfTgIFDzqwkDgiue8ewgs0OS4hcCCHZ47CKzQ3rqBwIq9vXkIbLCxMQuBDY2Z6xipYMgMBCoaUYdAbQNbPx0yatPng0Zt+oTYqE2fEazusXP00aK411dH4a9B2EmKnZyFn4NwkBR6dBj+EoT+p487aaGHYSZ4/GVmN4AQh0+lUqkUgusP6DQ+9KlN4P8AAAAASUVORK5CYII="
+                alt="Delete Account Icon" style="width: 20px; height: 20px;">
+            </button>
     </form><br /><br />
 
     
@@ -92,17 +110,20 @@
         </label>
     </div>
     <div class="button-group">
-        <button type="submit" class="btn btn-danger">Delete Account</button>
-        <!-- Cancel Button -->
-        <button type="button" class="btn btn-secondary" id="cancelDeleteAccount">Cancel</button>
+        <button title="Delete Account" type="submit" class="btn btn-danger"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAACwklEQVR4nO2bO2hUQRRAzyqaxEb8VFEUBVGsREWjhQT/TTCNVSxUFL8BIWjQwg8WRtNYiD/8FRFsFBXSxCBikWhl4SelCoIrmhUNShT8MHAXrouw+9b35o7LHLjdzp47d/e9nblvFiKRSCQS8cEiYB/QWSbcaxZSQ+SAi8CvhHFBxv737Khi8sXYRg3wQCbzCWgGZpeJZnmtG3OfGuC5TGYwwZhBGfOMGirAQIIxAzLGjQ2CqcApuTEljYJMJp9gTF7GFKp0ngSmpFmArn+4kVnFiTQLsA4YCWBSlYbLdW2aBYhEIpFICW6j0ljB0jbraLTaNF0N4OeuGFcsCvA4gIkXw+XinZsiH5WVokWMSg53LApwWuQ/gQYD/zjgh+RwzsBPh/oKzjHwT1f+IwZ+NqoEVhn4Fyu/6zp5p0klsMXA36L8Gwz8TDP+Cm5X/iUGfsYA3yWBSwb+w6oAMzDilSTQZ+A+q36F6jDioSQxZOC+Je5hDLkuSXwxcAfROe5S16FrnPrkpXj7MWSPKoDv53lfxduDIS2qAK0evZOUtxtDFqhE2j165yuvW5KbMVkl4h6c+GKl8rZhzIgkcsOjs814H/IHQ1U8+0tzJ+ouB1P6JJE3Hp3dqgDuMjTlsiTimhPjPTl7xPkthFMkR9WnMcuTs198rwmAraoAKzyfOXhEAKxRBdjkyTksvtsEwFxVgEMefHWyBXa+8wTABFUAH93Zmcrn7j9B8EES6vXci9xJIDyRhJ56cLVaN0P/xl1J6DPZs0sVYCmBcEYlNTFj17EQmqGlHPDYGLmmVp71BMJ6VYCDGXrGAm/F84KAaADeS2IfM3xWqDdBxwmMdpVcQc7+L0vhBMg8ab31qvfPh7ALLCUnJzWyPgzhGjDLCZQcsBt4l9Hk78nSO3jqgdXA3gr+IlMu9gObjc4gRCKRSIRa5jcBcun6pJoUuwAAAABJRU5ErkJggg=="
+            alt="Delete Account Icon" style="width: 20px; height: 20px;">
+        </button>
+        <button title="Cancel" type="button" class="btn btn-secondary" id="cancelDeleteAccount"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAABiElEQVR4nO2bzUrEQBCE68HEo4Kr4EV8ni2zLAp792VFCSQgyya76cxM/6QL5tpUfZlMepIJkEqlUqnUlO4BHAG8wJ/eAXwDeFoT/gfA7zA6+FH3z3c/3iRFjmdFvEA4D9+Pk6TQ84VC1iFcCi+eAXMFLUKo5pUThb9gR9U90jCEZt5oEEJzTzQEQc0LDUBQ90BFA+rhNY2YCa9hyFz4lsbMhm9h0Hz4UfsKRqfCf8Ko9gUhuAtfEoLb8CUguA+/BkKY8BII4cIvgRA2/LW3NR/D8PLWqcpMCH3lJRDChr8FQvjwcwueyf6+ZfjwELhgEQwHgTP3vJvtrlS3NDk1ttImxAWrfTgIFDzqwkDgiue8ewgs0OS4hcCCHZ47CKzQ3rqBwIq9vXkIbLCxMQuBDY2Z6xipYMgMBCoaUYdAbQNbPx0yatPng0Zt+oTYqE2fEazusXP00aK411dH4a9B2EmKnZyFn4NwkBR6dBj+EoT+p487aaGHYSZ4/GVmN4AQh0+lUqkUgusP6DQ+9KlN4P8AAAAASUVORK5CYII="
+            alt="Delete Account Icon" style="width: 20px; height: 20px;">
+        </button>
     </div>
 </form>
 
 
     <!-- Logout Button -->
 <a href="{{ url_for('login') }}" class="btn custom-button">
-    <img title="Sign Out" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAABV0lEQVR4nO2aTU7DMBBGHxvK1lJyAHoKuAqwgAW5Qrde9iDcAokTIH5yme4wqtRIXlBiR4koM9+TRurK0rxkJvbUIIQQQgghRClroAM2I3EHnGGMB2AHpMK4xdiT31Ukb05AlyXWA9uRuLFWAjETsP/tjigB6A1IKgHUA9LMTfACuAZWOGyCDfB2WPMFZwIa4CNb8wtHAgLw+sPO0YWAcCR5FwLCL8mbFxBGkjctIBQkb1ZAC3wWHp/NCWgrkjcnoK1M3pSAZkLyqWDOuPnLWWSsEPA0Ifk5Y5FRXJQAqkqgn/DktjPEYrPIWNkES7/9JpvgVAkmN0KhQsJJEycKwPtWeMD1YWjA9XF4wPVAZMD1SOzYecHVUDSX8H5Y8xmnf46ugCvgnBMnLiTg3xAlAL0BSSWA3x7QZSXQe7wnuPZ+TW7PveeLkgOXwKPHe4JCCCGEEAJDfAOz7LLc0dM3gAAAAABJRU5ErkJggg=="
-        alt="Sign Out">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAABV0lEQVR4nO2aTU7DMBBGHxvK1lJyAHoKuAqwgAW5Qrde9iDcAokTIH5yme4wqtRIXlBiR4koM9+TRurK0rxkJvbUIIQQQgghRClroAM2I3EHnGGMB2AHpMK4xdiT31Ukb05AlyXWA9uRuLFWAjETsP/tjigB6A1IKgHUA9LMTfACuAZWOGyCDfB2WPMFZwIa4CNb8wtHAgLw+sPO0YWAcCR5FwLCL8mbFxBGkjctIBQkb1ZAC3wWHp/NCWgrkjcnoK1M3pSAZkLyqWDOuPnLWWSsEPA0Ifk5Y5FRXJQAqkqgn/DktjPEYrPIWNkES7/9JpvgVAkmN0KhQsJJEycKwPtWeMD1YWjA9XF4wPVAZMD1SOzYecHVUDSX8H5Y8xmnf46ugCvgnBMnLiTg3xAlAL0BSSWA3x7QZSXQe7wnuPZ+TW7PveeLkgOXwKPHe4JCCCGEEAJDfAOz7LLc0dM3gAAAAABJRU5ErkJggg=="
+        title="Sign Out" alt="Sign Out">
 </a>
 </div>
 

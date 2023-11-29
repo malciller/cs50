@@ -6,6 +6,30 @@
     --border-color: #202225;
 }
 
+.custom-footer {
+    position: sticky;
+    bottom: 0;
+}
+
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.main-content {
+    flex: 1;
+}
+
+
+
+body,
+html {
+    height: 100%;
+    margin: 0;
+}
+
 /* Global Styles */
 body {
     font-family: Arial, sans-serif;
@@ -169,7 +193,7 @@ a:hover {
     /* Match the text color to the body */
     padding: 5px 0;
     /* Optional padding for better visibility */
-    position: absolute;
+    
     bottom: 0;
     width: 100%;
 }
@@ -226,4 +250,61 @@ button:hover,
     width: 32px;
     height: auto;
     /* Adjust the size as needed */
+}
+
+.centered-form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 20px;
+}
+
+.centered-form {
+    width: 100%;
+    max-width: 400px;
+    background-color: #f8f8f8;
+    padding: 40px;
+    /* Increase padding */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-field {
+    margin-bottom: 20px;
+    /* Increase margin if needed */
+}
+
+.form-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.btn {
+    padding: 0;
+    /* Remove padding to fit the image */
+    border-radius: 4px;
+    /* Match with input fields */
+    display: inline-block;
+    /* Changed from flex to block */
+    height: auto;
+    /* Auto height to match input fields */
+    background-color: transparent;
+    /* Remove background */
+}
+
+.form-action {
+    display: flex;
+    justify-content: space-between;
+    /* Align button and prompt */
+    align-items: center;
+}
+
+.register-prompt {
+    margin-left: 10px;
+    /* Space between button and text */
+    color: var(--text-color);
+    /* Optional: Set the color */
 }

@@ -14,10 +14,7 @@
     <header class="custom-header">
         <!-- Header content -->
     </header>
-
-    <nav class="custom-nav">
-        <!-- Navigation content -->
-    </nav>
+    <div class="main-content">
 
     <main class="custom-main">
         {% with messages = get_flashed_messages(with_categories=true) %}
@@ -32,9 +29,9 @@
         <!-- Default content (if any) -->
         {% endblock %}
     </main>
-
-    <footer class="custom-footer">
-        <p>images courtesy of <a href="https://icons8.com">Icons8</a></p>
+</div>
+    <div class="custom-footer">
+        <p>icons courtesy of <a href="https://icons8.com">Icons8</a></p>
     </footer>
 
     <!-- JavaScript files -->

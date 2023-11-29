@@ -54,19 +54,24 @@ def login():
 def key_collection():
     form = APIKeyForm()
     if form.validate_on_submit():
-        user_id = session.get('user_id')  # Retrieve user ID from session
-
+        user_id = session.get('user_id')
         if user_id:
-            api_key = form.api_key.data
+            try:
+                api_key = form.api_key.data
 
-            # Connect to the database
-            conn = sqlite3.connect('info.db')
-            cursor = conn.cursor()
+                # Connect to the database
+                conn = sqlite3.connect('info.db')
+                cursor = conn.cursor()
 
-            # Insert the hashed API key into the keys table
-            cursor.execute("INSERT INTO keys (user_id, openai_api_key) VALUES (?, ?)", (user_id, api_key))
-            flash('API Key saved successfully!', 'success')
-            return redirect(url_for('index'))
+                # Insert the API key into the keys table
+                cursor.execute("INSERT INTO keys (user_id, api_key) VALUES (?, ?)", (user_id, api_key))
+                conn.commit()
+                conn.close()
+
+                flash('API Key saved successfully!', 'success')
+                return redirect(url_for('index'))
+            except Exception as e:
+                flash(f'An error occurred: {e}', 'danger')
         else:
             flash('User not identified.', 'danger')
             return redirect(url_for('login'))
@@ -91,7 +96,7 @@ def register():
             hashed_password = hashlib.sha256(form.password.data.encode()).hexdigest()
             
             # Add user to the database
-            cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)", (form.username.data, hashed_password))
+            cursor.execute("INSERT INTO users (username, password, email) VALUES (?, ?, ?)", (form.username.data, hashed_password, form.email.data))
             conn.commit()
 
             flash(f'Account created for {form.username.data}!', 'success')
@@ -209,12 +214,11 @@ def update_api_key():
         return redirect(url_for('login'))
 
     new_api_key = request.form['new_api_key']
-    hashed_api_key = hashlib.sha256(new_api_key.encode()).hexdigest()
 
     conn = sqlite3.connect('info.db')
     cursor = conn.cursor()
 
-    cursor.execute("UPDATE keys SET openai_api_key = ? WHERE user_id = ?", (new_api_key, user_id))
+    cursor.execute("UPDATE keys SET api_key = ? WHERE user_id = ?", (new_api_key, user_id))
     conn.commit()
     conn.close()
 
@@ -307,7 +311,7 @@ def send_message():
     user_id = session.get('user_id')
     conn = sqlite3.connect('info.db')
     cursor = conn.cursor()
-    cursor.execute("SELECT openai_api_key FROM keys WHERE user_id = ?", (user_id,))
+    cursor.execute("SELECT api_key FROM keys WHERE user_id = ?", (user_id,))
     api_key_row = cursor.fetchone()
     conn.close()
 
