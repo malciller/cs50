@@ -1,0 +1,229 @@
+:root {
+    --background-color: #36393f;
+    --text-color: #ffffff;
+    --button-color: #4b3c5e;
+    --input-background: #40444b;
+    --border-color: #202225;
+}
+
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+/* Tab Styles */
+.tab-pane {
+    display: none;
+}
+
+.tab-pane.active.show {
+    display: block;
+}
+
+.nav-tabs {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: space-around;
+    background-color: var(--input-background);
+}
+
+.nav-tabs .nav-item {
+    flex-grow: 1;
+    text-align: center;
+}
+
+.nav-tabs .nav-link {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: var(--text-color);
+}
+
+.nav-tabs .nav-link.active {
+    font-weight: bold;
+    text-decoration: underline;
+    background-color: var(--border-color);
+}
+
+/* Chat Styles */
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100vh - 100px);
+    background-color: var(--background-color);
+}
+
+.chat-messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    border: 1px solid var(--border-color);
+    padding: 10px;
+    word-wrap: break-word;
+    background-color: var(--input-background);
+}
+
+.user-input-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-top: 1px solid var(--border-color);
+}
+
+.chat-input {
+    flex-grow: 1;
+    padding: 5px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    background-color: var(--input-background);
+    color: var(--text-color);
+    resize: vertical;
+    overflow-y: auto;
+    margin-right: 10px;
+}
+
+
+input,
+textarea,
+select {
+    background-color: var(--input-background);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    padding: 5px;
+}
+
+a {
+    color: var(--button-color);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+/* Custom Tab Styles */
+.custom-nav-tabs {
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    background-color: var(--input-background);
+    /* Background color for the tab bar */
+    border-bottom: 1px solid var(--border-color);
+}
+
+.custom-nav-item {
+    flex-grow: 1;
+    text-align: center;
+}
+
+.custom-nav-link {
+    display: block;
+    padding: 10px 15px;
+    color: var(--text-color);
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.custom-nav-link:hover,
+.custom-nav-link:focus {
+    background-color: darken(var(--input-background), 5%);
+    color: var(--text-color);
+}
+
+.custom-nav-link.active {
+    background-color: var(--background-color);
+    /* Active tab background color */
+    color: var(--text-color);
+    font-weight: bold;
+    border-bottom: 3px solid var(--button-color);
+    /* Highlight color for active tab */
+}
+
+.custom-tab-content {
+    padding: 15px;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+.custom-tab-pane {
+    display: none;
+}
+
+.custom-tab-pane.active {
+    display: block;
+}
+
+
+.custom-footer {
+    text-align: center;
+    font-size: 10px;
+    /* You can adjust the font size as needed */
+    background-color: var(--background-color);
+    /* Match the background color to the body */
+    color: var(--text-color);
+    /* Match the text color to the body */
+    padding: 5px 0;
+    /* Optional padding for better visibility */
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+
+.form-group {
+    margin-bottom: 10px;
+    /* Add space between form groups */
+}
+
+.form-check {
+    margin-bottom: 10px;
+    /* Add space between the checkbox and the next element */
+}
+
+button,
+.send-button,
+.custom-button,
+.btn {
+    padding: 10px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    font-size: 16px;
+    color: var(--text-color);
+}
+
+/* Button background color */
+button,
+.send-button,
+.custom-button,
+.btn {
+    background-color: var(--button-color);
+}
+
+/* Hover styles for all buttons */
+button:hover,
+.send-button:hover,
+.custom-button:hover,
+.btn:hover {
+    background-color: #5d4e6d;
+    /* Slightly lighter purple for hover */
+}
+
+/* Styles for button images */
+.btn img {
+    width: 32px;
+    height: auto;
+    /* Adjust the size as needed */
+}

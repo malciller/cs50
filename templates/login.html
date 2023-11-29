@@ -1,19 +1,23 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-<form method="POST" action="">
-    {{ form.hidden_tag() }}
-    <div>
-        {{ form.username.label }} {{ form.username() }}
+<div class="custom-form-container">
+    <form method="POST" action="" class="custom-form">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.username.label(class='form-label') }}
+            {{ form.username(class='form-control') }}
+        </div>
+        <div class="form-group">
+            {{ form.password.label(class='form-label') }}
+            {{ form.password(class='form-control') }}
+        </div>
+        <div class="form-group">
+            {{ form.submit(class='btn custom-button') }}
+        </div>
+    </form>
+    <div class="form-footer">
+        <p>Don't have an account? <a href="{{ url_for('register') }}" class="form-link">Register here</a></p>
     </div>
-    <div>
-        {{ form.password.label }} {{ form.password() }}
-    </div>
-    <div>
-        {{ form.submit() }}
-    </div>
-</form>
-<div>
-    <p>Don't have an account? <a href="{{ url_for('register') }}">Register here</a></p>
 </div>
 {% endblock %}

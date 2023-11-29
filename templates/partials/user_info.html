@@ -1,13 +1,166 @@
-{% extends 'layout.html' %}
-
-{% block title %}User Info{% endblock %}
-
-{% block content %}
-  
-<!-- partials/user_info.html -->
 <div class="user-info">
     <h2>User Information</h2>
     <p><strong>Username:</strong> {{ username }}</p>
     <p><strong>Email:</strong> {{ email }}</p>
+    
+    
+    <br/>
+    <!-- Update Email Button -->
+    <button type="button" class="btn btn-info" id="updateEmailButton">Update Email</button>
+    
+    <!-- Update Email Form (Initially Hidden) -->
+    <form action="{{ url_for('update_email') }}" method="post" style="display: none;" id="updateEmailForm">
+        <div class="form-group">
+            <label for="newEmail">New Email:</label>
+            <input type="email" class="form-control" id="newEmail" name="new_email" required>
+        </div>
+        <div class="form-group">
+            <label for="confirmEmail">Confirm New Email:</label>
+            <input type="email" class="form-control" id="confirmEmail" name="confirm_email" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Update Email</button>
+        <!-- Cancel Button -->
+        <button type="button" class="btn btn-secondary" id="cancelEmailUpdate" style="margin-left: 10px;">Cancel</button>
+    </form><br /><br/>
+
+    <!-- Password Reset Button -->
+    <button type="button" class="btn btn-info" id="resetPasswordButton">Reset Password</button>
+ 
+    <!-- Password Reset Form (Initially Hidden) -->
+    <form action="{{ url_for('reset_password') }}" method="post" style="display: none;" id="resetPasswordForm">
+        <div class="form-group">
+            <label for="currentPassword">Current Password:</label>
+            <input type="password" class="form-control" id="currentPassword" name="current_password" required>
+        </div>
+        <div class="form-group">
+            <label for="newPassword">New Password:</label>
+            <input type="password" class="form-control" id="newPassword" name="new_password" required>
+        </div>
+        <div class="form-group">
+            <label for="confirmPassword">Confirm New Password:</label>
+            <input type="password" class="form-control" id="confirmPassword" name="confirm_password" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Update Password</button>
+        <!-- Cancel Button -->
+        <button type="button" class="btn btn-secondary" id="cancelPasswordUpdate"
+            style="margin-left: 10px;">Cancel</button>
+    </form><br /><br />
+
+    
+
+    <!-- Update API Key Button -->
+    
+<button title="Update API Key" type="button" class="btn btn-info" id="updateApiKeyButton">
+    <img
+        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAADGElEQVR4nO2byWvXUBDHPxZKxWoFPVn0Jlr1ZMEFL+JBT4L14Nnin+By8lJcoK4nsYhSj/4PIoILaK2eXaiISkXQuuBKPYw8mEAIeUl+ycueLwz88vLy8ub7m5k3mZdAhw5NRz9wGfgMfNDfS2kRzgESkEtUGE9CJuxajCVUFlKAzFNhiIorTIYQcIEWEdAPXAQ+qemb3wO0iIDaQdpOQIcOFUxEHuu5NRFr63CC62uRCotFjPIGMyHnHiUgqDapsFjkaIKbHU9AQNi5voxKDlr+mFSpsFjkj5LgWYIfpu0Y8DclAWszEnDT5bOA5CRR449nUP6wjvET2OIiFZYSCJgDVkfMaZOlfbMqHkViz6mwqGwjO3YkJMDIs5B/0MSGE8A/YCJk/Am91riAM0hgwq7Hi7KSReAOcB6YAt4GzoeRcEiDYCkTlh5M3sN+zRkGdOIbgQPADWAhAUE2d6gNAVFYAZwCflnGNO6QOyRnFzD++lyDl5EXwHVgn6/PVuBdQPn3DvKFVBMu0qIeACPabzhAgtNAV6YLSIx8A/b4LMFzhyttIUCArz5LOK1t9wrSn6QKBI9dEuC5g8GQrg6LlkyvsQSILzBO6/HTmIyxMS4gKmZ1MBjztb0GjgDrgCV51gOqQIBZItFkKe4+zusBVSDgh16zPOY+vc7tIzUh4LsvELokYL5NLjCZth5QpSB4MFA7GNcqUtIgmKoeUAUC9gaWwVlgFTlDKkLAfe2/0pcImQoQbSDgC7BB+5/RNlMooQ0ELAC7te8o8FvbTZWo8QTcBtZbHoevNoWAs8Bd4CXwCnioy9IuX5/RkILIm4RRv3ACgogjIApDSpBn9kExO0+1J2BMzXyZprgj2jatwa/xRVGJUdAsf9eAW/oE17iyuFhkNmSdN1ncybI3RqQAAuZiMrysW2OZ6gFZUfbmaOp6wHayY2dCAlq/Pd6XkehBfQ2nFu8HFI2e6wEzOSjvvUNUBmr3qmyHDi2HlBw0S0dHAG4toHZfjYljAmr31ZgUIJFbY2Ujj0Ssp1S4aajdV2Ou0aXCHbDjP2J84+pSFzO7AAAAAElFTkSuQmCC"
+        alt="Delete Account Icon" style="width: 20px; height: 20px;">
+</button>
+    <!-- Update API Key Form (Initially Hidden) -->
+    <form action="{{ url_for('update_api_key') }}" method="post" style="display: none;" id="updateApiKeyForm">
+        <div class="form-group">
+            <label for="newApiKey">New API Key:</label>
+            <input type="text" class="form-control" id="newApiKey" name="new_api_key" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Update Key</button>
+        <!-- Cancel Button -->
+        <button type="button" class="btn btn-secondary" id="cancelApiKeyUpdate"
+            style="margin-left: 10px;">Cancel</button>
+    </form><br /><br />
+
+    
+    <!-- Delete button -->
+    <button title="Delete Account" type="button" class="btn btn-danger" id="deleteAccountButton">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAACwklEQVR4nO2bO2hUQRRAzyqaxEb8VFEUBVGsREWjhQT/TTCNVSxUFL8BIWjQwg8WRtNYiD/8FRFsFBXSxCBikWhl4SelCoIrmhUNShT8MHAXrouw+9b35o7LHLjdzp47d/e9nblvFiKRSCQS8cEiYB/QWSbcaxZSQ+SAi8CvhHFBxv737Khi8sXYRg3wQCbzCWgGZpeJZnmtG3OfGuC5TGYwwZhBGfOMGirAQIIxAzLGjQ2CqcApuTEljYJMJp9gTF7GFKp0ngSmpFmArn+4kVnFiTQLsA4YCWBSlYbLdW2aBYhEIpFICW6j0ljB0jbraLTaNF0N4OeuGFcsCvA4gIkXw+XinZsiH5WVokWMSg53LApwWuQ/gQYD/zjgh+RwzsBPh/oKzjHwT1f+IwZ+NqoEVhn4Fyu/6zp5p0klsMXA36L8Gwz8TDP+Cm5X/iUGfsYA3yWBSwb+w6oAMzDilSTQZ+A+q36F6jDioSQxZOC+Je5hDLkuSXwxcAfROe5S16FrnPrkpXj7MWSPKoDv53lfxduDIS2qAK0evZOUtxtDFqhE2j165yuvW5KbMVkl4h6c+GKl8rZhzIgkcsOjs814H/IHQ1U8+0tzJ+ouB1P6JJE3Hp3dqgDuMjTlsiTimhPjPTl7xPkthFMkR9WnMcuTs198rwmAraoAKzyfOXhEAKxRBdjkyTksvtsEwFxVgEMefHWyBXa+8wTABFUAH93Zmcrn7j9B8EES6vXci9xJIDyRhJ56cLVaN0P/xl1J6DPZs0sVYCmBcEYlNTFj17EQmqGlHPDYGLmmVp71BMJ6VYCDGXrGAm/F84KAaADeS2IfM3xWqDdBxwmMdpVcQc7+L0vhBMg8ab31qvfPh7ALLCUnJzWyPgzhGjDLCZQcsBt4l9Hk78nSO3jqgdXA3gr+IlMu9gObjc4gRCKRSIRa5jcBcun6pJoUuwAAAABJRU5ErkJggg=="
+            alt="Delete Account Icon" style="width: 20px; height: 20px;">
+    </button>
+
+<!-- Delete Account Form (Initially Hidden) -->
+<form action="{{ url_for('delete_account') }}" method="post" style="display: none;" id="deleteAccountForm">
+    <div class="form-group">
+        <label for="deleteUsername">Username:</label>
+        <input type="text" class="form-control" id="deleteUsername" name="delete_username" required>
+    </div>
+    <div class="form-group">
+        <label for="deletePassword">Password:</label>
+        <input type="password" autocomplete="new-password" class="form-control" id="deletePassword"
+            name="delete_password" required>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="confirmDelete" name="confirm_delete" required>
+        <label class="form-check-label" for="confirmDelete">
+            I confirm that I want to delete my account.
+        </label>
+    </div>
+    <div class="button-group">
+        <button type="submit" class="btn btn-danger">Delete Account</button>
+        <!-- Cancel Button -->
+        <button type="button" class="btn btn-secondary" id="cancelDeleteAccount">Cancel</button>
+    </div>
+</form>
+
+
+    <!-- Logout Button -->
+<a href="{{ url_for('login') }}" class="btn custom-button">
+    <img title="Sign Out" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAABV0lEQVR4nO2aTU7DMBBGHxvK1lJyAHoKuAqwgAW5Qrde9iDcAokTIH5yme4wqtRIXlBiR4koM9+TRurK0rxkJvbUIIQQQgghRClroAM2I3EHnGGMB2AHpMK4xdiT31Ukb05AlyXWA9uRuLFWAjETsP/tjigB6A1IKgHUA9LMTfACuAZWOGyCDfB2WPMFZwIa4CNb8wtHAgLw+sPO0YWAcCR5FwLCL8mbFxBGkjctIBQkb1ZAC3wWHp/NCWgrkjcnoK1M3pSAZkLyqWDOuPnLWWSsEPA0Ifk5Y5FRXJQAqkqgn/DktjPEYrPIWNkES7/9JpvgVAkmN0KhQsJJEycKwPtWeMD1YWjA9XF4wPVAZMD1SOzYecHVUDSX8H5Y8xmnf46ugCvgnBMnLiTg3xAlAL0BSSWA3x7QZSXQe7wnuPZ+TW7PveeLkgOXwKPHe4JCCCGEEAJDfAOz7LLc0dM3gAAAAABJRU5ErkJggg=="
+        alt="Sign Out">
+</a>
 </div>
-{% endblock %}
+
+<script>
+    document.getElementById('updateEmailButton').addEventListener('click', function () {
+        const updateEmailForm = document.getElementById('updateEmailForm');
+        if (updateEmailForm.style.display === 'none') {
+            updateEmailForm.style.display = 'block';
+        } else {
+            updateEmailForm.style.display = 'none';
+        }
+    });
+
+    document.getElementById('cancelEmailUpdate').addEventListener('click', function () {
+        const updateEmailForm = document.getElementById('updateEmailForm');
+        updateEmailForm.style.display = 'none';
+    });
+
+
+    document.getElementById('updateApiKeyButton').addEventListener('click', function () {
+        const updateApiKeyForm = document.getElementById('updateApiKeyForm');
+        if (updateApiKeyForm.style.display === 'none') {
+            updateApiKeyForm.style.display = 'block';
+        } else {
+            updateApiKeyForm.style.display = 'none';
+        }
+    });
+
+    document.getElementById('cancelApiKeyUpdate').addEventListener('click', function () {
+        const updateApiKeyForm = document.getElementById('updateApiKeyForm');
+        updateApiKeyForm.style.display = 'none';
+    });
+
+    document.getElementById('resetPasswordButton').addEventListener('click', function () {
+        const resetPasswordForm = document.getElementById('resetPasswordForm');
+        if (resetPasswordForm.style.display === 'none') {
+            resetPasswordForm.style.display = 'block';
+        } else {
+            resetPasswordForm.style.display = 'none';
+        }
+    });
+
+    document.getElementById('cancelPasswordUpdate').addEventListener('click', function () {
+        const resetPasswordForm = document.getElementById('resetPasswordForm');
+        resetPasswordForm.style.display = 'none';
+    });
+
+    document.getElementById('deleteAccountButton').addEventListener('click', function () {
+            const deleteAccountForm = document.getElementById('deleteAccountForm');
+            if (deleteAccountForm.style.display === 'none') {
+                deleteAccountForm.style.display = 'block';
+            } else {
+                deleteAccountForm.style.display = 'none';
+            }
+        });
+
+        document.getElementById('cancelDeleteAccount').addEventListener('click', function () {
+            const deleteAccountForm = document.getElementById('deleteAccountForm');
+            deleteAccountForm.style.display = 'none';
+        });
+</script>

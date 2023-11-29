@@ -3,23 +3,55 @@
 {% block title %}Home Page{% endblock %}
 
 {% block content %}
-<div class="container mt-3">
-    <ul class="nav nav-tabs">
-        <li class="nav-item">
-            <a class="nav-link active" data-bs-toggle="tab" href="#userInfo">User Info</a>
+<div class="custom-container">
+    <ul class="custom-nav-tabs" role="tablist">
+        <li class="custom-nav-item">
+            <a class="custom-nav-link active" id="user-info-tab" href="#userInfo" role="tab" aria-controls="userInfo"
+                aria-selected="true">Account</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="tab" href="#chat">Chat</a>
+        <li class="custom-nav-item">
+            <a class="custom-nav-link" id="chat-tab" href="#chat" role="tab" aria-controls="chat"
+                aria-selected="false">Chat</a>
         </li>
     </ul>
 
-    <div class="tab-content">
-        <div id="userInfo" class="container tab-pane active"><br>
+    <div class="custom-tab-content">
+        <div class="custom-tab-pane show active" id="userInfo" role="tabpanel" aria-labelledby="user-info-tab">
             {% include 'partials/user_info.html' %}
         </div>
-        <div id="chat" class="container tab-pane fade"><br>
+        <div class="custom-tab-pane" id="chat" role="tabpanel" aria-labelledby="chat-tab" style="display: none;">
             {% include 'partials/chat.html' %}
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const tabs = document.querySelectorAll('.custom-nav-link');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function (event) {
+                event.preventDefault();
+                const activePane = document.querySelector('.custom-tab-pane.active');
+                const targetPane = document.querySelector(this.getAttribute('href'));
+
+                if (activePane) {
+                    activePane.classList.remove('active', 'show');
+                    activePane.style.display = 'none'; // Hide the currently active tab content
+                }
+                if (targetPane) {
+                    targetPane.classList.add('active', 'show');
+                    targetPane.style.display = 'block'; // Show the clicked tab content
+                }
+
+                // Update active state for tabs
+                const activeTab = document.querySelector('.custom-nav-link.active');
+                if (activeTab) {
+                    activeTab.classList.remove('active');
+                }
+                this.classList.add('active');
+            });
+        });
+    });
+</script>
 {% endblock %}

@@ -1,13 +1,55 @@
-{% extends 'layout.html' %}
+<!-- partials/chat.html -->
 
-{% block title %}User Info{% endblock %}
-
-{% block content %}
-
-<!-- partials/user_info.html -->
-<div class="user-info">
-    <h2>User Information</h2>
-    <p><strong>Username:</strong> {{ username }}</p>
-    <p><strong>Email:</strong> {{ email }}</p>
+<div class="chat-container">
+    <div id="chatMessages" class="chat-messages">
+        <p>ChatBot: How can I help you today?.</p>
+    </div>
+    <div class="user-input-container">
+        <textarea id="chatInput" placeholder="Type a message..." class="chat-input"></textarea>
+        <button onclick="sendMessage()" class="send-button">Send</button>
+    </div>
 </div>
-{% endblock %}
+
+
+<script>
+    function sendMessage() {
+        var input = document.getElementById("chatInput");
+        var message = input.value.trim();
+        input.value = '';
+
+        if (message === '') {
+            return; // Don't send empty messages
+        }
+
+        appendMessage("User", message);
+
+        fetch('/send_message', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ message: message })
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Received Data:", data); // Debugging statement
+                if (data && data.response) {
+                    appendMessage("ChatBot", data.response);
+                } else {
+                    console.log("No valid response in data"); // Debugging statement
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    function appendMessage(sender, text) {
+        var chatMessages = document.getElementById("chatMessages");
+        var messageElement = document.createElement("p");
+        messageElement.textContent = sender + ": " + text;
+        chatMessages.appendChild(messageElement);
+
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+</script>

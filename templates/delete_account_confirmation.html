@@ -1,0 +1,13 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="delete-account-confirmation">
+    <h2>Delete Account Confirmation</h2>
+    <p>Are you sure you want to delete your account?</p>
+    <form action="{{ url_for('confirm_delete_account') }}" method="post">
+        <input type="checkbox" name="confirm_delete" required> Final Confirmation of Account Deletion
+        <br>
+        <button type="submit" class="btn btn-danger">Confirm Delete</button>
+    </form>
+</div>
+{% endblock %}
