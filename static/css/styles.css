@@ -73,42 +73,7 @@ body {
     background-color: var(--border-color);
 }
 
-/* Chat Styles */
-.chat-container {
-    display: flex;
-    flex-direction: column;
-    max-height: calc(100vh - 100px);
-    background-color: var(--background-color);
-}
 
-.chat-messages {
-    flex-grow: 1;
-    overflow-y: auto;
-    border: 1px solid var(--border-color);
-    padding: 10px;
-    word-wrap: break-word;
-    background-color: var(--input-background);
-}
-
-.user-input-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    border-top: 1px solid var(--border-color);
-}
-
-.chat-input {
-    flex-grow: 1;
-    padding: 5px;
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-    background-color: var(--input-background);
-    color: var(--text-color);
-    resize: vertical;
-    overflow-y: auto;
-    margin-right: 10px;
-}
 
 
 input,
@@ -263,9 +228,9 @@ button:hover,
 .centered-form {
     width: 100%;
     max-width: 400px;
-    background-color: #f8f8f8;
+    background-color: var(--input-background);
+    /* Use the theme's input background color */
     padding: 40px;
-    /* Increase padding */
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -282,18 +247,7 @@ button:hover,
     border-radius: 4px;
 }
 
-.btn {
-    padding: 0;
-    /* Remove padding to fit the image */
-    border-radius: 4px;
-    /* Match with input fields */
-    display: inline-block;
-    /* Changed from flex to block */
-    height: auto;
-    /* Auto height to match input fields */
-    background-color: transparent;
-    /* Remove background */
-}
+
 
 .form-action {
     display: flex;
@@ -308,3 +262,13 @@ button:hover,
     color: var(--text-color);
     /* Optional: Set the color */
 }
+
+.register-prompt {
+    margin-left: 10px;
+    /* Space between button and text */
+    color: var(--text-color);
+    /* Optional: Set the color */
+    align-self: center;
+    /* Center vertically in the flex container */
+}
+

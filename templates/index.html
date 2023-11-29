@@ -19,12 +19,60 @@
         <div class="custom-tab-pane show active" id="userInfo" role="tabpanel" aria-labelledby="user-info-tab">
             {% include 'partials/user_info.html' %}
         </div>
-        <div class="custom-tab-pane" id="chat" role="tabpanel" aria-labelledby="chat-tab" style="display: none;">
+        <div class="custom-tab-pane" id="chat" role="tabpanel" aria-labelledby="chat-tab" >
             {% include 'partials/chat.html' %}
         </div>
     </div>
 </div>
+<style>
+    /* Add custom styles here */
+    .chat-container {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+    }
 
+    .chat-messages {
+        flex: 4;
+        /* 80% of the height */
+        overflow-y: scroll;
+        padding: 10px;
+        background-color: #f0f0f0;
+        /* Set your desired background color */
+    }
+
+    .chat-input-container {
+        display: flex;
+        flex-direction: row;
+        flex: 1;
+        /* 20% of the height */
+        background-color: #ffffff;
+        /* Set your desired background color */
+        border-top: 1px solid #ccc;
+        /* Add a border above the input area */
+    }
+
+    .chat-input {
+        flex: 4;
+        /* Takes up most of the width */
+        padding: 10px;
+        border: none;
+        outline: none;
+        resize: vertical;
+        /* Allows vertical scrolling */
+    }
+
+    .send-button {
+        flex: 1;
+        /* Takes up remaining width */
+        background-color: #4b3c5e;
+        /* Set your desired button color */
+        color: #ffffff;
+        /* Set your desired text color */
+        border: none;
+        cursor: pointer;
+    }
+</style>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const tabs = document.querySelectorAll('.custom-nav-link');
@@ -52,6 +100,46 @@
                 this.classList.add('active');
             });
         });
+    });
+
+
+</script>
+<script>
+    // JavaScript to toggle forms
+    document.getElementById('updateEmailButton').addEventListener('click', function () {
+        const updateEmailForm = document.getElementById('updateEmailForm');
+        updateEmailForm.style.display = updateEmailForm.style.display === 'none' ? 'block' : 'none';
+    });
+
+    document.getElementById('cancelEmailUpdate').addEventListener('click', function () {
+        document.getElementById('updateEmailForm').style.display = 'none';
+    });
+
+    document.getElementById('updateApiKeyButton').addEventListener('click', function () {
+        const updateApiKeyForm = document.getElementById('updateApiKeyForm');
+        updateApiKeyForm.style.display = updateApiKeyForm.style.display === 'none' ? 'block' : 'none';
+    });
+
+    document.getElementById('cancelApiKeyUpdate').addEventListener('click', function () {
+        document.getElementById('updateApiKeyForm').style.display = 'none';
+    });
+
+    document.getElementById('resetPasswordButton').addEventListener('click', function () {
+        const resetPasswordForm = document.getElementById('resetPasswordForm');
+        resetPasswordForm.style.display = resetPasswordForm.style.display === 'none' ? 'block' : 'none';
+    });
+
+    document.getElementById('cancelPasswordUpdate').addEventListener('click', function () {
+        document.getElementById('resetPasswordForm').style.display = 'none';
+    });
+
+    document.getElementById('deleteAccountButton').addEventListener('click', function () {
+        const deleteAccountForm = document.getElementById('deleteAccountForm');
+        deleteAccountForm.style.display = deleteAccountForm.style.display === 'none' ? 'block' : 'none';
+    });
+
+    document.getElementById('cancelDeleteAccount').addEventListener('click', function () {
+        document.getElementById('deleteAccountForm').style.display = 'none';
     });
 </script>
 {% endblock %}
