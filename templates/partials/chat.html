@@ -43,14 +43,99 @@
                 });
         }
 
-    function appendMessage(sender, text) {
-        var chatMessages = document.getElementById("chatMessages");
-        var messageElement = document.createElement("p");
-        messageElement.textContent = sender + ": " + text;
-        chatMessages.appendChild(messageElement);
+        function appendMessage(sender, text) {
+            var chatMessages = document.getElementById("chatMessages");
+            var codeBlockRegex = /```(.*?)\n([\s\S]*?)```/g;
+            var match;
+            var lastIndex = 0;
+            var hasCodeBlock = false;
+            var firstMessage = true;
 
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+            function appendNormalText(content) {
+                var messageElement = document.createElement("p");
+                messageElement.textContent = firstMessage ? sender + ": " + content : content;
+                chatMessages.appendChild(messageElement);
+                firstMessage = false;
+            }
+
+            function appendCodeBlock(title, codeSnippet) {
+                var codeContainer = document.createElement("div");
+                codeContainer.className = "code-container";
+
+                var codeToolbar = document.createElement("div");
+                codeToolbar.className = "code-toolbar";
+
+                if (title) {
+                    var toolbarTitle = document.createElement("span");
+                    toolbarTitle.className = "code-toolbar-title";
+                    toolbarTitle.textContent = title;
+                    codeToolbar.appendChild(toolbarTitle);
+                }
+
+                var copyButton = document.createElement("button");
+                copyButton.className = "copy-button";
+                copyButton.textContent = "Copy";
+                copyButton.onclick = function () { copyToClipboard(codeSnippet); };
+
+                codeToolbar.appendChild(copyButton);
+                codeContainer.appendChild(codeToolbar);
+
+                var codeBlock = document.createElement("textarea");
+                codeBlock.className = "code-block";
+                codeBlock.value = codeSnippet;
+                codeBlock.readOnly = true;
+
+                codeContainer.appendChild(codeBlock);
+                chatMessages.appendChild(codeContainer);
+            }
+
+            while ((match = codeBlockRegex.exec(text)) !== null) {
+                hasCodeBlock = true;
+                var normalText = text.substring(lastIndex, match.index);
+                var title = match[1].trim();
+                var codeSnippet = match[2];
+
+                if (normalText) {
+                    appendNormalText(normalText);
+                }
+
+                appendCodeBlock(title, codeSnippet);
+                lastIndex = codeBlockRegex.lastIndex;
+            }
+
+            if (hasCodeBlock && lastIndex < text.length) {
+                var remainingText = text.substring(lastIndex);
+                appendNormalText(remainingText);
+            }
+
+            if (!hasCodeBlock) {
+                appendNormalText(text);
+            }
+
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+
+
+    function copyToClipboard(codeSnippet) {
+        // Create a temporary textarea element to hold the text
+        var tempTextArea = document.createElement('textarea');
+        // Set its value to the code snippet
+        tempTextArea.value = codeSnippet;
+        // Append it to the body temporarily
+        document.body.appendChild(tempTextArea);
+        // Select the content
+        tempTextArea.select();
+        // Execute the "Copy" command
+        document.execCommand('copy');
+        // Remove the temporary textarea
+        document.body.removeChild(tempTextArea);
+
+        console.log('Text copied to clipboard');
     }
+
+
 
     
 </script>
+

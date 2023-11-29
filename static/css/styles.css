@@ -332,4 +332,65 @@ button:hover,
     overflow-wrap: break-word;
 }
 
-/* Add any additional styles or modifications as necessary */
+.code-container {
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 1px;
+    background-color: #36393f;
+    position: relative;
+}
+
+.code-toolbar {
+    display: flex;
+    justify-content: space-between;
+    /* This will push the children to each end */
+    align-items: center;
+    /* This will vertically center the children */
+    padding: 5px;
+    /* Add padding as needed */
+}
+
+.code-toolbar-title {
+    float: left;
+    /* Positions the title to the left */
+}
+
+.copy-button {
+    float: right;
+    /* Keeps the copy button to the right */
+}
+
+.code-block {
+    width: calc(100% - 20px);
+    /* Adjust width to account for padding */
+    margin: 0;
+    border: none;
+    padding: 10px;
+    height: 150px;
+    /* Adjust height as needed */
+    font-family: monospace;
+    resize: none;
+    /* Disable resizing */
+    background-color: #40444b;
+    color: #ffffff;
+}
+
+.copy-button {
+    padding: 10px;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        text-align: center;
+        font-size: 16px;
+        color: var(--text-color);
+}
+
+.copy-button:hover {
+    background-color: #5d4e6d;
+}
