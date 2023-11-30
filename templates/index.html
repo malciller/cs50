@@ -59,45 +59,66 @@
         });
     });
 
+    // Function to hide all forms and remove the selected class from all buttons
+    function hideAllForms() {
+        const forms = document.querySelectorAll('.centered-form form');
+        forms.forEach(form => {
+            form.style.display = 'none';
+        });
+        const buttons = document.querySelectorAll('.top-buttons button');
+        buttons.forEach(button => {
+            button.classList.remove('selected');
+        });
+    }
 
+    // Function to toggle form visibility and button selected state
+    function toggleForm(formId, button) {
+        const form = document.getElementById(formId);
+        if (form.style.display === 'none') {
+            hideAllForms();
+            form.style.display = 'block';
+            button.classList.add('selected');
+        } else {
+            form.style.display = 'none';
+            button.classList.remove('selected');
+        }
+    }
 
-</script>
-<script>
-    // JavaScript to toggle forms
+    // Event listeners for buttons
     document.getElementById('updateEmailButton').addEventListener('click', function () {
-        const updateEmailForm = document.getElementById('updateEmailForm');
-        updateEmailForm.style.display = updateEmailForm.style.display === 'none' ? 'block' : 'none';
-    });
-
-    document.getElementById('cancelEmailUpdate').addEventListener('click', function () {
-        document.getElementById('updateEmailForm').style.display = 'none';
+        toggleForm('updateEmailForm', this);
     });
 
     document.getElementById('updateApiKeyButton').addEventListener('click', function () {
-        const updateApiKeyForm = document.getElementById('updateApiKeyForm');
-        updateApiKeyForm.style.display = updateApiKeyForm.style.display === 'none' ? 'block' : 'none';
-    });
-
-    document.getElementById('cancelApiKeyUpdate').addEventListener('click', function () {
-        document.getElementById('updateApiKeyForm').style.display = 'none';
+        toggleForm('updateApiKeyForm', this);
     });
 
     document.getElementById('resetPasswordButton').addEventListener('click', function () {
-        const resetPasswordForm = document.getElementById('resetPasswordForm');
-        resetPasswordForm.style.display = resetPasswordForm.style.display === 'none' ? 'block' : 'none';
-    });
-
-    document.getElementById('cancelPasswordUpdate').addEventListener('click', function () {
-        document.getElementById('resetPasswordForm').style.display = 'none';
+        toggleForm('resetPasswordForm', this);
     });
 
     document.getElementById('deleteAccountButton').addEventListener('click', function () {
-        const deleteAccountForm = document.getElementById('deleteAccountForm');
-        deleteAccountForm.style.display = deleteAccountForm.style.display === 'none' ? 'block' : 'none';
+        toggleForm('deleteAccountForm', this);
+    });
+
+    // Event listeners for cancel buttons
+    document.getElementById('cancelEmailUpdate').addEventListener('click', function () {
+        hideAllForms();
+    });
+
+    document.getElementById('cancelApiKeyUpdate').addEventListener('click', function () {
+        hideAllForms();
+    });
+
+    document.getElementById('cancelPasswordUpdate').addEventListener('click', function () {
+        hideAllForms();
     });
 
     document.getElementById('cancelDeleteAccount').addEventListener('click', function () {
-        document.getElementById('deleteAccountForm').style.display = 'none';
+        hideAllForms();
     });
+
 </script>
+
+
 {% endblock %}
