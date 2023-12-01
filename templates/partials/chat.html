@@ -1,46 +1,58 @@
 <div class="chat-container">
     <div id="chatMessages" class="chat-messages">
-        <!-- Chat messages will be displayed here -->
+        <!-- messages will be displayed here -->
     </div>
     <div class="chat-input-container">
         <textarea id="chatInput" placeholder="Type a message..." class="chat-input"></textarea>
-        <button onclick="sendMessage()" class="send-button">
-            <img src="static\images\icons8-hexagon-synchronize.svg" title="Send" alt="Send Icon" style="width: 20px; height: 20px;">
+        <div id="loadingSpinner" class="loading-spinner" style="display: none;">
+            <img src="static/images/icons8-loading.gif" alt="loading..." style="width: 20px; height: 20px;">
+        </div>
+        <button id="sendButton" onclick="sendMessage()" class="send-button">
+            <img src="static/images/icons8-hexagon-synchronize.svg" title="Send" alt="Send Icon"
+                style="width: 20px; height: 20px;">
         </button>
     </div>
 </div>
+
 <script>
-        function sendMessage() {
-            var input = document.getElementById("chatInput");
-            var message = input.value.trim();
-            input.value = '';
+    function sendMessage() {
+        var input = document.getElementById("chatInput");
+        var loadingSpinner = document.getElementById("loadingSpinner");
+        var sendButton = document.getElementById("sendButton");
+        var message = input.value.trim();
+        input.value = '';
 
-            if (message === '') {
-                return; // Don't send empty messages
-            }
-
-            appendMessage("User", message);
-
-            fetch('/send_message', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ message: message })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log("Received Data:", data); // Debugging statement
-                    if (data && data.response) {
-                        appendMessage("ChatBot", data.response);
-                    } else {
-                        console.log("No valid response in data"); // Debugging statement
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+        if (message === '') {
+            return; // Don't send empty messages
         }
+
+        sendButton.style.display = 'none'; // Hide send button
+        loadingSpinner.style.display = 'block'; // Show loading spinner
+
+        fetch('/send_message', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ message: message })
+        })
+            .then(response => response.json())
+            .then(data => {
+                sendButton.style.display = 'block'; // Show send button
+                loadingSpinner.style.display = 'none'; // Hide loading spinner
+                if (data && data.response) {
+                    appendMessage("ChatBot", data.response);
+                }
+            })
+            .catch(error => {
+                sendButton.style.display = 'block'; // Show send button
+                loadingSpinner.style.display = 'none'; // Hide loading spinner
+                console.error('Error:', error);
+                // Display an error message to the user
+            });
+    }
+
+
 
         function appendMessage(sender, text) {
             var chatMessages = document.getElementById("chatMessages");
