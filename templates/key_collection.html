@@ -1,17 +1,21 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-<div class="custom-form-container">
-    <h2 class="form-header">Enter your API Key</h2>
-    <form method="POST" action="" class="custom-form">
-        {{ form.hidden_tag() }}
-        <div class="form-group">
-            {{ form.api_key.label(class='form-label') }}
-            {{ form.api_key(class='form-control') }}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h2 class="mb-4">Enter your API Key</h2>
+            <form method="POST" action="" class="needs-validation" novalidate>
+                {{ form.hidden_tag() }}
+                <div class="form-group">
+                    {{ form.api_key.label(class='form-label') }}
+                    {{ form.api_key(class='form-control') }}
+                </div>
+                <div class="form-group">
+                    {{ form.submit(class='btn btn-primary') }}
+                </div>
+            </form>
         </div>
-        <div class="form-group">
-            {{ form.submit(class='btn custom-button') }}
-        </div>
-    </form>
+    </div>
 </div>
 {% endblock %}

@@ -1,33 +1,44 @@
-<div class="chat-container">
-    <div id="chatMessages" class="chat-messages">
-        <!-- messages will be displayed here -->
-    </div>
-    <div class="chat-input-container">
-        <textarea id="chatInput" placeholder="Type a message..." class="chat-input"></textarea>
-        <div id="loadingSpinner" class="loading-spinner" style="display: none;">
-            <img src="static/images/icons8-loading.gif" alt="loading..." style="width: 20px; height: 20px;">
+<div class="container my-4">
+    <div class="row">
+        <div class="col">
+            <div id="chatMessages" class="chat-messages bg-light p-3" style="height: 400px; overflow-y: scroll;">
+                <!-- messages will be displayed here -->
+            </div>
+            <div id="loadingSpinner" class="loading-spinner" style="display: none;">
+                <img src="static/images/icons8-loading.gif" alt="loading..." style="width: 20px; height: 20px;">
+            </div>
+            <div class="input-group mt-3">
+                <textarea id="chatInput" placeholder="Type a message..." class="form-control chat-input"></textarea>
+                <div class="input-group-append">
+                    <button id="sendButton" onclick="sendMessage()" class="btn btn-primary">
+                        <img src="static/images/icons8-hexagon-synchronize.svg" title="Send" alt="Send Icon"
+                            style="width: 20px; height: 20px;">
+                    </button>
+                </div>
+            </div>
+
+
         </div>
-        <button id="sendButton" onclick="sendMessage()" class="send-button">
-            <img src="static/images/icons8-hexagon-synchronize.svg" title="Send" alt="Send Icon"
-                style="width: 20px; height: 20px;">
-        </button>
     </div>
 </div>
-
 <script>
     function sendMessage() {
         var input = document.getElementById("chatInput");
-        var loadingSpinner = document.getElementById("loadingSpinner");
-        var sendButton = document.getElementById("sendButton");
         var message = input.value.trim();
         input.value = '';
+
+        var sendButton = document.getElementById("sendButton");
+        var loadingSpinner = document.getElementById("loadingSpinner");
 
         if (message === '') {
             return; // Don't send empty messages
         }
 
-        sendButton.style.display = 'none'; // Hide send button
-        loadingSpinner.style.display = 'block'; // Show loading spinner
+        // Show loading spinner and hide send button
+        sendButton.style.display = 'none';
+        loadingSpinner.style.display = 'block';
+
+        appendMessage("User", message);
 
         fetch('/send_message', {
             method: 'POST',
@@ -38,98 +49,102 @@
         })
             .then(response => response.json())
             .then(data => {
-                sendButton.style.display = 'block'; // Show send button
-                loadingSpinner.style.display = 'none'; // Hide loading spinner
+                console.log("Received Data:", data); // Debugging statement
                 if (data && data.response) {
                     appendMessage("ChatBot", data.response);
+                } else {
+                    console.log("No valid response in data"); // Debugging statement
                 }
+                // Hide loading spinner and show send button
+                sendButton.style.display = 'block';
+                loadingSpinner.style.display = 'none';
             })
             .catch(error => {
-                sendButton.style.display = 'block'; // Show send button
-                loadingSpinner.style.display = 'none'; // Hide loading spinner
                 console.error('Error:', error);
-                // Display an error message to the user
+                // Hide loading spinner and show send button even on error
+                sendButton.style.display = 'block';
+                loadingSpinner.style.display = 'none';
             });
     }
 
 
+            function appendMessage(sender, text) {
+                var chatMessages = document.getElementById("chatMessages");
+                var codeBlockRegex = /```(.*?)\n([\s\S]*?)```/g;
+                var match;
+                var lastIndex = 0;
+                var hasCodeBlock = false;
+                var firstMessage = true;
 
-        function appendMessage(sender, text) {
-            var chatMessages = document.getElementById("chatMessages");
-            var codeBlockRegex = /```(.*?)\n([\s\S]*?)```/g;
-            var match;
-            var lastIndex = 0;
-            var hasCodeBlock = false;
-            var firstMessage = true;
-
-            function appendNormalText(content) {
-                var messageElement = document.createElement("p");
-                messageElement.textContent = firstMessage ? sender + ": " + content : content;
-                chatMessages.appendChild(messageElement);
-                firstMessage = false;
-            }
-
-            function appendCodeBlock(title, codeSnippet) {
-                var codeContainer = document.createElement("div");
-                codeContainer.className = "code-container";
-
-                var codeToolbar = document.createElement("div");
-                codeToolbar.className = "code-toolbar";
-
-                if (title) {
-                    var toolbarTitle = document.createElement("span");
-                    toolbarTitle.className = "code-toolbar-title";
-                    toolbarTitle.textContent = title;
-                    codeToolbar.appendChild(toolbarTitle);
+                function appendNormalText(content) {
+                    var messageElement = document.createElement("p");
+                    messageElement.textContent = firstMessage ? sender + ": " + content : content;
+                    chatMessages.appendChild(messageElement);
+                    firstMessage = false;
                 }
 
-                var copyButton = document.createElement("button");
-                copyButton.className = "copy-button";
-                
-                var img = document.createElement("img");
-                img.src = "/static/images/icons8-external-link.svg"; // Correct the path with forward slashes
-                img.title = "Copy";
-                copyButton.appendChild(img);
+                function appendCodeBlock(title, codeSnippet) {
+                    var codeContainer = document.createElement("div");
+                    codeContainer.className = "code-container";
 
-                copyButton.onclick = function () { copyToClipboard(codeSnippet); };
+                    var codeToolbar = document.createElement("div");
+                    codeToolbar.className = "code-toolbar";
 
-                codeToolbar.appendChild(copyButton);
-                codeContainer.appendChild(codeToolbar);
+                    if (title) {
+                        var toolbarTitle = document.createElement("span");
+                        toolbarTitle.className = "code-toolbar-title";
+                        toolbarTitle.textContent = title;
+                        codeToolbar.appendChild(toolbarTitle);
+                    }
 
-                var codeBlock = document.createElement("textarea");
-                codeBlock.className = "code-block";
-                codeBlock.value = codeSnippet;
-                codeBlock.readOnly = true;
+                    var copyButton = document.createElement("button");
+                    copyButton.className = "copy-button";
 
-                codeContainer.appendChild(codeBlock);
-                chatMessages.appendChild(codeContainer);
-            }
+                    var img = document.createElement("img");
+                    img.src = "/static/images/icons8-external-link.svg"; // Correct the path with forward slashes
+                    img.title = "Copy";
+                    copyButton.appendChild(img);
 
-            while ((match = codeBlockRegex.exec(text)) !== null) {
-                hasCodeBlock = true;
-                var normalText = text.substring(lastIndex, match.index);
-                var title = match[1].trim();
-                var codeSnippet = match[2];
+                    copyButton.onclick = function () { copyToClipboard(codeSnippet); };
 
-                if (normalText) {
-                    appendNormalText(normalText);
+                    codeToolbar.appendChild(copyButton);
+                    codeContainer.appendChild(codeToolbar);
+
+                    var codeBlock = document.createElement("textarea");
+                    codeBlock.className = "code-block";
+                    codeBlock.value = codeSnippet;
+                    codeBlock.readOnly = true;
+
+                    codeContainer.appendChild(codeBlock);
+                    chatMessages.appendChild(codeContainer);
                 }
 
-                appendCodeBlock(title, codeSnippet);
-                lastIndex = codeBlockRegex.lastIndex;
+                while ((match = codeBlockRegex.exec(text)) !== null) {
+                    hasCodeBlock = true;
+                    var normalText = text.substring(lastIndex, match.index);
+                    var title = match[1].trim();
+                    var codeSnippet = match[2];
+
+                    if (normalText) {
+                        appendNormalText(normalText);
+                    }
+
+                    appendCodeBlock(title, codeSnippet);
+                    lastIndex = codeBlockRegex.lastIndex;
+                }
+
+                if (hasCodeBlock && lastIndex < text.length) {
+                    var remainingText = text.substring(lastIndex);
+                    appendNormalText(remainingText);
+                }
+
+                if (!hasCodeBlock) {
+                    appendNormalText(text);
+                }
+
+                chatMessages.scrollTop = chatMessages.scrollHeight;
             }
 
-            if (hasCodeBlock && lastIndex < text.length) {
-                var remainingText = text.substring(lastIndex);
-                appendNormalText(remainingText);
-            }
-
-            if (!hasCodeBlock) {
-                appendNormalText(text);
-            }
-
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
 
 
 

@@ -1,29 +1,33 @@
+<div class="container my-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="d-flex justify-content-between mb-3">
+                <!-- Update Email Button -->
+                <button title="Update Email Address" type="button" class="btn btn-info" id="updateEmailButton">
+                    <img src="{{ url_for('static', filename='images/icons8-contacts.svg') }}" alt="Update Email Icon"
+                        style="width: 20px; height: 20px;">
+                </button>
+                <!-- Password Reset Button -->
+                <button title="Update Password" type="button" class="btn btn-info" id="resetPasswordButton">
+                    <img src="{{ url_for('static', filename='images/icons8-support.svg') }}" alt="Reset Password Icon"
+                        style="width: 20px; height: 20px;">
+                </button>
+                <!-- Update API Key Button -->
+                <button title="Update API Key" type="button" class="btn btn-info" id="updateApiKeyButton">
+                    <img src="{{ url_for('static', filename='images/icons8-key.svg') }}" alt="Update API Key Icon"
+                        style="width: 20px; height: 20px;">
+                </button>
+                <!-- Delete button -->
+                <button title="Delete Account" type="button" class="btn btn-danger" id="deleteAccountButton">
+                    <img src="{{ url_for('static', filename='images/icons8-trash-can.svg') }}" alt="Delete Account Icon"
+                        style="width: 20px; height: 20px;">
+                </button>
+            </div>
 
-<div class="centered-form-container">
-    <div class="centered-form">
-        <div class="top-buttons">
-    <!-- Update Email Button -->
-    <button title="Update Email Address" type="button" class="btn btn-info" id="updateEmailButton">
-        <img src="static\images\icons8-contacts.svg" alt="Delete Account Icon" style="width: 20px; height: 20px;">
-    </button>
-    <!-- Password Reset Button -->
-    <button title="Update Password" type="button" class="btn btn-info" id="resetPasswordButton">
-        <img src="static\images\icons8-support.svg" alt="Delete Account Icon" style="width: 20px; height: 20px;">
-    </button>
-
-        <!-- Update API Key Button -->
-        
-        <button title="Update API Key" type="button" class="btn btn-info" id="updateApiKeyButton">
-            <img src="static\images\icons8-key.svg" alt="Delete Account Icon" style="width: 20px; height: 20px;">
-        </button>
-    <!-- Delete button -->
-    <button title="Delete Account" type="button" class="btn btn-danger" id="deleteAccountButton">
-        <img src="static\images\icons8-trash-can.svg" alt="Delete Account Icon" style="width: 20px; height: 20px;">
-    </button>
-        </div>
-<div class="user-info">
-    <p><strong>u:</strong> {{ username }}</p>
-    <p><strong>e:</strong> {{ email }}</p>
+            <div class="user-info mb-3">
+                <p><strong>Username:</strong> {{ username }}</p>
+                <p><strong>Email:</strong> {{ email }}</p>
+            </div>
 
     <!-- Update Email Form (Initially Hidden) -->
     <form action="{{ url_for('update_email') }}" method="post" style="display: none;" id="updateEmailForm">
@@ -108,9 +112,77 @@
 
 
     <!-- Logout Button -->
-<a href="{{ url_for('login') }}" class="btn custom-button">
-    <img src="static\images\icons8-unavailable.svg" title="Sign Out" alt="Sign Out">
-</a>
+        <a href="{{ url_for('logout') }}" class="btn btn-warning mt-3">
+            <img src="{{ url_for('static', filename='images/icons8-unavailable.svg') }}" title="Sign Out" alt="Sign Out Icon"
+                style="width: 20px; height: 20px;"> Sign Out
+        </a>
+        </div>
+    </div>
 </div>
-</div>
-</div>
+<script>
+    // Function to hide all forms
+    function hideAllForms() {
+        const forms = document.querySelectorAll('.user-info form');
+        forms.forEach(form => {
+            form.style.display = 'none';
+        });
+        const buttons = document.querySelectorAll('.d-flex button');
+        buttons.forEach(button => {
+            button.classList.remove('selected');
+        });
+    }
+
+    // Function to toggle form visibility and button selected state
+    function toggleForm(formId, button) {
+        const form = document.getElementById(formId);
+        // Check if the clicked form is already open
+        const isFormOpen = form.style.display === 'block';
+
+        hideAllForms(); // Hide all forms
+
+        // Toggle the clicked form based on its previous state
+        if (!isFormOpen) {
+            form.style.display = 'block';
+            button.classList.add('selected');
+        } else {
+            form.style.display = 'none';
+            button.classList.remove('selected');
+        }
+    }
+
+    // Add event listeners for buttons
+    document.getElementById('updateEmailButton').addEventListener('click', function () {
+        toggleForm('updateEmailForm', this);
+    });
+
+    document.getElementById('updateApiKeyButton').addEventListener('click', function () {
+        toggleForm('updateApiKeyForm', this);
+    });
+
+    document.getElementById('resetPasswordButton').addEventListener('click', function () {
+        toggleForm('resetPasswordForm', this);
+    });
+
+    document.getElementById('deleteAccountButton').addEventListener('click', function () {
+        toggleForm('deleteAccountForm', this);
+    });
+
+    // Add event listeners for cancel buttons
+    document.getElementById('cancelEmailUpdate').addEventListener('click', function () {
+        hideAllForms();
+    });
+
+    document.getElementById('cancelApiKeyUpdate').addEventListener('click', function () {
+        hideAllForms();
+    });
+
+    document.getElementById('cancelPasswordUpdate').addEventListener('click', function () {
+        hideAllForms();
+    });
+
+    document.getElementById('cancelDeleteAccount').addEventListener('click', function () {
+        hideAllForms();
+    });
+
+
+</script>

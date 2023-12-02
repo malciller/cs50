@@ -1,30 +1,35 @@
 {% extends 'layout.html' %}
+
 {% block title %}Register{% endblock %}
+
 {% block content %}
-<div class="centered-form-container">
-    <form method="POST" action="" class="centered-form">
-        {{ form.hidden_tag() }}
-        <div class="form-field">
-            {{ form.username(class='form-input', placeholder="Username") }}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form method="POST" action="" class="needs-validation" novalidate>
+                {{ form.hidden_tag() }}
+                <div class="form-group">
+                    {{ form.username(class='form-control', placeholder="Username") }}
+                </div>
+                <div class="form-group">
+                    {{ form.email(class='form-control', placeholder="Email") }}
+                </div>
+                <div class="form-group">
+                    {{ form.password(class='form-control', placeholder="Password") }}
+                </div>
+                <div class="form-group">
+                    {{ form.confirm_password(class='form-control', placeholder="Confirm Password") }}
+                </div>
+                <div class="form-footer">
+                    <div class="register-prompt mb-3">
+                        Already have an account? <a href="{{ url_for('login') }}">Login here</a>
+                    </div>
+                    <button type="submit" name="submit" class="btn btn-primary">
+                        Register
+                    </button>
+                </div>
+            </form>
         </div>
-        <div class="form-field">
-            {{ form.email(class='form-input', placeholder="Email") }}
-        </div>
-        <div class="form-field">
-            {{ form.password(class='form-input', placeholder="Password") }}
-        </div>
-        <div class="form-field">
-            {{ form.confirm_password(class='form-input', placeholder="Confirm Password") }}
-        </div>
-        <div class="form-footer">
-            <div class="register-prompt">
-                Already have an account? <a href="{{ url_for('login') }}">Login here</a>
-            </div>
-            <button type="submit" name="submit" class="login-button">
-                <img src="static/images/icons8-upload-to-the-cloud.svg" title="Register" alt="Register"
-                    style="width: 20px; height: 20px;">
-            </button>
-        </div>
-    </form>
+    </div>
 </div>
 {% endblock %}

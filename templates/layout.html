@@ -2,39 +2,38 @@
 <html lang="en">
 
 <head>
-    <title>{% block title %}Default Title{% endblock %}</title>
+    <title>{% block title %}Your App Name{% endblock %}</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style2.0.css') }}">
-    <!-- Remove if Bootstrap is no longer needed -->
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"> -->
+
+    <!-- Existing CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style2.0.css') }}">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- Existing Head Elements -->
+    {% block head %}{% endblock %}
 </head>
 
 <body>
-    <header class="custom-header">
-        <!-- Header content -->
-    </header>
-    <div class="main-content">
+    <!-- Existing Navbar or Header -->
+    {% block navbar %}{% endblock %}
 
-    <main class="custom-main">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-        {% for category, message in messages %}
-        <div class="alert custom-alert-{{ category }}">{{ message }}</div>
-        {% endfor %}
-        {% endif %}
-        {% endwith %}
-
+    <!-- Main Content -->
+    <div class="container">
         {% block content %}
-        <!-- Default content (if any) -->
+        <!-- Your main content goes here -->
         {% endblock %}
-    </main>
-</div>
+    </div>
     <div class="custom-footer">
         <p>Icons by <a href="https://icons8.com" target="_blank" style="color: red">Icons8</a></p>
-    </footer>
+    </div>
 
-    <!-- JavaScript files -->
-    <!-- <script src="{{ url_for('static', filename='js/script.js') }}"></script> -->
+    <!-- Bootstrap JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
 </body>
+
 </html>

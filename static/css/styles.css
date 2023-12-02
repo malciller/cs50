@@ -4,7 +4,7 @@
     --button-color: #e8202b;
     --input-background: #40444b;
     --border-color: #202225;
-    
+
 }
 
 /* Reset and Base Styles */
@@ -12,7 +12,6 @@ body,
 html {
     height: 100%;
     margin: 0;
-    padding: 0;
     font-family: Arial, sans-serif;
     background-color: var(--background-color);
     color: var(--text-color);
@@ -22,9 +21,6 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    /* full viewport height */
-    margin: 0;
-    /* reset any default margin */
 }
 
 /* Tab Styles */
@@ -54,7 +50,7 @@ body {
 
 
 .nav-tabs .nav-link,
-.custom-nav-link{
+.custom-nav-link {
     display: block;
     padding: 10px;
     text-decoration: none;
@@ -144,11 +140,9 @@ a:hover {
     text-decoration: underline;
 }
 
+/* Layout Styles */
 .main-content {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    /* Grow to take up all available space */
+    flex: 1;
 }
 
 .custom-footer {
@@ -234,42 +228,32 @@ a:hover {
     align-self: center;
 }
 
+/* Chat Styles */
 .parent-of-chat-container {
     display: flex;
     flex-direction: column;
     height: 100%;
-    /* This ensures that the parent container takes the full height */
-    max-height: 100vh;
-    /* Ensures that the container does not exceed the height of the viewport */
 }
-
-
 
 .chat-container {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    /* This will allow the chat area to expand and fill the space */
-    justify-content: space-between;
-    /* Aligns children to both ends */
+    overflow: hidden;
 }
+
 .chat-messages {
-    flex: 1;
-    /* shorthand for flex-grow: 1; flex-shrink: 1; and flex-basis: 0; Ensures it grows to fill available space */
+    flex: 0 0 80%;
     overflow-y: auto;
-    /* Enables scrolling for overflow content */
     padding: 10px;
-    /* Adjust padding as needed */
-    min-height: 100%;
-    /* Not necessary to set to percentage. Value of 0 for flex children can help in some browsers to allow it to shrink correctly if needed */
+    border-bottom: 1px solid var(--border-color);
 }
+
 .chat-input-container {
+    flex: 0 0 20%;
     display: flex;
-    align-items: flex-start;
-    /* Aligns items to start (top) */
+    align-items: center;
     padding: 10px;
-    background-color: var(--input-background);
-    /* Matching background color */
 }
 
 .chat-input {
@@ -283,12 +267,14 @@ a:hover {
 
 .send-button {
     flex-shrink: 0;
+    background-color: var(--button-color);
+    color: var(--text-color);
 }
-
 
 /* Ensure text wraps within its container */
 .chat-messages,
 .chat-input {
+
     word-wrap: break-word;
     overflow-wrap: break-word;
 }

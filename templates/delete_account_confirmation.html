@@ -5,8 +5,12 @@
     <h2>Delete Account Confirmation</h2>
     <p>Are you sure you want to delete your account?</p>
     <form action="{{ url_for('confirm_delete_account') }}" method="post">
-        <input type="checkbox" name="confirm_delete" required> Final Confirmation of Account Deletion
-        <br>
+        <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" name="confirm_delete" required>
+            <label class="form-check-label" for="confirm_delete">
+                Final Confirmation of Account Deletion
+            </label>
+        </div>
         <button type="submit" class="btn btn-danger">Confirm Delete</button>
     </form>
 </div>
