@@ -6,6 +6,10 @@
     --button-color: #476D7C;
 }
 
+::-webkit-scrollbar {
+    display: none;
+}
+
 img {
     filter: invert(1);
     background: none;

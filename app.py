@@ -18,7 +18,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         # Connect to the database
-        conn = sqlite3.connect('info.db')
+        conn = sqlite3.connect('/home/malciller/Sites/cs50/info.db')
         cursor = conn.cursor()
 
         # Query the database for the user
