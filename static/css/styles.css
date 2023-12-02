@@ -260,7 +260,7 @@ a:hover {
     /* Enables scrolling for overflow content */
     padding: 10px;
     /* Adjust padding as needed */
-    min-height: 85vh;
+    min-height: 100%;
     /* Not necessary to set to percentage. Value of 0 for flex children can help in some browsers to allow it to shrink correctly if needed */
 }
 .chat-input-container {
