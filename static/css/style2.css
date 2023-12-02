@@ -21,7 +21,7 @@ html {
     background-color: var(--background-color);
     color: var(--text-color);
     font-family: 'Abolition', sans-serif;
-    overflow: hidden;
+    overflow-y: hidden;
 }
 
 /* Typography */
