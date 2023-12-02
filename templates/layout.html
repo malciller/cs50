@@ -5,12 +5,12 @@
     <title>{% block title %}Your App Name{% endblock %}</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- Existing CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='style2.0.css') }}">
-
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- Existing CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style2.css') }}">
+
 
     <!-- Existing Head Elements -->
     {% block head %}{% endblock %}

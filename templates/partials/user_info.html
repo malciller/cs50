@@ -112,7 +112,7 @@
 
 
     <!-- Logout Button -->
-        <a href="{{ url_for('logout') }}" class="btn btn-warning mt-3">
+        <a href="{{ url_for('login') }}" class="btn btn-warning mt-3">
             <img src="{{ url_for('static', filename='images/icons8-unavailable.svg') }}" title="Sign Out" alt="Sign Out Icon"
                 style="width: 20px; height: 20px;"> Sign Out
         </a>
@@ -120,35 +120,59 @@
     </div>
 </div>
 <script>
-    // Function to hide all forms
-    function hideAllForms() {
-        const forms = document.querySelectorAll('.user-info form');
-        forms.forEach(form => {
-            form.style.display = 'none';
-        });
-        const buttons = document.querySelectorAll('.d-flex button');
-        buttons.forEach(button => {
-            button.classList.remove('selected');
-        });
+    let currentOpenFormId = null;
+
+    // Function to hide the currently open form
+    function hideCurrentOpenForm() {
+        if (currentOpenFormId) {
+            const currentForm = document.getElementById(currentOpenFormId);
+            currentForm.style.display = 'none';
+
+            // Also, remove the 'selected' class from the button associated with the currently open form
+            const currentButton = document.querySelector(`button[id="${currentOpenFormId.replace("Form", "Button")}"]`);
+            if (currentButton) {
+                currentButton.classList.remove('selected');
+            }
+
+            currentOpenFormId = null; // No form is open
+        }
     }
 
     // Function to toggle form visibility and button selected state
     function toggleForm(formId, button) {
+        console.log(`Toggling form ${formId}`);
         const form = document.getElementById(formId);
         // Check if the clicked form is already open
         const isFormOpen = form.style.display === 'block';
 
-        hideAllForms(); // Hide all forms
-
-        // Toggle the clicked form based on its previous state
         if (!isFormOpen) {
+            // Hide the currently open form (if any)
+            if (currentOpenFormId) {
+                const currentForm = document.getElementById(currentOpenFormId);
+                currentForm.style.display = 'none';
+                // Also, remove the 'selected' class from the button associated with the currently open form
+                const currentButton = document.querySelector(`button[id="${currentOpenFormId.replace("Form", "Button")}"]`);
+                if (currentButton) {
+                    currentButton.classList.remove('selected');
+                }
+            }
+
+            // Update the current open form ID
+            currentOpenFormId = formId;
+
             form.style.display = 'block';
             button.classList.add('selected');
         } else {
             form.style.display = 'none';
             button.classList.remove('selected');
+            currentOpenFormId = null; // No form is open
         }
     }
+
+    // Function to hide all forms (using the hideCurrentOpenForm function)
+    function hideAllForms() {
+        hideCurrentOpenForm();
+    }    
 
     // Add event listeners for buttons
     document.getElementById('updateEmailButton').addEventListener('click', function () {

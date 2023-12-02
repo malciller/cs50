@@ -1,0 +1,153 @@
+/* Root Color Scheme */
+:root {
+    --antique-white: #F4F1DE;
+    --terra-cotta: #E07A5F;
+    --deep-slate-blue: #3D405B;
+    --muted-sage-green: #81B29A;
+}
+
+/* General Styles */
+body,
+html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--deep-slate-blue);
+    color: var(--antique-white);
+    font-family: 'Abolition', sans-serif;
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--terra-cotta);
+}
+
+/* Container and Layout Adjustments */
+.container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    height: 98vh;
+    overflow: hidden;
+}
+
+.row {
+    height: 100%;
+}
+
+/* Component Styling: Buttons */
+.btn {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Button Images */
+.btn img {
+    width: 20px;
+    height: 20px;
+}
+
+/* Responsiveness */
+@media screen and (max-width: 600px) {
+
+    .container,
+    .row {
+        overflow-y: auto;
+    }
+
+    .custom-footer {
+        position: static;
+    }
+}
+
+/* Scrollable Elements */
+.scrollable-element {
+    background-color: var(--deep-slate-blue) !important;
+    max-height: 100%;
+    overflow-y: auto;
+}
+
+/* Chat Specific Styles */
+.chat-container {
+    background-color: var(--deep-slate-blue) !important;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+#chatMessages {
+    background-color: var(--deep-slate-blue) !important;
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.input-group .form-control,
+.input-group .form-control:focus {
+    background-color: var(--deep-slate-blue);
+    color: var(--antique-white);
+    border: 1px solid var(--muted-sage-green);
+}
+
+#sendButton {
+    background-color: var(--muted-sage-green);
+    border-color: var(--muted-sage-green);
+    color: var(--antique-white);
+}
+
+.input-group {
+    margin-bottom: 10px;
+}
+
+::placeholder {
+    color: var(--antique-white);
+    opacity: 1;
+}
+
+:-ms-input-placeholder {
+    color: var(--deep-slate-blue);
+}
+
+::-ms-input-placeholder {
+    color: var(--deep-slate-blue);
+}
+
+/* Button Color Overrides */
+.btn-primary,
+.btn-info,
+.btn-danger,
+.btn-warning,
+.btn-secondary {
+    background-color: var(--muted-sage-green);
+    border-color: var(--muted-sage-green);
+    color: var(--antique-white);
+}
+
+/* Invert Colors for Icons in Buttons for Better Visibility */
+.btn-warning img,
+.btn-secondary img {
+    filter: invert(1);
+}
+
+/* Footer */
+.custom-footer {
+    height: 2vh;
+    background-color: var(--deep-slate-blue);
+    color: var(--antique-white);
+    text-align: center;
+    padding: 5px 0;
+    width: 100%;
+}
