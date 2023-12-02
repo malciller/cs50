@@ -1,27 +1,14 @@
 /* Root Color Scheme */
 :root {
-    --text-color: #F4F1DE;
-    --header-color: #E07A5F;
-    --background-color: #3D405B;
-    --button-color: #81B29A;
-}
-
-
-/* Hide scrollbar for Chrome, Safari and Opera */
-::-webkit-scrollbar {
-    display: none;
-}
-
-/* Hide scrollbar for IE, Edge, and Firefox */
-* {
-    -ms-overflow-style: none;
-    /* IE and Edge */
-    scrollbar-width: none;
-    /* Firefox */
+    --text-color: #F0EFEB;
+    --header-color: #254B62;
+    --background-color: #1D3E53;
+    --button-color: #476D7C;
 }
 
 img {
     filter: invert(1);
+    background: none;
 }
 
 /* General Styles */
@@ -34,6 +21,7 @@ html {
     background-color: var(--background-color);
     color: var(--text-color);
     font-family: 'Abolition', sans-serif;
+    overflow: hidden;
 }
 
 /* Typography */
@@ -91,10 +79,38 @@ h6 {
 /* Scrollable Elements */
 .scrollable-element,
 .chat-container,
-#chatMessages {
+#chatMessages,
+.code-block {
     background-color: var(--background-color) !important;
     max-height: 100%;
     overflow-y: auto;
+    color: var(--text-color);
+}
+
+
+.code-toolbar {
+    background-color: var(--header-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.code-block {
+    height: auto;
+    min-height: 100px;
+    max-height: 500px;
+    overflow-y: auto;
+    resize: vertical;
+
+    overflow-y: auto;
+}
+
+
+
+.code-block,
+.code-toolbar {
+    width: 100%;
 }
 
 .nav-item, .nav-link,
@@ -125,7 +141,8 @@ a[data-toggle="tab"],
 .btn-info,
 .btn-danger,
 .btn-warning,
-.btn-secondary {
+.btn-secondary,
+.copy-button {
     background-color: var(--button-color);
     border-color: var(--button-color);
     color: var(--text-color);
@@ -133,7 +150,10 @@ a[data-toggle="tab"],
 
 .btn-signout,
 .btn-signin,
-.btn-send {
+.btn-send,
+.copy-button,
+.btn-register
+ {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -148,6 +168,7 @@ a[data-toggle="tab"],
     cursor: pointer;
 }
 
+.btn-register img,
 .btn-signout img,
 .btn-signin img {
     margin-right: 8px;
@@ -161,7 +182,8 @@ a[data-toggle="tab"],
 }
 
 
-.btn-send img {
+.btn-send img,
+.copy-button img {
     width: 20px;
     height: 20px;
 }

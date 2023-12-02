@@ -109,16 +109,17 @@
         </button>
     </div>
 </form>
-
+</div>
 
     <!-- Logout Button -->
         <a href="{{ url_for('login') }}" class="btn-signout btn-warning mt-3">
             <img src="{{ url_for('static', filename='images/icons8-unavailable.svg') }}" title="Sign Out" alt="Sign Out Icon"
                 style="width: 20px; height: 20px;"> Sign Out
         </a>
+        
         </div>
     </div>
-</div>
+
 <script>
     let currentOpenFormId = null;
 
@@ -140,7 +141,6 @@
 
     // Function to toggle form visibility and button selected state
     function toggleForm(formId, button) {
-        console.log(`Toggling form ${formId}`);
         const form = document.getElementById(formId);
         // Check if the clicked form is already open
         const isFormOpen = form.style.display === 'block';
