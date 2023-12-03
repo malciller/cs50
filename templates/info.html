@@ -1,0 +1,53 @@
+{% extends 'layout.html' %}
+
+{% block title %}About this Project{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link" id="chat-tab" href="{{ url_for('login') }}" role="tab" data-toggle="tab" aria-controls="chat" aria-selected="false"
+                onclick="redirectToLogin()">Return to Login</a>
+        </li>
+    </ul>
+<h1>What's This Tool About?</h1>
+<p>
+    So, I taught myself programming with a lot of help from LLMs. ChatGPT was a game-changer for me, helping me level up
+    from struggling to learn, to landing a gig as a programmer. I'm a big fan of OpenAI (obviously), and GPT-4 blew my
+    mind. But yeah, the usage limits are a bummer.
+    I'm doing this course, right? And for my final project, I thought why not build something where folks like me can
+    use GPT-4 with their own API keys. So, here we are!
+</p>
+<H2>How To:</H2>
+<p>Go back and click on "Register":</p>
+<p><b>1. </b>Create and account with a Username, Password, and Email Address. <b>This info won't be shared ever.</b></p>
+<p><b>2. </b>You'll be prompted to enter your OpenAI API Key. Currently only works if you have access to the GPT-4 endpoints.</p>
+<p><b>3. </b>Login, and go to the "Chat" window to begin chatting with GPT-4-Turbo</p>
+<p><b>4. </b>Under the "Account" tab, you can update your email on file, password, or api key. <b>You can also permanently delete your account and associated account information.</b></p>
+<p>Enjoy</p>
+</p>
+<h3>Disclaimer:</h3>
+<p>Please note that this tool is independently developed and is not affiliated with, endorsed by, or in any way officially
+connected with OpenAI. All product names, logos, and brands mentioned as part of this tool, such as GPT-4, are property
+of their respective owners. This project is intended to provide an additional interface for those who have access to
+OpenAI's API and is built upon the OpenAI platform under the terms and conditions they provide.</p>
+<h3>What's Up With Your Data?</h3>
+<p>
+    Here's the deal with data:
+<ul>
+    <li>Your chats, like what you send and get back, I'm gonna store and use them for data science stuff later.</li>
+    <li>Any personal info you share (like username, email, API keys) stays on the server for as long as you use this
+        platform. You can wipe your account, including all that info, anytime from the Account page. But heads up, this
+        won't delete your chat history.</li>
+</ul>
+Just by using the site, you're cool with all this. And hey, if you've got questions or concerns about your data, feel
+free to reach out to malciller@gmail.com.
+</p>
+<br/><br/>
+</div>
+<script type="text/javascript">
+    function redirectToLogin() {
+        window.location.href = "{{ url_for('login') }}";
+    }
+</script>
+{% endblock %}

@@ -4,8 +4,13 @@
 
 {% block content %}
 <div class="container mt-4">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link" id="chat-tab" href="{{ url_for('login') }}"" role=" tab" data-toggle="tab"
+                                aria-controls="chat" aria-selected="false" onclick="redirectToLogin()">Return to Login</a>
+                        </li>
+                    </ul>
+        <h1>Create Account</h1>
             <form method="POST" action="" class="needs-validation" novalidate>
                 {{ form.hidden_tag() }}
                 <div class="form-group">
@@ -24,10 +29,7 @@
 
                     {{ form.confirm_password(class='form-control', placeholder="Confirm Password") }}
                 </div>
-                <div class="form-footer">
-                    <div class="register-prompt mb-3">
-                        Already have an account? <a href="{{ url_for('login') }}">Login here</a>
-                    </div>
+                <div class="form-footer">            
                     <button type="submit" name="submit" class="btn btn-primary btn-register">
                                                 <img src="{{ url_for('static', filename='images/icons8-upload-to-the-cloud.svg') }}" title="Register" alt="Register Icon"
                                                     style="width: 20px; height: 20px;">
@@ -35,7 +37,10 @@
                     </button>
                 </div>
             </form>
-        </div>
-    </div>
 </div>
+<script type="text/javascript">
+    function redirectToLogin() {
+        window.location.href = "{{ url_for('login') }}";
+    }
+</script>
 {% endblock %}

@@ -1,7 +1,7 @@
 /* Root Color Scheme */
 :root {
     --text-color: #F0EFEB;
-    --header-color: #254B62;
+    --header-color: #6890a7;
     --background-color: #1D3E53;
     --button-color: #476D7C;
 }
@@ -142,15 +142,26 @@ h6 {
 
 .code-block {
     height: auto;
-    min-height: 100px;
+    min-height: auto;
     max-height: 500px;
     overflow-y: auto;
     resize: vertical;
-
     overflow-y: auto;
 }
 
+.code-block::-webkit-scrollbar {
+    display: block;
+    /* or use 'auto' */
+    width: 8px;
+    /* or your desired width */
+}
 
+.code-block::-webkit-scrollbar-thumb {
+    background-color: var(--button-color);
+    /* your desired color */
+    border-radius: 4px;
+    /* optional, for rounded corners */
+}
 
 .code-block,
 .code-toolbar {
@@ -164,7 +175,7 @@ h6 {
     color: var(--text-color);
 }
 
-.nav-link:hover,
+
 a[data-toggle="tab"],
 .nav-item:hover {
     color: var(--text-color);
