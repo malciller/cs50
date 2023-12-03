@@ -1,0 +1,27 @@
+{% extends 'layout.html' %}
+
+{% block title %}About this Project{% endblock %}
+
+{% block content %}
+<h1>Hey, What's This Tool About?</h1>
+<p>
+    So, I taught myself programming with a lot of help from LLMs. ChatGPT was a game-changer for me, helping me level up
+    from struggling to learn, to landing a gig as a programmer. I'm a big fan of OpenAI (obviously), and GPT-4 blew my
+    mind. But yeah, the usage limits are a bummer.
+    I'm doing this course, right? And for my final project, I thought why not build something where folks like me can
+    use GPT-4 with their own API keys. So, here we are!
+</p>
+
+<h2>What's Up With Your Data?</h2>
+<p>
+    Here's the deal with data:
+<ul>
+    <li>Your chats, like what you send and get back, I'm gonna store and use them for data science stuff later.</li>
+    <li>Any personal info you share (like username, email, API keys) stays on the server for as long as you use this
+        platform. You can wipe your account, including all that info, anytime from the Account page. But heads up, this
+        won't delete your chat history.</li>
+</ul>
+Just by using the site, you're cool with all this. And hey, if you've got questions or concerns about your data, feel
+free to reach out.
+</p>
+{% endblock %}
