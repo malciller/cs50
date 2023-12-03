@@ -112,9 +112,9 @@ def register():
     return render_template('register.html', title='Register', form=form)
 
 
-@app.route("/register")
+@app.route("/info")
 def info():
-    return redirect(url_for('info'))
+    return render_template('info.html', title='Info')
 
 
 @app.route("/index", methods=['GET', 'POST'])

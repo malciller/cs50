@@ -4,12 +4,19 @@
 
 {% block content %}
 <div class="container mt-4">
-    <div class="row justify-content-center">
-        <h1>Hit the usage limit on GPT-4 again?...</h1>
-        <br/><br/>
-        <div class="col-md-6">
-            Sign up. Save your OpenAI api key. Get back to asking questions.
-            <br/><br/>
+            <div class="container mt-4">
+                                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="chat-tab" href="{{ url_for('register') }}" role="tab" data-toggle="tab"
+                                            aria-controls="chat" aria-selected="false" onclick="redirectToRegister()">Create Account</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="chat-tab" href="{{ url_for('info') }}" role="tab" data-toggle="tab" aria-controls="chat"
+                                            aria-selected="false" onclick="redirectToMoreInfo()">More Info</a>
+                                    </li>
+                                </ul>
+                <h1>Usage limit on GPT-4 again?...</h1>
+                <p>Sign up. Save your OpenAI api key. Get back to asking questions.</p>
             <form method="POST" action="" class="needs-validation" novalidate>
                 {{ form.hidden_tag() }}
                 <div class="form-group">
@@ -26,14 +33,15 @@
                         Sign In
                     </button>
                 </div>
-                <div class="register-prompt">
-                    Don't have an account? <a href="{{ url_for('register') }}">Register here</a>
-                </div>
-                <div>
-                    Learn more: <a href="{{ url_for('info') }}">Click here</a>
                 </div>
             </form>
-        </div>
-    </div>
 </div>
+<script type="text/javascript">
+    function redirectToRegister() {
+        window.location.href = "{{ url_for('register') }}";
+    }
+    function redirectToMoreInfo() {
+        window.location.href = "{{ url_for('info') }}";
+    }    
+</script>
 {% endblock %}
