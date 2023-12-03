@@ -1,7 +1,7 @@
 # Ignore all .log files
 *.log
 *.wsgi
-*.gitignore
+config.py
 # Ignore specific directories
 node_modules/
 dist/

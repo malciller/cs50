@@ -4,9 +4,13 @@ import sqlite3
 import hashlib
 from openai import OpenAI
 from flask import jsonify
+import config
+import psycopg2
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '123' 
+DATABASE_URI = config.DATABASE_URI
+
 
 @app.route("/")
 def home():
@@ -18,18 +22,18 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         # Connect to the database
-        conn = sqlite3.connect('/home/malciller/Sites/cs50/info.db')
+        conn = psycopg2.connect(DATABASE_URI)
         cursor = conn.cursor()
 
         # Query the database for the user
-        cursor.execute("SELECT * FROM users WHERE username = ?", (form.username.data,))
+        cursor.execute("SELECT * FROM users WHERE username = %s", (form.username.data,))
         user = cursor.fetchone()
 
         if user and hashlib.sha256(form.password.data.encode()).hexdigest() == user[2]:  # Assuming password is the third field
             session['user_id'] = user[0]   # Assuming user ID is the first field
 
             # Check if user has an associated key
-            cursor.execute("SELECT * FROM keys WHERE user_id = ?", (session['user_id'],))
+            cursor.execute("SELECT * FROM keys WHERE user_id = %s", (session['user_id'],))
             key_exists = cursor.fetchone()
 
             # Close the database connection
@@ -60,11 +64,11 @@ def key_collection():
                 api_key = form.api_key.data
 
                 # Connect to the database
-                conn = sqlite3.connect('info.db')
+                conn = psycopg2.connect(DATABASE_URI)
                 cursor = conn.cursor()
 
                 # Insert the API key into the keys table
-                cursor.execute("INSERT INTO keys (user_id, api_key) VALUES (?, ?)", (user_id, api_key))
+                cursor.execute("INSERT INTO keys (user_id, api_key) VALUES (%s, %s)", (user_id, api_key))
                 conn.commit()
                 conn.close()
 
@@ -84,11 +88,11 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         # Connect to the database
-        conn = sqlite3.connect('info.db')
+        conn = psycopg2.connect(DATABASE_URI)
         cursor = conn.cursor()
 
         # Check if username already exists
-        cursor.execute("SELECT * FROM users WHERE username = ?", (form.username.data,))
+        cursor.execute("SELECT * FROM users WHERE username = %s", (form.username.data,))
         if cursor.fetchone():
             flash('Username already exists. Please choose a different one.', 'danger')
         else:
@@ -96,7 +100,7 @@ def register():
             hashed_password = hashlib.sha256(form.password.data.encode()).hexdigest()
             
             # Add user to the database
-            cursor.execute("INSERT INTO users (username, password, email) VALUES (?, ?, ?)", (form.username.data, hashed_password, form.email.data))
+            cursor.execute("INSERT INTO users (username, password, email) VALUES (%s, %s, %s)", (form.username.data, hashed_password, form.email.data))
             conn.commit()
 
             flash(f'Account created for {form.username.data}!', 'success')
@@ -119,11 +123,11 @@ def index():
         return redirect(url_for('login'))
 
     # Connect to the database
-    conn = sqlite3.connect('info.db')
+    conn = psycopg2.connect(DATABASE_URI)
     cursor = conn.cursor()
 
     # Query the database for the user
-    cursor.execute("SELECT username, email FROM users WHERE id = ?", (user_id,))
+    cursor.execute("SELECT username, email FROM users WHERE id = %s", (user_id,))
     user_row = cursor.fetchone()
 
     # Close the database connection
@@ -153,11 +157,11 @@ def update_email():
         return redirect(url_for('index'))
 
     # Connect to the database
-    conn = sqlite3.connect('info.db')
+    conn = psycopg2.connect(DATABASE_URI)
     cursor = conn.cursor()
 
     # Update the email in the database
-    cursor.execute("UPDATE users SET email = ? WHERE id = ?", (new_email, user_id))
+    cursor.execute("UPDATE users SET email = %s WHERE id = %s", (new_email, user_id))
     conn.commit()
     conn.close()
 
@@ -178,11 +182,11 @@ def reset_password():
     confirm_password = request.form['confirm_password']
 
     # Connect to the database
-    conn = sqlite3.connect('info.db')
+    conn = psycopg2.connect(DATABASE_URI)
     cursor = conn.cursor()
 
     # Check if the current password is correct
-    cursor.execute("SELECT password FROM users WHERE id = ?", (user_id,))
+    cursor.execute("SELECT password FROM users WHERE id = %s", (user_id,))
     stored_password = cursor.fetchone()[0]
 
     if stored_password != hashlib.sha256(current_password.encode()).hexdigest():
@@ -198,7 +202,7 @@ def reset_password():
 
     # Update the password in the database
     hashed_new_password = hashlib.sha256(new_password.encode()).hexdigest()
-    cursor.execute("UPDATE users SET password = ? WHERE id = ?", (hashed_new_password, user_id))
+    cursor.execute("UPDATE users SET password = %s WHERE id = %s", (hashed_new_password, user_id))
     conn.commit()
     conn.close()
 
@@ -215,10 +219,10 @@ def update_api_key():
 
     new_api_key = request.form['new_api_key']
 
-    conn = sqlite3.connect('info.db')
+    conn = psycopg2.connect(DATABASE_URI)
     cursor = conn.cursor()
 
-    cursor.execute("UPDATE keys SET api_key = ? WHERE user_id = ?", (new_api_key, user_id))
+    cursor.execute("UPDATE keys SET api_key = %s WHERE user_id = %s", (new_api_key, user_id))
     conn.commit()
     conn.close()
 
@@ -248,11 +252,11 @@ def delete_account():
     delete_password = request.form['delete_password']
 
     # Connect to the database
-    conn = sqlite3.connect('info.db')
+    conn = psycopg2.connect(DATABASE_URI)
     cursor = conn.cursor()
 
     # Check if the entered username and password are correct
-    cursor.execute("SELECT * FROM users WHERE id = ?", (user_id,))
+    cursor.execute("SELECT * FROM users WHERE id = %s", (user_id,))
     user = cursor.fetchone()
 
     if not user:
@@ -285,13 +289,13 @@ def confirm_delete_account():
         return redirect(url_for('login'))
 
     # Connect to the database
-    conn = sqlite3.connect('info.db')
+    conn = psycopg2.connect(DATABASE_URI)
     cursor = conn.cursor()
 
     # Delete user from the users table
-    cursor.execute("DELETE FROM users WHERE id = ?", (user_id,))
+    cursor.execute("DELETE FROM users WHERE id = %s", (user_id,))
     # Delete associated keys
-    cursor.execute("DELETE FROM keys WHERE user_id = ?", (user_id,))
+    cursor.execute("DELETE FROM keys WHERE user_id = %s", (user_id,))
     conn.commit()
     conn.close()
 
@@ -309,11 +313,10 @@ def send_message():
 
     # Retrieve the user's API key from the database
     user_id = session.get('user_id')
-    conn = sqlite3.connect('info.db')
+    conn = psycopg2.connect(DATABASE_URI)
     cursor = conn.cursor()
-    cursor.execute("SELECT api_key FROM keys WHERE user_id = ?", (user_id,))
+    cursor.execute("SELECT api_key FROM keys WHERE user_id = %s", (user_id,))
     api_key_row = cursor.fetchone()
-    conn.close()
 
     if api_key_row:
         api_key = api_key_row[0]
@@ -334,6 +337,14 @@ def send_message():
             # Extracting the assistant's response correctly
             if response.choices and response.choices[0].message:
                 assistant_response = response.choices[0].message.content
+
+                # Log user message
+                cursor.execute("INSERT INTO user_messages (text, user_id) VALUES (%s, %s) RETURNING message_id", (user_message, user_id))
+                message_id = cursor.fetchone()[0]  # Get the inserted message ID
+
+                # Log chat response
+                cursor.execute("INSERT INTO chat_responses (text, message_id) VALUES (%s, %s)", (assistant_response, message_id))
+                conn.commit()
             else:
                 assistant_response = None
 
@@ -341,8 +352,11 @@ def send_message():
         except Exception as e:
             print(f"Error: {e}")
             return jsonify({'response': 'Error in processing the message.'})
+        finally:
+            conn.close()
     else:
         return jsonify({'response': 'API Key not found or invalid.'})
+
 
 
 

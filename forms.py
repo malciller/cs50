@@ -22,5 +22,6 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Login')
 
 class APIKeyForm(FlaskForm):
-    api_key = StringField('API Key', validators=[DataRequired()])
+    api_key = StringField('API Key', validators=[DataRequired(), Length(min=2, max=20)],
+                            render_kw={"placeholder": "API Key"})
     submit = SubmitField('Submit')
