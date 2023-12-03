@@ -1,4 +1,3 @@
-
 <div class="container my-4">
     <div class="row">
         <div class="col">
@@ -22,159 +21,170 @@
 
 <script>
 
-    function sendMessage() {
-        var input = document.getElementById("chatInput");
-        var message = input.value.trim();
-        input.value = '';
+        function sendMessage() {
+            var input = document.getElementById("chatInput");
+            var message = input.value.trim();
+            input.value = '';
 
-        var sendButton = document.getElementById("sendButton");
-        var loadingSpinner = document.getElementById("loadingSpinner");
+            var sendButton = document.getElementById("sendButton");
+            var loadingSpinner = document.getElementById("loadingSpinner");
 
-        if (message === '') {
-            return; // Don't send empty messages
-        }
+            if (message === '') {
+                return; // Don't send empty messages
+            }
 
-        // Show loading spinner and hide send button
-        sendButton.style.display = 'none';
-        loadingSpinner.style.display = 'block';
+            // Show loading spinner and hide send button
+            sendButton.style.display = 'none';
+            loadingSpinner.style.display = 'block';
 
-        appendMessage("User", message);
-
-        fetch('/send_message', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ message: message })
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log("Received response data:", data);
-                if (data && data.response) {
-                    appendMessage("ChatBot", data.response, data.response_id); // Append the response_id from the server
-                } else {
-                    console.log("No valid response in data"); // Debugging statement
-                }
-                // Hide loading spinner and show send button
-                sendButton.style.display = 'block';
-                loadingSpinner.style.display = 'none';
+            fetch('/send_message', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message: message })
             })
-            .catch(error => {
-                console.error('Error:', error);
-                // Hide loading spinner and show send button even on error
-                sendButton.style.display = 'block';
-                loadingSpinner.style.display = 'none';
-            });
+                .then(response => response.json())
+                .then(data => {
+                    appendMessage("User", message);
+
+                    if (data && data.response) {
+                        appendMessage("ChatBot", data.response, data.response_id);
+                    } else {
+                        console.log("No valid response in data");
+                    }
+
+                    // Hide loading spinner and show send button
+                    sendButton.style.display = 'block';
+                    loadingSpinner.style.display = 'none';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Hide loading spinner and show send button even on error
+                    sendButton.style.display = 'block';
+                    loadingSpinner.style.display = 'none';
+                });
         }
 
-        
-    function appendMessage(sender, text, responseId = null) {
-        var chatMessages = document.getElementById("chatMessages");
-        var messageContainer = document.createElement("div");
-        messageContainer.className = sender === "User" ? "user-message-container" : "chatbot-message-container";
+        function appendMessage(sender, text, responseId = null) {
+            var chatMessages = document.getElementById("chatMessages");
+            var messageContainer = document.createElement("div");
+            messageContainer.className = sender === "User" ? "user-message-container" : "chatbot-message-container";
 
-        var codeBlockRegex = /```(.*?)\n([\s\S]*?)```/g;
-        var match;
-        var lastIndex = 0;
-        var hasCodeBlock = false;
+            var codeBlockRegex = /```(.*?)\n([\s\S]*?)```/g;
+            var match;
+            var lastIndex = 0;
+            var hasCodeBlock = false;
 
-        function appendNormalText(content) {
-            var messageElement = document.createElement("p");
-            var senderPrefix = sender === "User" ? "You: " : "ChatBot: ";
-            messageElement.textContent = senderPrefix + content;
-            messageElement.className = sender === "User" ? "user-message" : "chatbot-message";
-            messageContainer.appendChild(messageElement);
-        }
-
-        function appendCodeBlock(title, codeSnippet) {
-            var codeContainer = document.createElement("div");
-            codeContainer.className = "code-container";
-
-            var codeToolbar = document.createElement("div");
-            codeToolbar.className = "code-toolbar";
-
-            if (title) {
-                var toolbarTitle = document.createElement("span");
-                toolbarTitle.className = "code-toolbar-title";
-                toolbarTitle.textContent = title;
-                codeToolbar.appendChild(toolbarTitle);
+            function appendNormalText(content) {
+                var messageElement = document.createElement("p");
+                var senderPrefix = sender === "User" ? "You: " : "ChatBot: ";
+                messageElement.textContent = senderPrefix + content;
+                messageElement.className = sender === "User" ? "user-message" : "chatbot-message";
+                messageContainer.appendChild(messageElement);
             }
 
-            var copyButton = document.createElement("button");
-            copyButton.className = "copy-button";
+            function appendCodeBlock(title, codeSnippet) {
+                var codeContainer = document.createElement("div");
+                codeContainer.className = "code-container";
 
-            var img = document.createElement("img");
-            img.src = "/static/images/icons8-external-link.svg";
-            img.title = "Copy";
-            copyButton.appendChild(img);
+                var codeToolbar = document.createElement("div");
+                codeToolbar.className = "code-toolbar";
 
-            copyButton.onclick = function () { copyToClipboard(codeSnippet); };
+                if (title) {
+                    var toolbarTitle = document.createElement("span");
+                    toolbarTitle.className = "code-toolbar-title";
+                    toolbarTitle.textContent = title;
+                    codeToolbar.appendChild(toolbarTitle);
+                }
 
-            codeToolbar.appendChild(copyButton);
-            codeContainer.appendChild(codeToolbar);
+                var copyButton = document.createElement("button");
+                copyButton.className = "copy-button";
 
-            var codeBlock = document.createElement("textarea");
-            codeBlock.className = "code-block";
-            codeBlock.value = codeSnippet;
-            codeBlock.readOnly = true;
+                var img = document.createElement("img");
+                img.src = "/static/images/icons8-external-link.svg";
+                img.title = "Copy";
+                copyButton.appendChild(img);
 
-            codeContainer.appendChild(codeBlock);
-            messageContainer.appendChild(codeContainer);
-        }
+                copyButton.onclick = function () { copyToClipboard(codeSnippet); };
 
-        while ((match = codeBlockRegex.exec(text)) !== null) {
-            hasCodeBlock = true;
-            var normalText = text.substring(lastIndex, match.index);
-            var title = match[1].trim();
-            var codeSnippet = match[2];
+                codeToolbar.appendChild(copyButton);
+                codeContainer.appendChild(codeToolbar);
 
-            if (normalText) {
-                appendNormalText(normalText);
+                var codeBlock = document.createElement("textarea");
+                codeBlock.className = "code-block";
+                codeBlock.value = codeSnippet;
+                codeBlock.readOnly = true;
+
+                codeContainer.appendChild(codeBlock);
+                messageContainer.appendChild(codeContainer);
             }
 
-            appendCodeBlock(title, codeSnippet);
-            lastIndex = codeBlockRegex.lastIndex;
-        }
+            while ((match = codeBlockRegex.exec(text)) !== null) {
+                hasCodeBlock = true;
+                var normalText = text.substring(lastIndex, match.index);
+                var title = match[1].trim();
+                var codeSnippet = match[2];
 
-        if (hasCodeBlock && lastIndex < text.length) {
-            var remainingText = text.substring(lastIndex);
-            appendNormalText(remainingText);
-        }
+                if (normalText) {
+                    appendNormalText(normalText);
+                }
 
-        if (!hasCodeBlock) {
-            appendNormalText(text);
-        }
+                appendCodeBlock(title, codeSnippet);
+                lastIndex = codeBlockRegex.lastIndex;
+            }
 
-        // Append 'Mark as Helpful' button for ChatBot messages
-        if (sender === "ChatBot" && responseId) {
-            var helpfulButton = document.createElement("button");
-            helpfulButton.textContent = "Mark as Helpful";
-            helpfulButton.className = "btn btn-sm btn-outline-primary helpful-button";
-            helpfulButton.onclick = function () { markResponseAsHelpful(responseId); };
-            messageContainer.appendChild(helpfulButton);
-        }
+            if (hasCodeBlock && lastIndex < text.length) {
+                var remainingText = text.substring(lastIndex);
+                appendNormalText(remainingText);
+            }
 
-        chatMessages.appendChild(messageContainer);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
+            if (!hasCodeBlock) {
+                appendNormalText(text);
+            }
+            // Append 'Mark as Helpful' button for ChatBot messages
+            if (sender === "ChatBot" && responseId) {
+                var helpfulButton = document.createElement("button");
+                helpfulButton.className = "btn btn-sm btn-outline-primary helpful-button";
+                var img = document.createElement("img");
+                img.src = "/static/images/icons8-upload-to-the-cloud.svg";
+                img.title = "Mark as a helpful response";
+                helpfulButton.appendChild(img);
+
+                helpfulButton.onclick = function () {
+                    markResponseAsHelpful(responseId, this);
+                };
+
+                messageContainer.appendChild(helpfulButton);
+            }
+
+            chatMessages.appendChild(messageContainer);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
     
 
-    function markResponseAsHelpful(responseId) {
-        fetch('/mark_response_helpful', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ response_id: responseId })
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    console.log("Response marked as helpful");
-                }
+        function markResponseAsHelpful(responseId, buttonElement) {
+            fetch('/mark_response_helpful', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ response_id: responseId })
             })
-            .catch(error => console.error('Error:', error));
-    }
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        buttonElement.classList.add('helpful-button-active');
+                    } else {
+                        console.error('Error:', data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+
 
     function copyToClipboard(codeSnippet) {
         var tempTextArea = document.createElement('textarea');
@@ -183,8 +193,6 @@
         tempTextArea.select();
         document.execCommand('copy');
         document.body.removeChild(tempTextArea);
-
-        console.log('Text copied to clipboard');
     }
 
 </script>

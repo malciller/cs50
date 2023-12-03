@@ -192,6 +192,7 @@ a[data-toggle="tab"],
     color: var(--text-color);
 }
 
+.helpful-button,
 .btn-signout,
 .btn-signin,
 .btn-send,
@@ -222,12 +223,25 @@ a[data-toggle="tab"],
     height: 20px;
 }
 
+.helpful-button-active,
+.helpful-button-active img {
+    background-color: var(--background-color);
+    /* e.g., #4CAF50 */
+    color: var(--background-color);
+    /* e.g., white */
+    filter: grayscale(100%);
+    /* Gray out the button */
+    pointer-events: none;
+    /* Prevents click events */
+    cursor: not-allowed;
+    /* Shows a 'not allowed' cursor */
+}
 
 .btn-send {
     margin-left: 5px;
 }
 
-
+.helpful-button img,
 .btn-send img,
 .copy-button img {
     width: 20px;

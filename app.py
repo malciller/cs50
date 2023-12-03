@@ -310,18 +310,23 @@ def confirm_delete_account():
 def send_message():
     data = request.get_json()
     user_message = data['message']
-
-    # Retrieve the user's API key from the database
     user_id = session.get('user_id')
+
+    # Ensure user_id is available
+    if not user_id:
+        return jsonify({'response': 'User not authenticated.', 'response_id': None})
+
     conn = psycopg2.connect(DATABASE_URI)
     cursor = conn.cursor()
-    cursor.execute("SELECT api_key FROM keys WHERE user_id = %s", (user_id,))
-    api_key_row = cursor.fetchone()
 
-    if api_key_row:
-        api_key = api_key_row[0]
+    try:
+        # Retrieve the user's API key from the database
+        cursor.execute("SELECT api_key FROM keys WHERE user_id = %s", (user_id,))
+        api_key_row = cursor.fetchone()
 
-        try:
+        if api_key_row:
+            api_key = api_key_row[0]
+
             # Initialize the OpenAI client with the user's API key
             client = OpenAI(api_key=api_key)
 
@@ -339,23 +344,56 @@ def send_message():
                 assistant_response = response.choices[0].message.content
 
                 # Log user message
-                cursor.execute("INSERT INTO user_messages (text, user_id) VALUES (%s, %s) RETURNING message_id", (user_message, user_id))
-                message_id = cursor.fetchone()[0]  # Get the inserted message ID
-
-                # Log chat response
-                cursor.execute("INSERT INTO chat_responses (text, message_id) VALUES (%s, %s)", (assistant_response, message_id))
+                cursor.execute("INSERT INTO user_messages (text, user_id) VALUES (%s, %s)", (user_message, user_id))
                 conn.commit()
-            else:
-                assistant_response = None
 
-            return jsonify({'response': assistant_response})
-        except Exception as e:
-            print(f"Error: {e}")
-            return jsonify({'response': 'Error in processing the message.'})
-        finally:
-            conn.close()
-    else:
-        return jsonify({'response': 'API Key not found or invalid.'})
+                # Retrieve message_id
+                cursor.execute("SELECT message_id FROM user_messages WHERE text = %s AND user_id = %s ORDER BY message_id DESC LIMIT 1", (user_message, user_id))
+                message_id = cursor.fetchone()[0]
+
+                # Log chat response and get response_id
+                cursor.execute("INSERT INTO chat_responses (text, message_id) VALUES (%s, %s) RETURNING response_id", (assistant_response, message_id))
+                response_id = cursor.fetchone()[0]
+
+                conn.commit()
+
+                return jsonify({'response': assistant_response, 'response_id': response_id})
+            else:
+                return jsonify({'response': 'No response from chatbot.', 'response_id': None})
+        else:
+            return jsonify({'response': 'API Key not found or invalid.', 'response_id': None})
+
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({'response': 'Error in processing the message.', 'response_id': None})
+    finally:
+        conn.close()
+
+
+@app.route('/mark_response_helpful', methods=['POST'])
+def mark_response_helpful():
+    data = request.get_json()
+    response_id = data.get('response_id')
+
+    if not response_id:
+        return jsonify({'status': 'error', 'message': 'Missing response ID'}), 400
+
+    # Connect to the database
+    conn = psycopg2.connect(DATABASE_URI)
+    cursor = conn.cursor()
+
+    try:
+        # Update the database to mark the response as helpful
+        cursor.execute("UPDATE chat_responses SET is_helpful = TRUE WHERE response_id = %s", (response_id,))
+        conn.commit()
+
+        return jsonify({'status': 'success', 'message': 'Response marked as helpful'})
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({'status': 'error', 'message': 'An error occurred while processing your request'})
+    finally:
+        conn.close()
+
 
 
 
