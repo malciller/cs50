@@ -4,6 +4,7 @@
     --header-color: #6890a7;
     --background-color: #1D3E53;
     --button-color: #476D7C;
+    --chat-label-color: #ADD8E6;
 }
 
 ::-webkit-scrollbar {
@@ -131,6 +132,17 @@ h6 {
     margin: 5px;
 }
 
+    .user-label {
+        color: var(--chat-label-color);
+        /* Replace with your actual variable or color */
+        font-weight: bold;
+    }
+
+    .chatbot-label {
+        color: var(--chat-label-color);
+        /* Replace with your actual variable or color */
+        font-weight: bold;
+    }
 
 .code-toolbar {
     background-color: var(--header-color);

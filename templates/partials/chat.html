@@ -66,101 +66,98 @@
                 });
         }
 
-        function appendMessage(sender, text, responseId = null) {
-            var chatMessages = document.getElementById("chatMessages");
-            var messageContainer = document.createElement("div");
-            messageContainer.className = sender === "User" ? "user-message-container" : "chatbot-message-container";
+    function appendMessage(sender, text, responseId = null) {
+        var chatMessages = document.getElementById("chatMessages");
+        var messageContainer = document.createElement("div");
+        messageContainer.className = sender === "User" ? "user-message-container" : "chatbot-message-container";
 
-            var codeBlockRegex = /```(.*?)\n([\s\S]*?)```/g;
-            var match;
-            var lastIndex = 0;
-            var hasCodeBlock = false;
+        var codeBlockRegex = /```(.*?)\n([\s\S]*?)```/g;
+        var match;
+        var lastIndex = 0;
+        var hasCodeBlock = false;
+        var firstPartHandled = false;
 
-            function appendNormalText(content) {
-                var messageElement = document.createElement("p");
-                var senderPrefix = sender === "User" ? "You: " : "ChatBot: ";
-                messageElement.textContent = senderPrefix + content;
-                messageElement.className = sender === "User" ? "user-message" : "chatbot-message";
-                messageContainer.appendChild(messageElement);
+        function appendNormalText(content, isFirstPart = false) {
+            var messageElement = document.createElement("p");
+            if (isFirstPart) {
+                var senderSpan = document.createElement("span");
+                senderSpan.className = sender === "User" ? "user-label" : "chatbot-label";
+                senderSpan.textContent = sender === "User" ? "You: " : "ChatBot: ";
+                messageElement.appendChild(senderSpan);
             }
-
-            function appendCodeBlock(title, codeSnippet) {
-                var codeContainer = document.createElement("div");
-                codeContainer.className = "code-container";
-
-                var codeToolbar = document.createElement("div");
-                codeToolbar.className = "code-toolbar";
-
-                if (title) {
-                    var toolbarTitle = document.createElement("span");
-                    toolbarTitle.className = "code-toolbar-title";
-                    toolbarTitle.textContent = title;
-                    codeToolbar.appendChild(toolbarTitle);
-                }
-
-                var copyButton = document.createElement("button");
-                copyButton.className = "copy-button";
-
-                var img = document.createElement("img");
-                img.src = "/static/images/icons8-external-link.svg";
-                img.title = "Copy";
-                copyButton.appendChild(img);
-
-                copyButton.onclick = function () { copyToClipboard(codeSnippet); };
-
-                codeToolbar.appendChild(copyButton);
-                codeContainer.appendChild(codeToolbar);
-
-                var codeBlock = document.createElement("textarea");
-                codeBlock.className = "code-block";
-                codeBlock.value = codeSnippet;
-                codeBlock.readOnly = true;
-
-                codeContainer.appendChild(codeBlock);
-                messageContainer.appendChild(codeContainer);
-            }
-
-            while ((match = codeBlockRegex.exec(text)) !== null) {
-                hasCodeBlock = true;
-                var normalText = text.substring(lastIndex, match.index);
-                var title = match[1].trim();
-                var codeSnippet = match[2];
-
-                if (normalText) {
-                    appendNormalText(normalText);
-                }
-
-                appendCodeBlock(title, codeSnippet);
-                lastIndex = codeBlockRegex.lastIndex;
-            }
-
-            if (hasCodeBlock && lastIndex < text.length) {
-                var remainingText = text.substring(lastIndex);
-                appendNormalText(remainingText);
-            }
-
-            if (!hasCodeBlock) {
-                appendNormalText(text);
-            }
-            // Append 'Mark as Helpful' button for ChatBot messages
-            if (sender === "ChatBot" && responseId) {
-                var helpfulButton = document.createElement("button");
-                helpfulButton.className = "btn btn-sm btn-outline-primary helpful-button";
-                var img = document.createElement("img");
-                img.src = "/static/images/icons8-upload-to-the-cloud.svg";
-                img.title = "Mark as a helpful response";
-                helpfulButton.appendChild(img);
-
-                helpfulButton.onclick = function () {
-                    markResponseAsHelpful(responseId, this);
-                };
-
-                messageContainer.appendChild(helpfulButton);
-            }
-
-            chatMessages.appendChild(messageContainer);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
+            var textNode = document.createTextNode(content);
+            messageElement.appendChild(textNode);
+            messageElement.className = sender === "User" ? "user-message" : "chatbot-message";
+            messageContainer.appendChild(messageElement);
         }
+
+        function appendCodeBlock(title, codeSnippet) {
+            var codeContainer = document.createElement("div");
+            codeContainer.className = "code-container";
+            var codeToolbar = document.createElement("div");
+            codeToolbar.className = "code-toolbar";
+            if (title) {
+                var toolbarTitle = document.createElement("span");
+                toolbarTitle.className = "code-toolbar-title";
+                toolbarTitle.textContent = title;
+                codeToolbar.appendChild(toolbarTitle);
+            }
+            var copyButton = document.createElement("button");
+            copyButton.className = "copy-button";
+            var img = document.createElement("img");
+            img.src = "/static/images/icons8-external-link.svg";
+            img.title = "Copy";
+            copyButton.appendChild(img);
+            copyButton.onclick = function () { copyToClipboard(codeSnippet); };
+            codeToolbar.appendChild(copyButton);
+            codeContainer.appendChild(codeToolbar);
+            var codeBlock = document.createElement("textarea");
+            codeBlock.className = "code-block";
+            codeBlock.value = codeSnippet;
+            codeBlock.readOnly = true;
+            codeContainer.appendChild(codeBlock);
+            messageContainer.appendChild(codeContainer);
+        }
+
+        while ((match = codeBlockRegex.exec(text)) !== null) {
+            hasCodeBlock = true;
+            var normalText = text.substring(lastIndex, match.index);
+            var title = match[1].trim();
+            var codeSnippet = match[2];
+            if (normalText) {
+                appendNormalText(normalText, !firstPartHandled);
+                firstPartHandled = true;
+            }
+            appendCodeBlock(title, codeSnippet);
+            lastIndex = codeBlockRegex.lastIndex;
+        }
+
+        if (hasCodeBlock && lastIndex < text.length) {
+            var remainingText = text.substring(lastIndex);
+            appendNormalText(remainingText);
+        }
+
+        if (!hasCodeBlock) {
+            appendNormalText(text, true);
+        }
+
+        if (sender === "ChatBot" && responseId) {
+            var helpfulButton = document.createElement("button");
+            helpfulButton.className = "btn btn-sm btn-outline-primary helpful-button";
+            var img = document.createElement("img");
+            img.src = "/static/images/icons8-upload-to-the-cloud.svg";
+            img.title = "Mark as a helpful response";
+            helpfulButton.appendChild(img);
+            helpfulButton.onclick = function () {
+                markResponseAsHelpful(responseId, this);
+            };
+            messageContainer.appendChild(helpfulButton);
+        }
+
+        chatMessages.appendChild(messageContainer);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
     
 
         function markResponseAsHelpful(responseId, buttonElement) {
