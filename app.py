@@ -1,11 +1,13 @@
 from flask import Flask, render_template, url_for, flash, redirect, session, request
 from forms import RegistrationForm, LoginForm, APIKeyForm
-import sqlite3
 import hashlib
 from openai import OpenAI
 from flask import jsonify
 import config
 import psycopg2
+import markdown2
+import re
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '123' 
@@ -285,6 +287,9 @@ def delete_account():
     conn.close()
     return redirect(url_for('index'))
 
+
+
+
 @app.route("/confirm_delete_account", methods=['POST'])
 def confirm_delete_account():
     user_id = session.get('user_id')
@@ -308,6 +313,19 @@ def confirm_delete_account():
 
     flash('Account deleted successfully.', 'success')
     return redirect(url_for('login'))
+
+
+# Handle CodeBlock
+def preprocess_markdown(content):
+    code_blocks = []
+    placeholder_template = "<!--CODE_BLOCK_PLACEHOLDER_{}-->"
+
+    def replace_with_placeholder(match):
+        code_blocks.append(match.group(0))
+        return placeholder_template.format(len(code_blocks) - 1)
+
+    processed_content = re.sub(r'```(.*?)```', replace_with_placeholder, content, flags=re.DOTALL)
+    return processed_content, code_blocks
 
 
 @app.route('/send_message', methods=['POST'])
@@ -347,6 +365,14 @@ def send_message():
             if response.choices and response.choices[0].message:
                 assistant_response = response.choices[0].message.content
 
+                # Preprocess the content to handle code blocks
+                preprocessed_content, code_blocks = preprocess_markdown(assistant_response)
+                html_response = markdown2.markdown(preprocessed_content)
+
+                # Reinsert code blocks into HTML content
+                for i, code_block in enumerate(code_blocks):
+                    html_response = html_response.replace(f"<!--CODE_BLOCK_PLACEHOLDER_{i}-->", code_block)
+
                 # Log user message
                 cursor.execute("INSERT INTO user_messages (text, user_id) VALUES (%s, %s)", (user_message, user_id))
                 conn.commit()
@@ -361,7 +387,7 @@ def send_message():
 
                 conn.commit()
 
-                return jsonify({'response': assistant_response, 'response_id': response_id})
+                return jsonify({'response': html_response, 'response_id': response_id})
             else:
                 return jsonify({'response': 'No response from chatbot.', 'response_id': None})
         else:
