@@ -424,6 +424,25 @@ def mark_response_helpful():
     finally:
         conn.close()
 
+@app.route('/select_response_for_context', methods=['POST'])
+def select_response_for_context():
+    data = request.get_json()
+    response_id = data.get('response_id')
+    if not response_id:
+        return jsonify({'status': 'error', 'message': 'Missing response ID'}), 400
+
+    conn = psycopg2.connect(DATABASE_URI)
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute("UPDATE chat_responses SET include_in_future_context = TRUE WHERE response_id = %s", (response_id,))
+        conn.commit()
+        return jsonify({'status': 'success', 'message': 'Response selected for future context'})
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({'status': 'error', 'message': 'An error occurred while processing your request'})
+    finally:
+        conn.close()
 
 
 

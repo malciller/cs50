@@ -16,53 +16,54 @@
 
 
 <script>
+    function sendMessage() {
+        var input = document.getElementById("chatInput");
+        var message = input.value.trim();
+        input.value = '';
 
-        function sendMessage() {
-            var input = document.getElementById("chatInput");
-            var message = input.value.trim();
-            input.value = '';
+        var sendButton = document.getElementById("sendButton");
+        var loadingSpinner = document.getElementById("loadingSpinner");
 
-            var sendButton = document.getElementById("sendButton");
-            var loadingSpinner = document.getElementById("loadingSpinner");
-
-            if (message === '') {
-                return; // Don't send empty messages
-            }
-
-            // Show loading spinner and hide send button
-            sendButton.style.display = 'none';
-            loadingSpinner.style.display = 'block';
-
-            fetch('/send_message', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ message: message })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    appendMessage("User", message);
-
-                    if (data && data.response) {
-                        appendMessage("ChatBot", data.response, data.response_id);
-                    } else {
-                        console.log("No valid response in data");
-                    }
-
-                    // Hide loading spinner and show send button
-                    sendButton.style.display = 'block';
-                    loadingSpinner.style.display = 'none';
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    // Hide loading spinner and show send button even on error
-                    sendButton.style.display = 'block';
-                    loadingSpinner.style.display = 'none';
-                });
+        if (message === '') {
+            return; // Don't send empty messages
         }
 
-        
+        // Show loading spinner and hide send button
+        sendButton.style.display = 'none';
+        loadingSpinner.style.display = 'block';
+
+        // Collect response IDs to include in context
+        var includedResponses = Array.from(document.getElementsByClassName('include-button-active')).map(btn => btn.getAttribute('data-response-id'));
+
+        fetch('/send_message', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ message: message, included_responses: includedResponses })
+        })
+            .then(response => response.json())
+            .then(data => {
+                appendMessage("User", message);
+
+                if (data && data.response) {
+                    appendMessage("ChatBot", data.response, data.response_id);
+                } else {
+                    console.log("No valid response in data");
+                }
+
+                // Hide loading spinner and show send button
+                sendButton.style.display = 'block';
+                loadingSpinner.style.display = 'none';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Hide loading spinner and show send button even on error
+                sendButton.style.display = 'block';
+                loadingSpinner.style.display = 'none';
+            });
+    }
+
     function appendMessage(sender, text, responseId = null) {
         var chatMessages = document.getElementById("chatMessages");
         var messageContainer = document.createElement("div");
@@ -147,49 +148,77 @@
         messageContainer.appendChild(messageElement);
 
         if (sender === "ChatBot" && responseId) {
+            // Mark as Helpful Button
             var helpfulButton = document.createElement("button");
             helpfulButton.className = "btn btn-sm btn-outline-primary helpful-button";
-            var img = document.createElement("img");
-            img.src = "/static/images/icons8-upload-to-the-cloud.svg";
-            img.title = "Mark as a helpful response";
-            helpfulButton.appendChild(img);
+            var helpfulImg = document.createElement("img");
+            helpfulImg.src = "/static/images/icons8-checkmark.svg";
+            helpfulImg.title = "Mark as a helpful response";
+            helpfulButton.appendChild(helpfulImg);
             helpfulButton.onclick = function () {
                 markResponseAsHelpful(responseId, this);
             };
             messageContainer.appendChild(helpfulButton);
+            
+            // Include in Next Response Button
+            var includeButton = document.createElement("button");
+            includeButton.className = "btn btn-sm btn-outline-secondary include-button";
+            includeButton.setAttribute('data-response-id', responseId);
+            var includeImg = document.createElement("img");
+            includeImg.src = "static/images/icons8-upload-to-the-cloud.svg"; 
+            includeImg.title = "Include in next message";
+            includeButton.appendChild(includeImg);
+            includeButton.onclick = function () {
+                includeResponseInContext(responseId, this);
+            };
+            messageContainer.appendChild(includeButton);
         }
 
         chatMessages.appendChild(messageContainer);
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
-
-
-
-    
-
-        function markResponseAsHelpful(responseId, buttonElement) {
-            fetch('/mark_response_helpful', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ response_id: responseId })
+    function markResponseAsHelpful(responseId, buttonElement) {
+        fetch('/mark_response_helpful', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ response_id: responseId })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    buttonElement.classList.add('helpful-button-active');
+                } else {
+                    console.error('Error:', data.message);
+                }
             })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        buttonElement.classList.add('helpful-button-active');
-                    } else {
-                        console.error('Error:', data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        }
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
 
-
+    function includeResponseInContext(responseId, buttonElement) {
+        fetch('/include_response_in_context', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ response_id: responseId })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    buttonElement.classList.add('include-button-active');
+                } else {
+                    console.error('Error:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
 
     function copyToClipboard(codeSnippet) {
         var tempTextArea = document.createElement('textarea');
@@ -199,5 +228,4 @@
         document.execCommand('copy');
         document.body.removeChild(tempTextArea);
     }
-
 </script>
