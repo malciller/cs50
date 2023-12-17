@@ -445,6 +445,27 @@ def select_response_for_context():
         conn.close()
 
 
+@app.route('/toggle_include_response', methods=['POST'])
+def toggle_include_response():
+    data = request.get_json()
+    response_id = data.get('response_id')
+    include = data.get('include')
+
+    if response_id is None:
+        return jsonify({'status': 'error', 'message': 'Missing response ID'}), 400
+
+    conn = psycopg2.connect(DATABASE_URI)
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute("UPDATE chat_responses SET include_in_future_context = %s WHERE response_id = %s", (include, response_id))
+        conn.commit()
+        return jsonify({'status': 'success', 'message': 'Response inclusion toggled'})
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({'status': 'error', 'message': 'An error occurred while processing your request'})
+    finally:
+        conn.close()
 
 
 

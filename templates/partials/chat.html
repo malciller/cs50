@@ -200,17 +200,28 @@
     }
 
     function includeResponseInContext(responseId, buttonElement) {
-        fetch('/include_response_in_context', {
+        // Determine the current state of the button
+        var isCurrentlyIncluded = buttonElement.classList.contains('include-button-active');
+
+        fetch('/toggle_include_response', { // Note: Change the route to the appropriate one
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ response_id: responseId })
+            body: JSON.stringify({ response_id: responseId, include: !isCurrentlyIncluded })
         })
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
-                    buttonElement.classList.add('include-button-active');
+                    if (isCurrentlyIncluded) {
+                        // If it was included, remove the active class and reset color
+                        buttonElement.classList.remove('include-button-active');
+                        buttonElement.style.backgroundColor = ''; // Reset to default color
+                    } else {
+                        // If it was not included, add the active class and set color to red
+                        buttonElement.classList.add('include-button-active');
+                        buttonElement.style.backgroundColor = 'red'; // Change button color to red
+                    }
                 } else {
                     console.error('Error:', data.message);
                 }
@@ -219,6 +230,8 @@
                 console.error('Error:', error);
             });
     }
+
+
 
     function copyToClipboard(codeSnippet) {
         var tempTextArea = document.createElement('textarea');
