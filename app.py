@@ -334,7 +334,6 @@ def send_message():
     user_message = data['message']
     user_id = session.get('user_id')
 
-    # Ensure user_id is available
     if not user_id:
         return jsonify({'response': 'User not authenticated.', 'response_id': None})
 
@@ -349,16 +348,30 @@ def send_message():
         if api_key_row:
             api_key = api_key_row[0]
 
+            # Retrieve responses marked for inclusion in future context
+            # Assuming there's a link between user_messages and chat_responses
+            cursor.execute("""
+                SELECT cr.text 
+                FROM chat_responses cr
+                JOIN user_messages um ON cr.message_id = um.message_id
+                WHERE um.user_id = %s AND cr.include_in_future_context = TRUE
+            """, (user_id,))
+            included_responses = cursor.fetchall()
+
+            # Prepare the context for the OpenAI API
+            context_messages = [{"role": "system", "content": "You are a helpful assistant."}]
+            for response in included_responses:
+                context_messages.append({"role": "assistant", "content": response[0]})
+
+            context_messages.append({"role": "user", "content": user_message})
+
             # Initialize the OpenAI client with the user's API key
             client = OpenAI(api_key=api_key)
 
             # Using chat.completions.create method
             response = client.chat.completions.create(
                 model="gpt-4-1106-preview",
-                messages=[
-                    {"role": "system", "content": "You are a helpful assistant."},
-                    {"role": "user", "content": user_message},
-                ]
+                messages=context_messages
             )
 
             # Extracting the assistant's response correctly
@@ -398,6 +411,8 @@ def send_message():
         return jsonify({'response': 'Error in processing the message.', 'response_id': None})
     finally:
         conn.close()
+
+
 
 
 @app.route('/mark_response_helpful', methods=['POST'])

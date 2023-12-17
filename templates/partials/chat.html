@@ -152,7 +152,7 @@
             var helpfulButton = document.createElement("button");
             helpfulButton.className = "btn btn-sm btn-outline-primary helpful-button";
             var helpfulImg = document.createElement("img");
-            helpfulImg.src = "/static/images/icons8-checkmark.svg";
+            helpfulImg.src = "/static/images/icons8-done.svg";
             helpfulImg.title = "Mark as a helpful response";
             helpfulButton.appendChild(helpfulImg);
             helpfulButton.onclick = function () {
@@ -165,7 +165,7 @@
             includeButton.className = "btn btn-sm btn-outline-primary include-button";
             includeButton.setAttribute('data-response-id', responseId);
             var includeImg = document.createElement("img");
-            includeImg.src = "static/images/icons8-upload-to-the-cloud.svg"; 
+            includeImg.src = "/static/images/icons8-upload-to-the-cloud.svg"; 
             includeImg.title = "Include in next message";
             includeButton.appendChild(includeImg);
             includeButton.onclick = function () {
