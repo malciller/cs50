@@ -424,7 +424,7 @@ def mark_response_helpful():
     finally:
         conn.close()
 
-@app.route('/select_response_for_context', methods=['POST'])
+@app.route('/include_response_in_context', methods=['POST'])
 def select_response_for_context():
     data = request.get_json()
     response_id = data.get('response_id')
