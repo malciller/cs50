@@ -5,35 +5,74 @@
     <title>{% block title %}Your App Name{% endblock %}</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 
-    <!-- Existing CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style2.css') }}">
-
-
-    <!-- Existing Head Elements -->
     {% block head %}{% endblock %}
-</head>
 
+</head>
 <body>
-    <!-- Existing Navbar or Header -->
+
     {% block navbar %}{% endblock %}
 
-    <!-- Main Content -->
-    <div class="container">
         {% block content %}
-        <!-- Your main content goes here -->
+
         {% endblock %}
-    </div>
+
     <div class="custom-footer">
         <p>Icons by <a href="https://icons8.com" target="_blank">Icons8</a></p>
     </div>
 
-    <!-- Bootstrap JavaScript -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+                // check if Chat is opened
+                $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                    if (e.target.id === 'chat-tab') {
+                        onChatContentLoaded();
+                    }
+                });
 
+        // call setting chat height
+        function onChatContentLoaded() {
+            adjustChatHeight(); 
+        }
+
+        function adjustChatHeight() {
+            // select page sections
+            const footer = document.querySelector('.custom-footer');
+            const input = document.querySelector('.input-group');
+            const navbar = document.querySelector('.nav-tabs');
+            const chatMessages = document.getElementById('chatMessages');
+
+            // check if everything relevant is showing
+            if (footer && input && navbar && chatMessages) {
+                const footerHeight = footer.offsetHeight;
+                const inputHeight = input.offsetHeight;
+                const navbarHeight = navbar.offsetHeight;
+                const viewportHeight = window.innerHeight;
+                const chatMessagesAvailableHeight = viewportHeight - navbarHeight - footerHeight - inputHeight;
+
+                chatMessages.style.position = 'absolute';
+                chatMessages.style.top = `${navbarHeight}px`;
+                chatMessages.style.bottom = `${footerHeight + inputHeight}px`;
+                chatMessages.style.height = `${chatMessagesAvailableHeight}px`;
+                chatMessages.style.overflowY = 'auto';
+
+            } else {
+                // log errors if elements not found
+                console.log('Some elements were not found or are not rendered yet:', {
+                    footer: !!footer,
+                    input: !!input,
+                    navbar: !!navbar,
+                    chatMessages: !!chatMessages
+                });
+            }
+        }
+
+        // fix chat height dynamically
+        window.addEventListener('DOMContentLoaded', adjustChatHeight);
+        window.addEventListener('resize', adjustChatHeight);
+    </script>
 </body>
-
 </html>

@@ -13,32 +13,51 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = '123' 
 DATABASE_URI = config.DATABASE_URI
 
+# checks database and retrieves users saved messages
+def get_saved_messages(user_id):
+    conn = psycopg2.connect(DATABASE_URI)
+    cursor = conn.cursor()
 
+    try:
+        cursor.execute("""
+            SELECT user_id, text, response_id, is_helpful, include_in_future_context
+            FROM chat_responses
+            WHERE user_id = %s AND include_in_future_context = TRUE
+        """, (user_id,))
+        messages = cursor.fetchall()
+    except Exception as e:
+        print(f"Error fetching messages: {e}")
+        messages = []
+    finally:
+        conn.close()
+
+    return [{"sender": "ChatBot", "text": msg[1], "response_id": msg[2], "is_helpful": msg[3], "is_included": "true"} for msg in messages]
+
+
+
+# initializes at login screen
 @app.route("/")
 def home():
     return redirect(url_for('login'))
 
 
+# handles log ins
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        # Connect to the database
         conn = psycopg2.connect(DATABASE_URI)
         cursor = conn.cursor()
 
-        # Query the database for the user
         cursor.execute("SELECT * FROM users WHERE username = %s", (form.username.data,))
         user = cursor.fetchone()
 
-        if user and hashlib.sha256(form.password.data.encode()).hexdigest() == user[2]:  # Assuming password is the third field
-            session['user_id'] = user[0]   # Assuming user ID is the first field
+        if user and hashlib.sha256(form.password.data.encode()).hexdigest() == user[2]:
+            session['user_id'] = user[0] 
 
-            # Check if user has an associated key
             cursor.execute("SELECT * FROM keys WHERE user_id = %s", (session['user_id'],))
             key_exists = cursor.fetchone()
 
-            # Close the database connection
             conn.close()
 
             if key_exists:
@@ -46,16 +65,16 @@ def login():
                 return redirect(url_for('index'))
             else:
                 flash('API Key is required.', 'info')
-                return redirect(url_for('key_collection'))  # Redirect to key collection page
+                return redirect(url_for('key_collection')) 
         else:
             flash('Login failed. Please check your username and password.', 'danger')
 
-        # Close the database connection if login fails
         conn.close()
 
     return render_template('login.html', title='Login', form=form)
 
 
+# handles initial collection of openai api key
 @app.route("/key_collection", methods=['GET', 'POST'])
 def key_collection():
     form = APIKeyForm()
@@ -65,11 +84,9 @@ def key_collection():
             try:
                 api_key = form.api_key.data
 
-                # Connect to the database
                 conn = psycopg2.connect(DATABASE_URI)
                 cursor = conn.cursor()
 
-                # Insert the API key into the keys table
                 cursor.execute("INSERT INTO keys (user_id, api_key) VALUES (%s, %s)", (user_id, api_key))
                 conn.commit()
                 conn.close()
@@ -85,69 +102,72 @@ def key_collection():
     return render_template('key_collection.html', title='API Key Collection', form=form)
 
 
+# handles creating an account
 @app.route("/register", methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        # Connect to the database
         conn = psycopg2.connect(DATABASE_URI)
         cursor = conn.cursor()
 
-        # Check if username already exists
         cursor.execute("SELECT * FROM users WHERE username = %s", (form.username.data,))
         if cursor.fetchone():
             flash('Username already exists. Please choose a different one.', 'danger')
         else:
-            # Hash the password
             hashed_password = hashlib.sha256(form.password.data.encode()).hexdigest()
             
-            # Add user to the database
             cursor.execute("INSERT INTO users (username, password, email) VALUES (%s, %s, %s)", (form.username.data, hashed_password, form.email.data))
             conn.commit()
 
             flash(f'Account created for {form.username.data}!', 'success')
             return redirect(url_for('login'))
 
-        # Close the database connection
         conn.close()
 
     return render_template('register.html', title='Register', form=form)
 
 
+# handles displaying user info partial template
 @app.route("/info")
 def info():
     return render_template('info.html', title='Info')
 
 
+# handles main index page
 @app.route("/index", methods=['GET', 'POST'])
 def index():
     user_id = session.get('user_id')
-    email = ''
+    print (user_id)
     if user_id is None:
-        # If no user is logged in, redirect to the login page
         flash('Please log in to view this page.', 'info')
         return redirect(url_for('login'))
 
-    # Connect to the database
     conn = psycopg2.connect(DATABASE_URI)
     cursor = conn.cursor()
 
-    # Query the database for the user
+    cursor.execute("""
+        SELECT cr.text 
+        FROM chat_responses cr
+        JOIN user_messages um ON cr.message_id = um.message_id
+        WHERE um.user_id = %s AND cr.include_in_future_context = TRUE
+    """, (user_id,))
+    context_messages = cursor.fetchall()
+
+    saved_messages = get_saved_messages(user_id)
+
     cursor.execute("SELECT username, email FROM users WHERE id = %s", (user_id,))
     user_row = cursor.fetchone()
 
-    # Close the database connection
     conn.close()
 
     if user_row:
-        # Pass the username to the template
-        return render_template('index.html', username=user_row[0], email=user_row[1])
+        return render_template('index.html', username=user_row[0], email=user_row[1], context_messages=context_messages, saved_messages=saved_messages)
     else:
-        # Handle the case where the user is not found
         flash('User not found.', 'danger')
         return redirect(url_for('login'))
 
 
+# handles update email form
 @app.route("/update_email", methods=['POST'])
 def update_email():
     user_id = session.get('user_id')
@@ -162,11 +182,9 @@ def update_email():
         flash('New email addresses do not match.', 'danger')
         return redirect(url_for('index'))
 
-    # Connect to the database
     conn = psycopg2.connect(DATABASE_URI)
     cursor = conn.cursor()
 
-    # Update the email in the database
     cursor.execute("UPDATE users SET email = %s WHERE id = %s", (new_email, user_id))
     conn.commit()
     conn.close()
@@ -174,8 +192,7 @@ def update_email():
     flash('Email updated successfully.', 'success')
     return redirect(url_for('index'))
 
-
-
+# handles reset password form
 @app.route("/reset_password", methods=['POST'])
 def reset_password():
     user_id = session.get('user_id')
@@ -216,6 +233,7 @@ def reset_password():
     return redirect(url_for('index'))
 
 
+# handles update api form
 @app.route("/update_api_key", methods=['POST'])
 def update_api_key():
     user_id = session.get('user_id')
@@ -236,17 +254,26 @@ def update_api_key():
     return redirect(url_for('index'))
 
 
-
+# handles log out form
 @app.route("/logout", methods=['POST'])
 def logout():
-    # Clear the user_id from session
     session.pop('user_id', None)
 
-    # Redirect to login page
     flash('You have been logged out.', 'info')
     return redirect(url_for('login'))
 
 
+# handles showing how to form
+@app.route("/how_to", methods=['POST'])
+def how_to():
+    user_id = session.get('user_id')
+    if not user_id:
+        flash('You must be logged in to perform this action.', 'danger')
+        return redirect(url_for('login'))
+    return redirect(url_for('how_to'))
+
+
+# handles delete account form
 @app.route("/delete_account", methods=['POST'])
 def delete_account():
     user_id = session.get('user_id')
@@ -257,11 +284,9 @@ def delete_account():
     delete_username = request.form['delete_username']
     delete_password = request.form['delete_password']
 
-    # Connect to the database
     conn = psycopg2.connect(DATABASE_URI)
     cursor = conn.cursor()
 
-    # Check if the entered username and password are correct
     cursor.execute("SELECT * FROM users WHERE id = %s", (user_id,))
     user = cursor.fetchone()
 
@@ -278,16 +303,12 @@ def delete_account():
         conn.close()
         return redirect(url_for('index'))
 
-    # If the confirmation checkbox is checked, show the secondary confirmation
     if request.form.get('confirm_delete'):
         return render_template('delete_account_confirmation.html')
 
-    # If the confirmation checkbox is not checked, redirect back to user_info
     flash('Account deletion requires confirmation. Check the confirmation box.', 'info')
     conn.close()
     return redirect(url_for('index'))
-
-
 
 
 @app.route("/confirm_delete_account", methods=['POST'])
@@ -328,6 +349,7 @@ def preprocess_markdown(content):
     return processed_content, code_blocks
 
 
+# handles interaction with openai API
 @app.route('/send_message', methods=['POST'])
 def send_message():
     data = request.get_json()
@@ -341,15 +363,12 @@ def send_message():
     cursor = conn.cursor()
 
     try:
-        # Retrieve the user's API key from the database
         cursor.execute("SELECT api_key FROM keys WHERE user_id = %s", (user_id,))
         api_key_row = cursor.fetchone()
 
         if api_key_row:
             api_key = api_key_row[0]
 
-            # Retrieve responses marked for inclusion in future context
-            # Assuming there's a link between user_messages and chat_responses
             cursor.execute("""
                 SELECT cr.text 
                 FROM chat_responses cr
@@ -358,44 +377,35 @@ def send_message():
             """, (user_id,))
             included_responses = cursor.fetchall()
 
-            # Prepare the context for the OpenAI API
             context_messages = [{"role": "system", "content": "You are a helpful assistant."}]
             for response in included_responses:
                 context_messages.append({"role": "assistant", "content": response[0]})
 
             context_messages.append({"role": "user", "content": user_message})
 
-            # Initialize the OpenAI client with the user's API key
             client = OpenAI(api_key=api_key)
 
-            # Using chat.completions.create method
             response = client.chat.completions.create(
                 model="gpt-4-1106-preview",
                 messages=context_messages
             )
 
-            # Extracting the assistant's response correctly
             if response.choices and response.choices[0].message:
                 assistant_response = response.choices[0].message.content
 
-                # Preprocess the content to handle code blocks
                 preprocessed_content, code_blocks = preprocess_markdown(assistant_response)
                 html_response = markdown2.markdown(preprocessed_content)
 
-                # Reinsert code blocks into HTML content
                 for i, code_block in enumerate(code_blocks):
                     html_response = html_response.replace(f"<!--CODE_BLOCK_PLACEHOLDER_{i}-->", code_block)
 
-                # Log user message
                 cursor.execute("INSERT INTO user_messages (text, user_id) VALUES (%s, %s)", (user_message, user_id))
                 conn.commit()
 
-                # Retrieve message_id
                 cursor.execute("SELECT message_id FROM user_messages WHERE text = %s AND user_id = %s ORDER BY message_id DESC LIMIT 1", (user_message, user_id))
                 message_id = cursor.fetchone()[0]
 
-                # Log chat response and get response_id
-                cursor.execute("INSERT INTO chat_responses (text, message_id) VALUES (%s, %s) RETURNING response_id", (assistant_response, message_id))
+                cursor.execute("INSERT INTO chat_responses (text, message_id, user_id) VALUES (%s, %s, %s) RETURNING response_id", (assistant_response, message_id, user_id))
                 response_id = cursor.fetchone()[0]
 
                 conn.commit()
@@ -413,8 +423,7 @@ def send_message():
         conn.close()
 
 
-
-
+# handles user feedback button
 @app.route('/mark_response_helpful', methods=['POST'])
 def mark_response_helpful():
     data = request.get_json()
@@ -423,12 +432,10 @@ def mark_response_helpful():
     if not response_id:
         return jsonify({'status': 'error', 'message': 'Missing response ID'}), 400
 
-    # Connect to the database
     conn = psycopg2.connect(DATABASE_URI)
     cursor = conn.cursor()
 
     try:
-        # Update the database to mark the response as helpful
         cursor.execute("UPDATE chat_responses SET is_helpful = TRUE WHERE response_id = %s", (response_id,))
         conn.commit()
 
@@ -439,6 +446,8 @@ def mark_response_helpful():
     finally:
         conn.close()
 
+
+# hadnles passing saved messages as context in subsequent messages
 @app.route('/include_response_in_context', methods=['POST'])
 def select_response_for_context():
     data = request.get_json()
@@ -460,6 +469,7 @@ def select_response_for_context():
         conn.close()
 
 
+# handles save message button
 @app.route('/toggle_include_response', methods=['POST'])
 def toggle_include_response():
     data = request.get_json()
@@ -483,6 +493,6 @@ def toggle_include_response():
         conn.close()
 
 
-
+# initialization of app
 if __name__ == '__main__':
     app.run(debug=True)
