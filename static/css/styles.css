@@ -1,368 +1,305 @@
 :root {
-    --background-color: #36393f;
-    --text-color: #ffffff;
-    --button-color: #e8202b;
-    --input-background: #40444b;
-    --border-color: #202225;
-
+    --text-color: #F0EFEB;
+    --header-color: #6890a7;
+    --background-color: #1D3E53;
+    --button-color: #476D7C;
+    --chat-label-color: #ADD8E6;
+    --footer-height: 30px;
+    --input-section-height: 60px;
 }
 
-/* Reset and Base Styles */
-body,
-html {
+* {
+    box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+    display: auto;
+    width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--button-color);
+    border-radius: 10px;
+}
+
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--header-color);
+}
+
+img {
+    filter: invert(1);
+    background: none;
+}
+
+html,
+body {
     height: 100%;
     margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: var(--background-color);
-    color: var(--text-color);
-}
-
-body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
-/* Tab Styles */
-.tab-pane {
-    display: none;
-}
-
-.tab-pane.active.show {
-    display: block;
-}
-
-.nav-tabs,
-.custom-nav-tabs {
-    list-style-type: none;
     padding: 0;
-    margin: 0;
-    display: flex;
-    justify-content: space-around;
-    background-color: var(--input-background);
-}
-
-.nav-tabs .nav-item,
-.custom-nav-item {
-    flex-grow: 1;
-    text-align: center;
-}
-
-
-.nav-tabs .nav-link,
-.custom-nav-link {
-    display: block;
-    padding: 10px;
-    text-decoration: none;
+    overflow-y: hidden;
+    position: relative;
+    background-color: var(--background-color) !important;
     color: var(--text-color);
-    transition: background-color 0.3s;
+    font-family: 'Abolition', sans-serif;
+    overflow-x: hidden;
 }
 
-.nav-tabs .nav-link.active,
-.custom-nav-link.active {
-    font-weight: bold;
-    text-decoration: underline;
-    background-color: var(--button-color);
+.container,
+.info {
+    overflow-y: scroll;
+    padding-bottom: 15px;
 }
 
-.custom-nav-link:hover,
-.custom-nav-link:focus {
-    background-color: darken(var(--button-color), 5%);
-}
-
-.custom-tab-content {
-    padding: 15px;
-    background-color: var(--background-color);
-    color: var(--text-color);
-}
-
-.custom-tab-pane {
-    display: none;
-}
-
-.custom-tab-pane.active {
-    display: block;
-}
-
-/* Form Styles */
-input,
-textarea,
-select,
-.form-input {
-    background-color: var(--input-background);
-    color: var(--text-color);
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-    padding: 5px;
+#chatMessages {
+    position: absolute;
+    overflow-y: auto;
     width: 100%;
+    left: 0;
+    padding-bottom: 1rem;
+    background-color: var(--background-color) !important;
 }
 
-.form-group,
-.form-check {
-    margin-bottom: 10px;
+#scrollToBottomBtn {
+    position: absolute;
+    bottom: calc(var(--footer-height) + var(--input-section-height) + 20px);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1050;
 }
 
-/* Button Styles */
-button,
-img,
-.send-button,
-.custom-button,
-.btn {
-    padding: 10px;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    display: inline-flex;
+.loading-spinner {
+    filter: invert(1);
+    display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
-    text-align: center;
-    color: var(--text-color);
-    background-color: var(--button-color);
+    position: absolute;
+    bottom: calc(var(--footer-height) + var(--input-section-height) + 20px);
 }
 
-button:hover,
-.send-button:hover,
-.custom-button:hover,
-.btn:hover {
-    background-color: #5d4e6d;
+.input-group {
+    position: absolute;
+    bottom: 45px;
+    left: 0;
+    width: 100%;
+    z-index: 1030;
+    height: var(--input-section-height);
 }
 
-/* Link Styles */
-a {
-    color: var(--button-color);
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-/* Layout Styles */
-.main-content {
-    flex: 1;
+.row {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    overflow-y: auto;
 }
 
 .custom-footer {
-    position: sticky;
+    position: absolute;
+    padding: 0;
+    display: block;
     bottom: 0;
-    text-align: center;
-    font-size: 10px;
-    background-color: var(--background-color);
-    color: var(--text-color);
-    padding: 5px 0;
     width: 100%;
-}
-
-.centered-form-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    padding: 20px;
-    box-sizing: border-box;
-    /* Makes sure padding is included in the width */
-}
-
-.centered-form {
-    width: 100%;
-    max-width: 400px;
-    background-color: var(--input-background);
-    padding: 40px;
-    /* Adjusted padding */
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    position: relative;
-    display: flex;
-    /* Added for internal flex layout */
-    flex-direction: column;
-    /* Stack children vertically */
-    justify-content: space-between;
-    /* Distribute space */
-    box-sizing: border-box;
-    /* Makes sure padding is included in the height */
-}
-
-.form-field {
-    margin-bottom: 20px;
-    /* Add more space between inputs */
-}
-
-.form-footer {
-    margin-top: 20px;
-    /* Add space above the footer area */
+    height: var(--footer-height);
+    border-top: var(--text-color);
+    z-index: 1020;
     text-align: center;
-    /* Center align the footer contents */
 }
 
-.register-prompt {
-    margin-bottom: 20px;
-    /* Add space below the prompt */
-}
 
-.login-button {
-    align-self: center;
-    /* Center the button in the form */
-    margin-top: 10px;
-    /* Optional: adds space above the login button if needed */
-}
 
-/* Ensure the footer is always at the bottom */
-.centered-form {
-    justify-content: space-between;
-    /* Distributes space between and around content items */
-}
-
-.form-action {
-    position: relative;
-    /* Relative positioning for absolute children */
-    padding-bottom: 60px;
-    /* Space for the button and prompt */
-}
-
-.register-prompt {
-    margin-left: 10px;
-    color: var(--text-color);
-    align-self: center;
-}
-
-/* Chat Styles */
-.parent-of-chat-container {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
-
-.chat-container {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    overflow: hidden;
-}
-
-.chat-messages {
-    flex: 0 0 80%;
-    overflow-y: auto;
-    padding: 10px;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.chat-input-container {
-    flex: 0 0 20%;
-    display: flex;
-    align-items: center;
-    padding: 10px;
-}
-
-.chat-input {
-    flex-grow: 1;
-    resize: none;
-    margin-right: 10px;
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-    padding: 5px;
-}
-
-.send-button {
-    flex-shrink: 0;
-    background-color: var(--button-color);
-    color: var(--text-color);
-}
-
-/* Ensure text wraps within its container */
-.chat-messages,
-.chat-input {
-
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-}
-
-/* Additional Styles */
-.code-container {
-    margin: 10px 0;
-    border: 1px solid #ddd;
-    border-radius: 1px;
-    background-color: #36393f;
-    position: relative;
-}
-
-.code-toolbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 5px;
-}
-
-.code-toolbar-title {
-    float: left;
-}
-
-.copy-button {
-    float: right;
-    padding: 10px;
-    border: none;
+.btn {
     border-radius: 50%;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    display: inline-flex;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    display: flex;
     align-items: center;
     justify-content: center;
-    background-color: var(--button-color);
 }
 
-.copy-button:hover {
-    background-color: #5d4e6d;
+.btn img {
+    width: 20px;
+    height: 20px;
+}
+
+.context-message {
+    background-color: var(--header-color);
+    color: var(--text-color);
+    padding: 10px;
+    border-radius: 10px;
+    margin: 5px;
 }
 
 .code-block {
-    width: calc(100% - 20px);
-    margin: 0;
-    border: none;
-    padding: 10px;
-    height: auto;
-    font-family: monospace;
-    resize: none;
-    background-color: #40444b;
-    color: #ffffff;
+    background-color: var(--background-color);
+    color: var(--text-color);
 }
 
-.login-button {
-    position: absolute;
-    right: 20px;
-    bottom: 20px;
+.code-block::-webkit-scrollbar {
+    width: 5px;
 }
 
-.register-prompt {
-    position: absolute;
-    left: 40%;
-    bottom: 10px;
-    /* Adjust this value as needed to move the prompt up or down within the container */
-    transform: translateX(-50%);
-    margin-left: 0;
-    /* This is not needed as translateX(-50%) will already center the element */
-}
-
-/* Specific styles for toolbar buttons */
-.code-toolbar .copy-button {
-    width: 30px;
-    /* Adjust the width as necessary */
-    height: 30px;
-    /* Adjust the height as necessary */
-    padding: 5px;
-    /* Adjust the padding to ensure the content is centered */
-}
-
-/* Ensure the image inside the button does not overflow */
-.code-toolbar .copy-button img {
-    width: 100%;
-    /* Ensures the image is as wide as the button */
-    height: auto;
-    /* Ensures the aspect ratio of the image is maintained */
-}
-
-.custom-nav-link[aria-selected='true'] {
+.code-block::-webkit-scrollbar-thumb {
     background-color: var(--button-color);
-    /* Other styling as needed */
+    border-radius: 10px;
+}
+
+.user-message {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    padding: 10px;
+    border-radius: 10px;
+    text-align: left;
+    margin: 5px;
+}
+
+.chatbot-message {
+    background-color: var(--header-color);
+    color: var(--text-color);
+    padding: 10px;
+    border-radius: 10px;
+    margin: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.user-label {
+    color: var(--chat-label-color);
+    font-weight: bold;
+}
+
+.chatbot-label {
+    color: var(--chat-label-color);
+    font-weight: bold;
+}
+
+.code-toolbar {
+    background-color: var(--button-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: space-between;
+    border-radius: 10px;
+    padding: 5px;
+    margin-bottom: 5px;
+}
+
+
+.code-block {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    border: 1px solid var(--header-color);
+    border-radius: 10px;
+    padding: 5px;
+    font-family: 'Fira Code', monospace;
+    overflow-y: auto;
+    resize: vertical;
+    resize: vertical;
+    overflow: auto;
+}
+
+.code-block,
+.code-toolbar {
+    width: 100%;
+}
+
+.nav-item,
+.nav-link,
+.input-group,
+.form-control,
+.input-group,
+.form-control:focus {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+a[data-toggle="tab"],
+.nav-link:hover {
+    color: var(--text-color);
+    background-color: var(--button-color);
+}
+
+.nav-tabs {
+    border-bottom: none;
+    margin-bottom: 0;
+    justify-content: space-between;
+    height: 5%;
+}
+
+#sendButton,
+.btn-primary,
+.btn-info,
+.btn-danger,
+.btn-warning,
+.btn-secondary,
+.copy-button {
+    background-color: var(--button-color);
+    border-color: var(--button-color);
+    color: var(--text-color);
+}
+
+.helpful-button,
+.btn-signout,
+.btn-signin,
+.btn-send,
+.copy-button,
+.btn-register,
+.btn-submitkey {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+    width: auto;
+    height: 40px;
+    border-radius: 50px;
+    background-color: var(--button-color);
+    color: var(--text-color);
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-submitkey img,
+.btn-register img,
+.btn-signout img,
+.btn-signin img {
+    margin-right: 8px;
+    width: 20px;
+    height: 20px;
+}
+
+.helpful-button-active,
+.helpful-button-active img {
+    background-color: var(--background-color);
+    color: var(--background-color);
+    filter: grayscale(100%);
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+.btn-send {
+    margin-left: 5px;
+}
+
+.helpful-button img,
+.btn-send img,
+.copy-button img {
+    width: 20px;
+    height: 20px;
+}
+
+::placeholder,
+:-ms-input-placeholder,
+::-ms-input-placeholder {
+    color: var(--text-color);
+    opacity: 1;
+}
+
+.btn-warning img,
+.btn-secondary img {
+    filter: invert(1);
 }

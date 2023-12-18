@@ -3,7 +3,6 @@
 {% block title %}Home Page{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item">
             <a class="nav-link active" id="user-info-tab" data-toggle="tab" href="#userInfo" role="tab"
@@ -23,44 +22,39 @@
             {% include 'partials/chat.html' %}
         </div>
     </div>
-</div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const tabs = document.querySelectorAll('.custom-nav-link');
+        document.addEventListener('DOMContentLoaded', function () {
+                const tabs = document.querySelectorAll('.custom-nav-link');
 
-        tabs.forEach(tab => {
-            tab.addEventListener('click', function (event) {
-                event.preventDefault();
+                tabs.forEach(tab => {
+                    tab.addEventListener('click', function (event) {
+                        event.preventDefault();
 
-                // Remove the active class and set aria-selected to false for all tabs
-                tabs.forEach(t => {
-                    t.classList.remove('active');
-                    t.setAttribute('aria-selected', 'false');
+                        tabs.forEach(t => {
+                            t.classList.remove('active');
+                            t.setAttribute('aria-selected', 'false');
+                        });
+
+                        this.classList.add('active');
+                        this.setAttribute('aria-selected', 'true');
+
+                        const tabPanes = document.querySelectorAll('.custom-tab-pane');
+                        tabPanes.forEach(pane => {
+                            pane.classList.remove('active', 'show');
+                            pane.style.display = 'none';
+                        });
+
+                        const targetPane = document.querySelector(this.getAttribute('href'));
+                        if (targetPane) {
+                            targetPane.classList.add('active', 'show');
+                            targetPane.style.display = 'block';
+                        }
+                    });
                 });
-
-                // Add the active class and set aria-selected to true for the clicked tab
-                this.classList.add('active');
-                this.setAttribute('aria-selected', 'true');
-
-                // Hide all tab panes
-                const tabPanes = document.querySelectorAll('.custom-tab-pane');
-                tabPanes.forEach(pane => {
-                    pane.classList.remove('active', 'show');
-                    pane.style.display = 'none';
-                });
-
-                // Show the clicked tab's content pane
-                const targetPane = document.querySelector(this.getAttribute('href'));
-                if (targetPane) {
-                    targetPane.classList.add('active', 'show');
-                    targetPane.style.display = 'block';
-                }
             });
-        });
-    });
 
 </script>
 
-
 {% endblock %}
+

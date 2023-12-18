@@ -2,22 +2,22 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="d-flex justify-content-between mb-3">
-                <!-- Update Email Button -->
                 <button title="Update Email Address" type="button" class="btn btn-info" id="updateEmailButton">
                     <img src="{{ url_for('static', filename='images/icons8-contacts.svg') }}" alt="Update Email Icon"
                         style="width: 20px; height: 20px;">
                 </button>
-                <!-- Password Reset Button -->
                 <button title="Update Password" type="button" class="btn btn-info" id="resetPasswordButton">
                     <img src="{{ url_for('static', filename='images/icons8-support.svg') }}" alt="Reset Password Icon"
                         style="width: 20px; height: 20px;">
                 </button>
-                <!-- Update API Key Button -->
                 <button title="Update API Key" type="button" class="btn btn-info" id="updateApiKeyButton">
                     <img src="{{ url_for('static', filename='images/icons8-key.svg') }}" alt="Update API Key Icon"
                         style="width: 20px; height: 20px;">
                 </button>
-                <!-- Delete button -->
+                <button title="How To" type="button" class="btn btn-info" id="howToButton">
+                    <img src="{{ url_for('static', filename='images/icons8-how-quest-48.png') }}" alt="How to"
+                        style="width: 20px; height: 20px;">
+                </button>
                 <button title="Delete Account" type="button" class="btn btn-danger" id="deleteAccountButton">
                     <img src="{{ url_for('static', filename='images/icons8-trash-can.svg') }}" alt="Delete Account Icon"
                         style="width: 20px; height: 20px;">
@@ -29,7 +29,6 @@
                 <p><strong>Email:</strong> {{ email }}</p>
             </div>
 
-    <!-- Update Email Form (Initially Hidden) -->
     <form action="{{ url_for('update_email') }}" method="post" style="display: none;" id="updateEmailForm">
         <div class="form-group">
             <label for="newEmail">New Email:</label>
@@ -41,13 +40,11 @@
         </div>
         <button title="Update Email Address" type="submit" class="btn btn-primary"><img src="static\images\icons8-done.svg" alt="Delete Account Icon" style="width: 20px; height: 20px;">
         </button>
-        <!-- Cancel Button -->
             <button title="Cancel" type="button" class="btn btn-secondary" id="cancelEmailUpdate" style="margin-left: 10px;">
                 <img src="static\images\icons8-close.svg" alt="Delete Account Icon" style="width: 20px; height: 20px;">
             </button>
     </form>
 
-    <!-- Password Reset Form (Initially Hidden) -->
     <form action="{{ url_for('reset_password') }}" method="post" style="display: none;" id="resetPasswordForm">
         <div class="form-group">
             <label for="currentPassword">Current Password:</label>
@@ -63,14 +60,11 @@
         </div>
         <button title="Update Password" type="submit" class="btn btn-primary"><img src="static\images\icons8-done.svg" alt="Delete Account Icon" style="width: 20px; height: 20px;">
         </button>
-        <!-- Cancel Button -->
         <button title="Cancel" type="button" class="btn btn-secondary" id="cancelPasswordUpdate"
             style="margin-left: 10px;"><img src="static\images\icons8-close.svg" alt="Delete Account Icon" style="width: 20px; height: 20px;">
             </button>
     </form>
 
-
-    <!-- Update API Key Form (Initially Hidden) -->
     <form action="{{ url_for('update_api_key') }}" method="post" style="display: none;" id="updateApiKeyForm">
         <div class="form-group">
             <label for="newApiKey">New API Key:</label>
@@ -78,14 +72,26 @@
         </div>
         <button title="Update API Key" type="submit" class="btn btn-primary"><img src="static\images\icons8-done.svg" alt="Delete Account Icon" style="width: 20px; height: 20px;">
         </button>
-        <!-- Cancel Button -->
         <button title="Cancel" type="button" class="btn btn-secondary" id="cancelApiKeyUpdate"
             style="margin-left: 10px;"><img src="static\images\icons8-close.svg" alt="Delete Account Icon" style="width: 20px; height: 20px;">
             </button>
     </form>
 
+<form action="{{ url_for('how_to') }}" method="post" style="display: none;" id="howToInstructions">
+<div class="form-group">
+    <h4>Using the Chat Interface:</h4>
+    <div>After entering your api key, navigate to the "Chat" tab.<br/>
+    Here you can interact with your OpenAI GPT-4-turbo api key.<br/>
+    Clicking the "Save Response" to context button, will allow you to add OpenAI responses to the context of your future messages, creating a manual memory chain.<br/>
+    Further features to come.</div>
 
-<!-- Delete Account Form (Initially Hidden) -->
+    <button title="Cancel" type="button" class="btn btn-secondary" id="cancelHowTo" style="margin-left: 10px;">
+        <img src="static\images\icons8-close.svg" alt="Cancel" style="width: 20px; height: 20px;">
+    </button>
+</div>
+
+</form>
+
 <form action="{{ url_for('delete_account') }}" method="post" style="display: none;" id="deleteAccountForm">
     <div class="form-group">
         <label for="deleteUsername">Username:</label>
@@ -111,7 +117,6 @@
 </form>
 </div>
 
-    <!-- Logout Button -->
         <a href="{{ url_for('login') }}" class="btn-signout btn-warning mt-3">
             <img src="{{ url_for('static', filename='images/icons8-unavailable.svg') }}" title="Sign Out" alt="Sign Out Icon"
                 style="width: 20px; height: 20px;"> Sign Out
@@ -123,41 +128,36 @@
 <script>
     let currentOpenFormId = null;
 
-    // Function to hide the currently open form
+    // hide open form
     function hideCurrentOpenForm() {
         if (currentOpenFormId) {
             const currentForm = document.getElementById(currentOpenFormId);
             currentForm.style.display = 'none';
 
-            // Also, remove the 'selected' class from the button associated with the currently open form
             const currentButton = document.querySelector(`button[id="${currentOpenFormId.replace("Form", "Button")}"]`);
             if (currentButton) {
                 currentButton.classList.remove('selected');
             }
 
-            currentOpenFormId = null; // No form is open
-        }
+            currentOpenFormId = null;
     }
+}
 
-    // Function to toggle form visibility and button selected state
+    // toggle form visibility
     function toggleForm(formId, button) {
         const form = document.getElementById(formId);
-        // Check if the clicked form is already open
         const isFormOpen = form.style.display === 'block';
 
         if (!isFormOpen) {
-            // Hide the currently open form (if any)
             if (currentOpenFormId) {
                 const currentForm = document.getElementById(currentOpenFormId);
                 currentForm.style.display = 'none';
-                // Also, remove the 'selected' class from the button associated with the currently open form
                 const currentButton = document.querySelector(`button[id="${currentOpenFormId.replace("Form", "Button")}"]`);
                 if (currentButton) {
                     currentButton.classList.remove('selected');
                 }
             }
 
-            // Update the current open form ID
             currentOpenFormId = formId;
 
             form.style.display = 'block';
@@ -165,16 +165,16 @@
         } else {
             form.style.display = 'none';
             button.classList.remove('selected');
-            currentOpenFormId = null; // No form is open
+            currentOpenFormId = null;
         }
     }
 
-    // Function to hide all forms (using the hideCurrentOpenForm function)
+    // hide all forms
     function hideAllForms() {
         hideCurrentOpenForm();
     }    
 
-    // Add event listeners for buttons
+    // listener for all buttons to show forms
     document.getElementById('updateEmailButton').addEventListener('click', function () {
         toggleForm('updateEmailForm', this);
     });
@@ -191,7 +191,10 @@
         toggleForm('deleteAccountForm', this);
     });
 
-    // Add event listeners for cancel buttons
+    document.getElementById('howToButton').addEventListener('click', function () {
+        toggleForm('howToInstructions', this);
+    });
+
     document.getElementById('cancelEmailUpdate').addEventListener('click', function () {
         hideAllForms();
     });
@@ -208,5 +211,8 @@
         hideAllForms();
     });
 
+    document.getElementById('cancelHowTo').addEventListener('click', function () {
+        hideAllForms();
+    });
 
 </script>
