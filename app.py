@@ -313,28 +313,38 @@ def delete_account():
 
 @app.route("/confirm_delete_account", methods=['POST'])
 def confirm_delete_account():
-    user_id = session.get('user_id')
-    if not user_id:
-        flash('You must be logged in to perform this action.', 'danger')
+    try:
+        user_id = session.get('user_id')
+        if not user_id:
+            flash('You must be logged in to perform this action.', 'danger')
+            return redirect(url_for('login'))
+
+        # Connect to the database
+        conn = psycopg2.connect(DATABASE_URI)
+        cursor = conn.cursor()
+
+
+        # Delete associated keys
+        cursor.execute("DELETE FROM keys WHERE user_id = %s", (user_id,))
+
+        # Delete user from the users table
+        cursor.execute("DELETE FROM users WHERE id = %s", (user_id,))
+
+        conn.commit()
+        conn.close()
+
+        # Clear the user_id from session
+        session.pop('user_id', None)
+
+        flash('Account deleted successfully.', 'success')
         return redirect(url_for('login'))
 
-    # Connect to the database
-    conn = psycopg2.connect(DATABASE_URI)
-    cursor = conn.cursor()
-
-    # Delete user from the users table
-    cursor.execute("DELETE FROM users WHERE id = %s", (user_id,))
-    # Delete associated keys
-    cursor.execute("DELETE FROM keys WHERE user_id = %s", (user_id,))
-    conn.commit()
-    conn.close()
-
-    # Clear the user_id from session
-    session.pop('user_id', None)
-
-    flash('Account deleted successfully.', 'success')
-    return redirect(url_for('login'))
-
+    except Exception as e:
+        # Log the exception e
+        print("Error:", e)
+        # Handle the error appropriately
+        flash('An error occurred.', 'danger')
+        return redirect(url_for('login'))
 
 # Handle CodeBlock
 def preprocess_markdown(content):
